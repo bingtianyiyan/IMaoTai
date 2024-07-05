@@ -25,7 +25,7 @@ namespace hygge_imaotai.UserInterface.UserControls
         {
             var storeListViewModel = (ShopListViewModel)DataContext;
             ShopListViewModel.StoreList.Clear();
-            DB.Sqlite.Select<ShopEntity>()
+            DB.SqlConn.Select<ShopEntity>()
                 .WhereIf(!string.IsNullOrEmpty(storeListViewModel.ShopId),
                     i => i.ShopId.Contains(storeListViewModel.ShopId))
                 .WhereIf(!string.IsNullOrEmpty(storeListViewModel.Province),

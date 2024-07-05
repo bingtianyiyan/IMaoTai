@@ -22,7 +22,7 @@ namespace hygge_imaotai.UserInterface.UserControls
             var logListViewModel = (LogListViewModel)DataContext;
             LogListViewModel.LogList.Clear();
 
-            DB.Sqlite.Select<LogEntity>()
+            DB.SqlConn.Select<LogEntity>()
                 .WhereIf(!string.IsNullOrEmpty(logListViewModel.Mobile),
                     i => i.MobilePhone.Contains(logListViewModel.Mobile))
                 .WhereIf(!string.IsNullOrEmpty(logListViewModel.SearchContent),

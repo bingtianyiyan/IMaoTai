@@ -97,7 +97,7 @@ namespace hygge_imaotai.Domain
         private void UpdateData(object parameter)
         {
             StoreList.Clear();
-            DB.Sqlite.Select<ShopEntity>()
+            DB.SqlConn.Select<ShopEntity>()
                 .WhereIf(!string.IsNullOrEmpty(this.ShopId),
                     i => i.ShopId.Contains(this.ShopId))
                 .WhereIf(!string.IsNullOrEmpty(this.Province),

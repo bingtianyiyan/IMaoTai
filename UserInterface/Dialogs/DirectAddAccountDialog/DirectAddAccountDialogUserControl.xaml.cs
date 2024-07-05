@@ -54,7 +54,7 @@ namespace hygge_imaotai.UserInterface.Dialogs.DirectAddAccountDialog
             {
                 // 此处执行更新操作o
                 // 更新寻找到的用户信息
-                DB.Sqlite.Update<UserEntity>()
+                DB.SqlConn.Update<UserEntity>()
                     .Set(i => i.UserId,_dataContext.UserId)
                     .Set(i => i.Token, _dataContext.Token)
                     .Set(i => i.ItemCode, _dataContext.ItemCode)
@@ -69,7 +69,7 @@ namespace hygge_imaotai.UserInterface.Dialogs.DirectAddAccountDialog
                 return;
             }
 
-            DB.Sqlite.Insert(_dataContext).ExecuteAffrows();
+            DB.SqlConn.Insert(_dataContext).ExecuteAffrows();
 
             // 刷新用户列表
             UserManageControl.RefreshData(UserManageControl.UserListViewModel);

@@ -163,7 +163,7 @@ namespace hygge_imaotai
             var foundUserEntity = UserManageViewModel.UserList.FirstOrDefault(user => user.Mobile == phone);
             if (foundUserEntity != null)
             {
-                await DB.Sqlite.Update<UserEntity>().Set(i => i.UserId, foundUserEntity.UserId)
+                await DB.SqlConn.Update<UserEntity>().Set(i => i.UserId, foundUserEntity.UserId)
                     .Set(i => i.Token, foundUserEntity.Token)
                     .Set(i => i.ItemCode, foundUserEntity.ItemCode)
                     .Set(i => i.ProvinceName, foundUserEntity.ProvinceName)
@@ -180,7 +180,7 @@ namespace hygge_imaotai
             }
             else
             {
-                await DB.Sqlite.Insert(new UserEntity(phone, responseJson)).ExecuteAffrowsAsync();
+                await DB.SqlConn.Insert(new UserEntity(phone, responseJson)).ExecuteAffrowsAsync();
             }
             return true;
         }
@@ -207,7 +207,7 @@ namespace hygge_imaotai
             }
             catch (Exception ex)
             {
-                await DB.Sqlite.Insert<LogEntity>(new LogEntity()
+                await DB.SqlConn.Insert<LogEntity>(new LogEntity()
                 {
                     CreateTime = DateTime.Now,
                     MobilePhone = userEntity.Mobile,
@@ -265,7 +265,7 @@ namespace hygge_imaotai
             {
                 var responseString = await response.GetStringAsync();
                 var responseJson = JObject.Parse(responseString);
-                await DB.Sqlite.Insert<LogEntity>(new LogEntity()
+                await DB.SqlConn.Insert<LogEntity>(new LogEntity()
                 {
                     CreateTime = DateTime.Now,
                     MobilePhone = user.Mobile,
@@ -288,7 +288,7 @@ namespace hygge_imaotai
                 {
                     logEntity.Response = await response.GetStringAsync();
                 }
-                await DB.Sqlite.Insert<LogEntity>(logEntity).ExecuteAffrowsAsync();
+                await DB.SqlConn.Insert<LogEntity>(logEntity).ExecuteAffrowsAsync();
             }
 
         }
@@ -361,7 +361,7 @@ namespace hygge_imaotai
         /// </summary>
         public static void ReservationBatch()
         {
-            var users = DB.Sqlite.Select<UserEntity>().Where(i =>
+            var users = DB.SqlConn.Select<UserEntity>().Where(i =>
                     i.ExpireTime > DateTime.Now && !string.IsNullOrEmpty(i.Lat) && !string.IsNullOrEmpty(i.Lng) &&
                     !string.IsNullOrEmpty(i.ShopType + "") && !string.IsNullOrEmpty(i.ItemCode))
                 .ToList();
@@ -375,7 +375,7 @@ namespace hygge_imaotai
                 catch (Exception e)
                 {
                     Logger.Error($"用户{userEntity.Mobile}预约产生异常,错误原因:{e.Message}");
-                    DB.Sqlite.Insert(new LogEntity()
+                    DB.SqlConn.Insert(new LogEntity()
                     {
                         CreateTime = DateTime.Now,
                         MobilePhone = userEntity.Mobile,
@@ -399,7 +399,7 @@ namespace hygge_imaotai
         public static async Task RefreshShop()
         {
             ShopListViewModel.StoreList.Clear();
-            await DB.Sqlite.Delete<ShopEntity>().ExecuteAffrowsAsync();
+            await DB.SqlConn.Delete<ShopEntity>().ExecuteAffrowsAsync();
 
             var responseStr = await "https://static.moutai519.com.cn/mt-backend/xhr/front/mall/resource/get"
                 .GetStringAsync();
@@ -414,7 +414,7 @@ namespace hygge_imaotai
                 {
                     var shopId = property.Name;
                     var nestedObject = (JObject)property.Value;
-                    DB.Sqlite.Insert(new ShopEntity(shopId, nestedObject)).ExecuteAffrows();
+                    DB.SqlConn.Insert(new ShopEntity(shopId, nestedObject)).ExecuteAffrows();
                 }
             });
             await task;

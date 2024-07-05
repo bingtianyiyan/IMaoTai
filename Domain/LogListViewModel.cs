@@ -87,7 +87,7 @@ namespace hygge_imaotai.Domain
         private void UpdateData(object parameter)
         {
             LogList.Clear();
-            DB.Sqlite.Select<LogEntity>()
+            DB.SqlConn.Select<LogEntity>()
                 .WhereIf(!string.IsNullOrEmpty(this.Mobile),
                     i => i.MobilePhone.Contains(this.Mobile))
                 .WhereIf(!string.IsNullOrEmpty(this.SearchContent),

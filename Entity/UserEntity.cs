@@ -149,6 +149,7 @@ namespace hygge_imaotai.Entity
             set => SetProperty(ref _shopType, value);
         }
 
+        [Column(DbType ="longtext")]
         public string JsonResult
         {
             get => _jsonResult;
@@ -178,7 +179,7 @@ namespace hygge_imaotai.Entity
         private static void DeleteItemFunc(object? parameter)
         {
             var userEntity = (parameter as UserEntity)!;
-            DB.Sqlite.Delete<UserEntity>().Where(i => i.Mobile == userEntity.Mobile).ExecuteAffrows();
+            DB.SqlConn.Delete<UserEntity>().Where(i => i.Mobile == userEntity.Mobile).ExecuteAffrows();
             UserManageViewModel.UserList.Remove((parameter as UserEntity)!);
         }
 

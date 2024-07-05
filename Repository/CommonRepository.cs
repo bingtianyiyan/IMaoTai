@@ -1,6 +1,9 @@
-﻿using System.Data.SQLite;
+﻿using System.Configuration;
+using System.Data;
+using System.Data.SQLite;
 using System.IO;
 using hygge_imaotai.Entity;
+using MySql.Data.MySqlClient;
 
 namespace hygge_imaotai.Repository
 {
@@ -14,15 +17,27 @@ namespace hygge_imaotai.Repository
         /// </summary>
         public static void CreateDatabase()
         {
-            // 判断数据库文件是否存在
-            if (File.Exists(App.OrderDatabasePath)) return;
+            if (App.DbType == FreeSql.DataType.Sqlite.ToString())
+            {
+                // 判断数据库文件是否存在
+                if (File.Exists(App.OrderDatabasePath)) return;
+                SQLiteConnection.CreateFile(App.OrderDatabasePath);
+            }
             // 创建数据库连接
-            SQLiteConnection.CreateFile(App.OrderDatabasePath);
-            var sqLiteConnection = new SQLiteConnection(App.OrderDatabaseConnectStr);
-            sqLiteConnection.Open();
+            IDbConnection sqlConnection = null;
+            if (App.DbType == FreeSql.DataType.MySql.ToString())
+            {
+                sqlConnection = new MySqlConnection(App.OrderDatabaseConnectStr);
+            }
+            else
+            {
+                sqlConnection = new SQLiteConnection(App.OrderDatabaseConnectStr);
+            }
+            sqlConnection.Open();
             // 创建表结构
             var types = new[] { typeof(UserEntity),typeof(ShopEntity),typeof(LogEntity) };
-            DB.Sqlite.CodeFirst.SyncStructure(types);
+            DB.SqlConn.CodeFirst.SyncStructure(types);
+            
         }
     }
 }

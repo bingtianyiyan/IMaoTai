@@ -132,7 +132,7 @@ namespace hygge_imaotai.Domain
         private void UpdateData(object parameter)
         {
             UserList.Clear();
-            DB.Sqlite.Select<UserEntity>()
+            DB.SqlConn.Select<UserEntity>()
                 .WhereIf(!string.IsNullOrEmpty(this.Phone),
                     i => i.Mobile.Contains(this.Phone))
                 .WhereIf(!string.IsNullOrEmpty(this.UserId),

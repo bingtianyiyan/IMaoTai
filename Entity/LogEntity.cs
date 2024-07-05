@@ -39,13 +39,13 @@ namespace hygge_imaotai.Entity
             get => _mobilePhone;
             set => SetProperty(ref _mobilePhone, value);
         }
-
+        [Column(DbType = "longtext")]
         public string Content
         {
             get => _content;
             set => SetProperty(ref _content, value);
         }
-
+        [Column(DbType = "longtext")]
         public string Response
         {
             get => _response;

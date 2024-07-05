@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Windows;
 using hygge_imaotai.Domain;
@@ -32,8 +33,29 @@ namespace hygge_imaotai
         /// <summary>
         /// 订单数据库连接字符串
         /// </summary>
-        public const string OrderDatabaseConnectStr = "Data Source=cache/imaotai.db;";
+        public static string OrderDatabaseConnectStr = ConfigurationManager.AppSettings["DefaultConnStr"] ?? "Data Source=cache/imaotai.db;";
 
+        public static string DbType = ConfigurationManager.AppSettings["DbType"] ?? "Sqlite";
+
+        /// <summary>
+        /// 获取Freesql数据库类型
+        /// </summary>
+        /// <returns></returns>
+        public static FreeSql.DataType GetFreeSqlDataType()
+        {
+            if (DbType == FreeSql.DataType.MySql.ToString())
+            {
+                return FreeSql.DataType.MySql;
+            } else if (DbType == FreeSql.DataType.Oracle.ToString())
+            {
+                return FreeSql.DataType.Oracle;
+            }
+            else if (DbType == FreeSql.DataType.SqlServer.ToString())
+            {
+                return FreeSql.DataType.SqlServer;
+            }
+            return FreeSql.DataType.Sqlite;
+        }
         /// <summary>
         /// 茅台会话ID
         /// </summary>

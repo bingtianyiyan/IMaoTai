@@ -129,7 +129,7 @@ namespace hygge_imaotai.Repository
                 return list;
             }
 
-            list = DB.Sqlite.Select<ShopEntity>().ToList();
+            list = DB.SqlConn.Select<ShopEntity>().ToList();
             if(list.Count != 0)
                 File.WriteAllText(App.StoreListFile, JsonConvert.SerializeObject(list));
             if (list.Count == 0)

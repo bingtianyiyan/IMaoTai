@@ -56,7 +56,7 @@ namespace hygge_imaotai.UserInterface.Window
                 NavDrawer.OpenMode = DrawerHostOpenMode.Modal;
                 NavDrawer.IsLeftDrawerOpen = false;
                 MenuToggleButton.Visibility = Visibility.Visible;
-                FAB.Visibility = Visibility.Visible;
+                FAB.Visibility = Visibility.Hidden;
                 DrawerFAB.Visibility = Visibility.Collapsed;
             }
             else if (ActualWidth > 700 && ActualWidth <= 1600)
@@ -65,7 +65,7 @@ namespace hygge_imaotai.UserInterface.Window
                 NavDrawer.OpenMode = DrawerHostOpenMode.Modal;
                 NavDrawer.IsLeftDrawerOpen = false;
                 MenuToggleButton.Visibility = Visibility.Visible;
-                FAB.Visibility = Visibility.Collapsed;
+                FAB.Visibility = Visibility.Hidden;
                 DrawerFAB.Visibility = Visibility.Collapsed;
             }
             else if (ActualWidth > 1600)
@@ -74,7 +74,7 @@ namespace hygge_imaotai.UserInterface.Window
                 NavDrawer.OpenMode = DrawerHostOpenMode.Standard;
                 NavDrawer.IsLeftDrawerOpen = true;
                 MenuToggleButton.Visibility = Visibility.Collapsed;
-                FAB.Visibility = Visibility.Collapsed;
+                FAB.Visibility = Visibility.Hidden;
                 DrawerFAB.Visibility = Visibility.Visible;
             }
         }
@@ -124,15 +124,15 @@ namespace hygge_imaotai.UserInterface.Window
             paletteHelper.SetTheme(theme);
         }
 
-        private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var sampleMessageDialog = new SampleMessageDialog
-            {
-                Message = { Text = ((ButtonBase)sender).Content.ToString() }
-            };
+        //private async void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
+        //{
+        //    var sampleMessageDialog = new SampleMessageDialog
+        //    {
+        //        Message = { Text = ((ButtonBase)sender).Content.ToString() }
+        //    };
 
-            await DialogHost.Show(sampleMessageDialog, "RootDialog");
-        }
+        //    await DialogHost.Show(sampleMessageDialog, "RootDialog");
+        //}
 
         private void OnSelectedItemChanged(object sender, DependencyPropertyChangedEventArgs e)
             => MainScrollViewer.ScrollToHome();

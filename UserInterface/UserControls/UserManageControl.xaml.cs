@@ -27,7 +27,7 @@ namespace hygge_imaotai.UserInterface.UserControls
         {
             UserManageViewModel.UserList.Clear();
 
-            DB.Sqlite.Select<UserEntity>()
+            DB.SqlConn.Select<UserEntity>()
                 .WhereIf(!string.IsNullOrEmpty(userListViewModel.Phone),
                     i => i.Mobile.Contains(userListViewModel.Phone))
                 .WhereIf(!string.IsNullOrEmpty(userListViewModel.UserId),

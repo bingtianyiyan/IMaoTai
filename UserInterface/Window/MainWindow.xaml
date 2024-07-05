@@ -229,15 +229,15 @@
 
                                 <Separator />
 
-                                <Button Click="MenuPopupButton_OnClick" Content="Hello World" />
+                                <!--<Button Click="MenuPopupButton_OnClick" Content="Hello World" />
 
                                 <Button Click="MenuPopupButton_OnClick" Content="Nice Popup" />
 
-                                <Button Content="Can't Touch This" IsEnabled="False" />
+                                <Button Content="Can't Touch This" IsEnabled="False" />-->
 
                                 <Separator />
 
-                                <Button Click="MenuPopupButton_OnClick" Content="Goodbye" />
+                                <!--<Button Click="MenuPopupButton_OnClick" Content="Goodbye" />-->
                             </StackPanel>
                         </materialDesign:PopupBox>
                     </Grid>
@@ -258,7 +258,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Row="0"
+                        <!--<Button Grid.Row="0"
                     Width="56"
                     Height="56"
                     Margin="0,25,0,60"
@@ -270,7 +270,7 @@
                             <materialDesign:PackIcon Width="24"
                                        Height="24"
                                        Kind="Github" />
-                        </Button>
+                        </Button>-->
                     </Grid>
 
                     <Grid Grid.Column="1">
