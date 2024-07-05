@@ -1,0 +1,53 @@
+﻿@inherits LayoutComponentBase
+
+<MApp>
+    <MAppBar App>
+        <MAppBarNavIcon @onclick="() => _drawer = !_drawer"></MAppBarNavIcon>
+        <MToolbarTitle>i茅台预约助手</MToolbarTitle>
+        <MSpacer></MSpacer>
+       @*  <MButton Text Color="primary" Target="_blank" Href="https://docs.masastack.com/blazor/introduction/why-masa-blazor">About</MButton> *@
+    </MAppBar>
+
+    <MNavigationDrawer App @bind-Value="_drawer">
+        <MList Nav Routable>
+            <MListItem Href="/" ActiveClass="primary--text">
+                <MListItemIcon>
+                    <MIcon>mdi-home</MIcon>
+                </MListItemIcon>
+                <MListItemContent>
+                    <MListItemTitle>Home</MListItemTitle>
+                </MListItemContent>
+            </MListItem>
+            <MListItem Href="/userData" ActiveClass="primary--text">
+                <MListItemIcon>
+                    <MIcon>mdi-plus</MIcon>
+                </MListItemIcon>
+                <MListItemContent>
+                    <MListItemTitle>用户管理</MListItemTitle>
+                </MListItemContent>
+            </MListItem>
+            <MListItem Href="/fetchdata" ActiveClass="primary--text">
+                <MListItemIcon>
+                    <MIcon>mdi-list-box</MIcon>
+                </MListItemIcon>
+                <MListItemContent>
+                    <MListItemTitle>店铺管理</MListItemTitle>
+                </MListItemContent>
+            </MListItem>
+        </MList>
+    </MNavigationDrawer>
+
+    <MMain>
+        <MContainer Fluid>
+            <MErrorHandler>
+                @Body
+            </MErrorHandler>
+        </MContainer>
+    </MMain>
+</MApp>
+
+@code {
+
+    private bool? _drawer;
+
+}

@@ -1,0 +1,91 @@
+@page "/userData"
+@using IMaoTai.Entity
+@inject IMaoTai.Service.IUserService UserService
+
+<PageTitle>用户管理</PageTitle>
+
+<h1>Weather forecast</h1>
+
+@if (_userList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MDataTable Headers="_headers" Items="_userList" 
+         Id="UserId" ItemKey="(a)=>{ return a.UserId.ToString(); }" 
+         ShowSelect="true"
+                Page="@_page"
+                ItemsPerPage="@_itemsPerPage"
+                OnOptionsUpdate="@HandleOnOptionsUpdate"
+                ServerItemsLength="@_total"
+                Loading="_loading"
+                Class="elevation-1">
+        <ItemColContent>
+            @context.Value
+        </ItemColContent>
+    </MDataTable>
+}
+
+@code {
+    private IEnumerable<UserEntity> _userList = new List<UserEntity>();
+    private int _total;
+    private bool _loading = true;
+    private int _itemsPerPage = 5;
+    private int _page = 1;
+    private DataOptions _options = new(1, 5);
+
+    private List<DataTableHeader<UserEntity>> _headers = new()
+    {
+        new() { Text = "Mobile", Value = nameof(UserEntity.Mobile) },
+        new() { Text = "UserId", Value = nameof(UserEntity.UserId) },
+        new() { Text = "Token", Value = nameof(UserEntity.Token),Ellipsis = new DataTableEllipsis() },
+        new() { Text = "ItemCode", Value = nameof(UserEntity.ItemCode)},
+        new() { Text = "ProvinceName", Value = nameof(UserEntity.ProvinceName) },
+        new() { Text = "CityName", Value = nameof(UserEntity.CityName) },
+        new() { Text = "Lat", Value = nameof(UserEntity.Lat) },
+        new() { Text = "Lng", Value = nameof(UserEntity.Lng) },
+    };
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var result = UserService.GetUserList(new Domain.UserManageViewModel());
+    //     if (result != null && result.UserList != null)
+    //     _userList = result.UserList;
+    // }
+
+    private async Task HandleOnOptionsUpdate(DataOptions options)
+    {
+        _options = options;
+        await GetDataFromApi();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await GetDataFromApi();
+            StateHasChanged();
+        }
+    }
+
+    private async Task GetDataFromApi()
+    {
+        _loading = true;
+        var result = UserService.GetUserList(new Domain.UserManageViewModel()
+        {
+                Current = _options.Page,
+                PageSize = _options.ItemsPerPage,
+        });
+        if (result != null && result.UserList != null){
+            _userList = result.UserList;
+            _total = Convert.ToInt32( result.Total);
+        }
+        else
+        {
+            _total = 0;
+        }
+        _loading = false;
+        await Task.CompletedTask;
+    }
+}
