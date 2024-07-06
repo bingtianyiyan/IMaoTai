@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
 using System.Threading;
+using System.Text.Json.Nodes;
 
 namespace IMaoTai
 {
@@ -159,27 +160,35 @@ namespace IMaoTai
             var responseCode = (string)responseJson["code"];
             if (responseCode != "2000") throw new Exception(responseJson.TryGetValue("message", out var value) ? value.Value<string>() : responseString);
             // 存储一下数据
-            var foundUserEntity = DB.SqlConn.Select<UserEntity>().Where(x => x.Mobile == phone).First();
+            var foundUserEntity = await DB.SqlConn.Select<UserEntity>().Where(x => x.Mobile == phone).FirstAsync();
             if (foundUserEntity != null)
             {
-                await DB.SqlConn.Update<UserEntity>().Set(i => i.UserId, foundUserEntity.UserId)
-                    .Set(i => i.Token, foundUserEntity.Token)
-                    .Set(i => i.ItemCode, foundUserEntity.ItemCode)
-                    .Set(i => i.ProvinceName, foundUserEntity.ProvinceName)
-                    .Set(i => i.CityName, foundUserEntity.CityName)
-                    .Set(i => i.Address, foundUserEntity.Address)
-                    .Set(i => i.Lat, foundUserEntity.Lat)
-                    .Set(i => i.Lng, foundUserEntity.Lng)
-                    .Set(i => i.ShopType, foundUserEntity.ShopType)
-                    .Set(i => i.PushPlusToken, foundUserEntity.PushPlusToken)
-                    .Set(i => i.JsonResult, foundUserEntity.JsonResult)
-                    .Set(i => i.CreateTime, foundUserEntity.CreateTime)
-                    .Set(i => i.ExpireTime, foundUserEntity.ExpireTime)
+                //更新token
+                var data = responseJson["data"];
+                string token = data["token"].Value<string>();
+                string jsonResult = responseJson.ToString();
+
+                var res =   await DB.SqlConn.Update<UserEntity>()
+                     //.Set(i => i.UserId, foundUserEntity.UserId)
+                    .Set(i => i.Token, token)
+                    //.Set(i => i.ItemCode, foundUserEntity.ItemCode)
+                    //.Set(i => i.ProvinceName, foundUserEntity.ProvinceName)
+                    //.Set(i => i.CityName, foundUserEntity.CityName)
+                    //.Set(i => i.Address, foundUserEntity.Address)
+                    //.Set(i => i.Lat, foundUserEntity.Lat)
+                    //.Set(i => i.Lng, foundUserEntity.Lng)
+                    //.Set(i => i.ShopType, foundUserEntity.ShopType)
+                    //.Set(i => i.PushPlusToken, foundUserEntity.PushPlusToken)
+                    .Set(i => i.JsonResult, jsonResult)
+                    //.Set(i => i.CreateTime, foundUserEntity.CreateTime)
+                    //.Set(i => i.ExpireTime, foundUserEntity.ExpireTime)
                     .Where(i => i.Mobile == foundUserEntity.Mobile).ExecuteAffrowsAsync();
+                return res > 0;
             }
             else
             {
-                await DB.SqlConn.Insert(new UserEntity(phone, responseJson)).ExecuteAffrowsAsync();
+                var res = await DB.SqlConn.Insert(new UserEntity(phone, responseJson)).ExecuteAffrowsAsync();
+                return res > 0;
             }
             return true;
         }

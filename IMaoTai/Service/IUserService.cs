@@ -11,8 +11,8 @@ namespace IMaoTai.Service
     public interface IUserService
     {
         Task<UserListModel> GetUserList(UserManageViewModel userListViewModel);
-        (bool, string) ModifyUser(UserEntity model);
-        (bool, string) InsertUser(UserEntity model);
-        bool DeleteUser(UserEntity model);
+        Task<(bool, string)> ModifyUser(UserEntity model);
+        Task<(bool, string)> InsertUser(UserEntity model);
+        Task<bool> DeleteUser(UserEntity model);
     }
 }

@@ -1,5 +1,6 @@
 @page "/userData"
 @using IMaoTai.Entity
+@using System.Windows.Threading;
 @inject IMaoTai.Service.IUserService UserService
 
 <PageTitle>用户管理</PageTitle>
@@ -12,7 +13,54 @@
 }
 else
 {
-    <MDataTable Headers="_headers" Items="_userList" 
+  <MCard>
+    <MCardTitle>
+        查询条件
+        <MSpacer></MSpacer>
+            <MTextField @bind-Value="_search.Phone"
+                    Label="手机号"
+                    SingleLine
+                    HideDetails="true"></MTextField>
+            <MTextField @bind-Value="_search.UserId"
+                        Label="i茅台用户ID"
+                        SingleLine
+                        HideDetails="true"></MTextField>
+            <MTextField @bind-Value="_search.Province"
+                        Label="省份"
+                        SingleLine
+                        HideDetails="true"></MTextField>
+            <MTextField @bind-Value="_search.City"
+                        Label="城市"
+                        SingleLine
+                        HideDetails="true"></MTextField>
+      </MCardTitle>
+        <MRow Align="@AlignTypes.Center"
+              Justify="@JustifyTypes.Center">
+            <MToolbar>
+                <MButton Depressed Color="primary"
+                         Dark
+                         OnClick="GetUserListDataFromApi">
+                    搜索
+                </MButton> 
+                <MButton Depressed Color="primary"
+                         Dark
+                         OnClick="ClearSearch">
+                    重置
+                </MButton>    
+                <MButton Depressed Color="indigo"
+                         Dark
+                         OnClick="RegisterOpen">
+                    添加账号
+                </MButton>     
+                <MButton Depressed Color="cyan"
+                         Dark
+                         OnClick="()=>_dialog=true">
+                    直接新增
+                </MButton>
+            </MToolbar>
+        </MRow>
+        <MDataTable Headers="_headers" DisableFiltering
+          Items="_userList" 
          Id="UserId" ItemKey="(a)=>{ return a.UserId.ToString(); }" 
          ShowSelect="true"
                 Page="@_page"
@@ -21,21 +69,6 @@ else
                 ServerItemsLength="@_total"
                 Loading="_loading"
                 Class="elevation-1">
-        <TopContent>
-            <MToolbar Flat>
-                <MToolbarTitle>My CRUD</MToolbarTitle>
-                <MDivider Class="mx-4"
-                          Inset
-                          Vertical></MDivider>
-                <MSpacer></MSpacer>
-                <MButton Color="primary"
-                         Dark
-                         Class="mb-2"
-                         OnClick="()=>_dialog=true">
-                    New Item
-                </MButton>
-            </MToolbar>
-        </TopContent>
         <ItemColContent>
             @if (context.Header.Value == "actions")
             {
@@ -51,12 +84,10 @@ else
             }
         </ItemColContent>
         <NoDataContent>
-            <MButton Color="primary"
-                     OnClick="GetUserListDataFromApi">
-                Reset
-            </MButton>
+                暂无数据.......
         </NoDataContent>
     </MDataTable>
+  </MCard>
 
     //新增/编辑弹框
     <MDialog @bind-Value="_dialog"
@@ -189,11 +220,94 @@ else
             </MCardActions>
         </MCard>
     </MDialog>
+    //账号注册
+    <MDialog @bind-Value="_dialogRegister"
+             MaxWidth="500">
+        <MCard>
+            <MCardTitle>
+                <span class="text-h5">添加\更新用户</span>
+            </MCardTitle>
 
+            <MCardText>
+                <MContainer>
+                    <MRow>
+                        <MCol Cols="50"
+                              Sm="6"
+                              Md="4">
+                            <PBlockText Primary="手机号">
+                            </PBlockText>
+                            <MTextField @bind-Value="_registerItem.Mobile"
+                                        Label="请输入i茅台手机号">
+                                    </MTextField>
+                        </MCol>
+                        <MCol Cols="20"
+                              Sm="6"
+                              Md="4">
+                            <MButton Depressed Color="cyan" Dark
+                                     OnClick="SendPhoneCodeBtn" Disabled="_sendCodeDisabled">
+                                @_sendPhoneCodeBtnTxt
+                            </MButton>
+                        </MCol>
+                    </MRow>
+                    <MRow>
+                        <MCol Cols="50"
+                              Sm="6"
+                              Md="4">
+                            <PBlockText Primary="验证码">
+                            </PBlockText>
+                            <MTextField @bind-Value="_registerItem.Code"
+                                        Label="请输入验证码"></MTextField>
+                        </MCol>
+                    </MRow>
+                </MContainer>
+            </MCardText>
+
+            <MCardActions>
+                <MSpacer></MSpacer>
+                <MButton Color="blue darken-1"
+                         Text
+                         OnClick="Close">
+                    取消
+                </MButton>
+                <MButton Color="blue darken-1"
+                         Text
+                         OnClick="LoginRegisterUser">
+                    保存
+                </MButton>
+            </MCardActions>
+
+        </MCard>
+    </MDialog>
+
+    //告警弹窗
+    <MDialog @bind-Value="_dialogWarn"
+             Width="400">
+        <ChildContent>
+            <MCard>
+                <MCardTitle>
+                    提示
+                </MCardTitle>
+
+                <MCardText Class="grow">
+                    @_warnMsg
+                </MCardText>
+                <MDivider></MDivider>
+                <MCardActions>
+                    <MSpacer></MSpacer>
+                    <MButton Color="primary"
+                             Text
+                             OnClick="() => _dialogWarn = false">
+                        关闭
+                    </MButton>
+                </MCardActions>
+            </MCard>
+        </ChildContent>
+    </MDialog>
 }
 
 @code {
     private List<UserEntity> _userList = new List<UserEntity>();
+    private Domain.UserManageViewModel _search = new Domain.UserManageViewModel();
     private int _total;
     private bool _loading = true;
     private int _itemsPerPage = 5;
@@ -215,14 +329,18 @@ else
         new() { Text = "操作", Value = "actions",Sortable=false },
     };
 
-
+    private bool _dialogWarn;
     private bool _dialog;
+    private bool _dialogRegister;
     private bool _dialogDelete;
-    private UserEntity _editedItem = new UserEntity()
-    {
-
-    };
+    private UserEntity _editedItem = new UserEntity();
     private int _editedIndex = -1;
+    private DispatcherTimer timer;
+    private int _remainingTime;
+    private bool _sendCodeDisabled = false;
+    private string _sendPhoneCodeBtnTxt = "发送验证码";
+    private RegisterModel _registerItem = new RegisterModel();
+    private string _warnMsg;
 
     public string FormTitle
     {
@@ -235,29 +353,119 @@ else
     public void Close()
     {
         _dialog = false;
+        _dialogRegister = false;
         _editedItem = new UserEntity();
         _editedIndex = -1;
+    }
+
+    public void ClearSearch()
+    {
+        _search = new();
+    }
+
+    //注册用户
+    public void RegisterOpen()
+    {
+        // 创建一个DispatcherTimer实例
+        timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1) // 设置时间间隔为1秒
+            };
+        timer.Tick += Timer_Tick; // 指定计时器触发事件的处理方法
+        _remainingTime = 0;
+        _dialogRegister = true;
+    }
+
+    // 计时器触发事件的处理方法
+    private void Timer_Tick(object sender, EventArgs e)
+    {
+        if (_remainingTime > 0)
+        {
+            // _sendCodeDisabled = true;
+            _remainingTime--; // 每秒减少1秒
+            _sendPhoneCodeBtnTxt = $"剩余{_remainingTime}秒...";
+            StateHasChanged();
+        }
+        else
+        {
+            _sendCodeDisabled = false;
+            _sendPhoneCodeBtnTxt = "发送验证码";
+            StateHasChanged();
+            timer.Stop();
+        }
+    }
+
+    /// <summary>
+    ///发送验证码
+    /// </summary>
+    /// <returns></returns>
+    public async Task SendPhoneCodeBtn()
+    {
+        if (string.IsNullOrEmpty(_registerItem.Mobile))
+        {
+            _warnMsg = "手机号不能为空";
+            _dialogWarn = true;
+            return;
+        }
+        if (_remainingTime > 0)
+        {
+            _warnMsg = $"{_remainingTime}秒后再重试";
+            _dialogWarn = true;
+            return;
+        }
+        var res = await new IMTService().SendCode(_registerItem.Mobile);
+        if (res)
+        {
+            _remainingTime = 60;
+            _sendPhoneCodeBtnTxt = $"剩余{_remainingTime}秒...";
+            timer.Start();
+        }
+    }
+
+    public async Task LoginRegisterUser()
+    {
+        if (string.IsNullOrEmpty(_registerItem.Mobile))
+        {
+            _warnMsg = "手机号不能为空";
+            _dialogWarn = true;
+            return;
+        }
+        if (string.IsNullOrEmpty(_registerItem.Code))
+        {
+            _warnMsg = "验证码不能为空";
+            _dialogWarn = true;
+            return;
+        }
+        _sendPhoneCodeBtnTxt = "发送验证码";
+        _remainingTime = 0;
+        timer.Stop();
+        StateHasChanged();
+        var res = await new IMTService().Login(_registerItem.Mobile, _registerItem.Code);
+        _warnMsg = res ? "成功" : "失败";
+        _dialogWarn = true;
     }
 
     /// <summary>
     /// 编辑和新增实际逻辑
     /// </summary>
-    public void Save()
+    public async Task Save()
     {
         (bool, string) resultItem = (false,"");
         if (_editedIndex > -1)//编辑
         {
             // var item = _userList[_editedIndex];
             //只能修改 用户ID，预约code,经度，维度，省份，城市，类型，token
-            resultItem = UserService.ModifyUser(_editedItem);
+            resultItem = await UserService.ModifyUser(_editedItem);
         }
         else // 新增
         {
-            resultItem = UserService.InsertUser(_editedItem);
+            resultItem = await UserService.InsertUser(_editedItem);
         }
+        _warnMsg = resultItem.Item1 ? "成功" : "失败";
+        _dialogWarn = true;
         if (resultItem.Item1)
         {
-            //GetUserListDataFromApi();
+            await GetUserListDataFromApi();
             StateHasChanged();
         }
         Close();
@@ -285,9 +493,14 @@ else
         _dialogDelete = true;
     }
 
-    public void DeleteItemConfirm()
+    public async Task DeleteItemConfirm()
     {
-        UserService.DeleteUser(_editedItem);
+        var res = await UserService.DeleteUser(_editedItem);
+        if (res)
+        {
+            await GetUserListDataFromApi();
+            StateHasChanged();
+        }
         CloseDelete();
     }
 
@@ -327,11 +540,9 @@ else
     private async Task GetUserListDataFromApi()
     {
         _loading = true;
-        var result = await UserService.GetUserList(new Domain.UserManageViewModel()
-        {
-                Current = _options.Page,
-                PageSize = _options.ItemsPerPage,
-        });
+        _search.Current = _options.Page;
+        _search.PageSize = _options.ItemsPerPage;
+        var result = await UserService.GetUserList(_search);
         _userList = result.UserList;
         _total = Convert.ToInt32(result.Total);
         _loading = false;
@@ -347,7 +558,6 @@ else
     public void MenuCancel()
     {
         _date = _prevDate;
-        //_editedItem.ExpireTime = Convert.ToDateTime(_date.ToString());
         _menu = false;
     }
 
@@ -356,5 +566,15 @@ else
         _prevDate = _date;
         _editedItem.ExpireTime = Convert.ToDateTime(_date.ToString());
         _menu = false;
+    }
+
+    public class RegisterModel
+    {
+        /// <summary>
+        ///手机号
+        /// </summary>
+        public string Mobile { get; set; }
+        //验证码
+        public string Code { get; set; }
     }
 }

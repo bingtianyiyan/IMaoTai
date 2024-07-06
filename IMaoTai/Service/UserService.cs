@@ -43,20 +43,20 @@ namespace IMaoTai.Service
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public (bool,string) ModifyUser(UserEntity model)
+        public async Task<(bool,string)> ModifyUser(UserEntity model)
         {
             var dataLogicalItem = DataLogical(model);
             if (!dataLogicalItem.Item1)
             {
-                return dataLogicalItem;
+                return  dataLogicalItem;
             }
-            var foundUserEntity =  DB.SqlConn.Select<UserEntity>()
-                .Where(x=> x.Mobile == model.Mobile).First();
+            var foundUserEntity = await DB.SqlConn.Select<UserEntity>()
+                .Where(x=> x.Mobile == model.Mobile).FirstAsync();
             if (foundUserEntity != null)
             {
                 // 此处执行更新操作o
                 // 更新寻找到的用户信息
-                var res = DB.SqlConn.Update<UserEntity>()
+                var res = await DB.SqlConn.Update<UserEntity>()
                     .Set(i => i.UserId, model.UserId)
                     .Set(i => i.Token, model.Token)
                     .Set(i => i.ItemCode, model.ItemCode)
@@ -66,7 +66,7 @@ namespace IMaoTai.Service
                     .Set(i => i.Lng, model.Lng)
                     .Set(i => i.ShopType, model.ShopType)
                     .Set(i => i.ExpireTime, model.ExpireTime)
-                    .Where(i => i.Mobile == model.Mobile).ExecuteAffrows();
+                    .Where(i => i.Mobile == model.Mobile).ExecuteAffrowsAsync();
 
                 return (res >0 ? true:false, res > 0 ? "":"编辑失败");
             }
@@ -78,20 +78,20 @@ namespace IMaoTai.Service
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public (bool, string) InsertUser(UserEntity model)
+        public async Task<(bool, string)> InsertUser(UserEntity model)
         {
             var dataLogicalItem = DataLogical(model);
             if (!dataLogicalItem.Item1)
             {
                 return dataLogicalItem;
             }
-            var foundUserEntity = DB.SqlConn.Select<UserEntity>()
-                .Where(x => x.Mobile == model.Mobile).First();
+            var foundUserEntity = await DB.SqlConn.Select<UserEntity>()
+                .Where(x => x.Mobile == model.Mobile).FirstAsync();
             if (foundUserEntity != null)
             {
                 return (false, "用户已存在");
             }
-            var res = DB.SqlConn.Insert(model).ExecuteAffrows();
+            var res = await DB.SqlConn.Insert(model).ExecuteAffrowsAsync();
             if (res > 0) {
                 return (true, "");
             }
@@ -103,9 +103,9 @@ namespace IMaoTai.Service
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool DeleteUser(UserEntity model)
+        public async Task<bool> DeleteUser(UserEntity model)
         {
-            var res = DB.SqlConn.Delete<UserEntity>().Where(x=> x.Mobile == model.Mobile).ExecuteAffrows();
+            var res = await DB.SqlConn.Delete<UserEntity>().Where(x=> x.Mobile == model.Mobile).ExecuteAffrowsAsync();
             return res > 0;
         }
 
