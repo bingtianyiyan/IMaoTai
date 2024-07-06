@@ -1,4 +1,5 @@
 ﻿using IMaoTai.Domain;
+using IMaoTai.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace IMaoTai.Service
 {
     public interface IUserService
     {
-        UserListModel GetUserList(UserManageViewModel userListViewModel);
+        Task<UserListModel> GetUserList(UserManageViewModel userListViewModel);
+        (bool, string) ModifyUser(UserEntity model);
+        (bool, string) InsertUser(UserEntity model);
+        bool DeleteUser(UserEntity model);
     }
 }

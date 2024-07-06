@@ -4,7 +4,7 @@
 
 <PageTitle>用户管理</PageTitle>
 
-<h1>Weather forecast</h1>
+<h1>用户管理</h1>
 
 @if (_userList == null)
 {
@@ -21,14 +21,146 @@ else
                 ServerItemsLength="@_total"
                 Loading="_loading"
                 Class="elevation-1">
+        <TopContent>
+            <MToolbar Flat>
+                <MToolbarTitle>My CRUD</MToolbarTitle>
+                <MDivider Class="mx-4"
+                          Inset
+                          Vertical></MDivider>
+                <MSpacer></MSpacer>
+                <MButton Color="primary"
+                         Dark
+                         Class="mb-2"
+                         OnClick="()=>_dialog=true">
+                    New Item
+                </MButton>
+                <MDialog @bind-Value="_dialog"
+                         MaxWidth="500">
+                    <MCard>
+                        <MCardTitle>
+                            <span class="text-h5">@FormTitle</span>
+                        </MCardTitle>
+
+                        <MCardText>
+                            <MContainer>
+                                <MRow>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.Mobile"
+                                                    Label="手机号"></MTextField>
+                                    </MCol>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.UserId"
+                                                    Label="i茅台用户id"></MTextField>
+                                    </MCol>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.Token"
+                                                    Label="Token"></MTextField>
+                                    </MCol>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.ItemCode"
+                                                    Label="预约商品Code,用@间隔"></MTextField>
+                                    </MCol>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.ProvinceName"
+                                                    Label="省份"></MTextField>
+                                    </MCol>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.CityName"
+                                                    Label="城市"></MTextField>
+                                    </MCol>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.ShopType"
+                                                    Label="类型=>1:预约本市出货量最大的门店;2:预约你的位置(经纬度)附近门店;"></MTextField>
+                                    </MCol>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.Lng"
+                                                    Label="请输入经度(eg:114.48)"></MTextField>
+                                    </MCol>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.Lat"
+                                                    Label="请输入纬度(eg:36.62)"></MTextField>
+                                    </MCol>
+                                    <MCol Cols="12"
+                                          Sm="6"
+                                          Md="4">
+                                        <MTextField @bind-Value="_editedItem.ExpireTime"
+                                                    Label="到期时间"></MTextField>
+                                    </MCol>
+                                </MRow>
+                            </MContainer>
+                        </MCardText>
+
+                        <MCardActions>
+                            <MSpacer></MSpacer>
+                            <MButton Color="blue darken-1"
+                                     Text
+                                     OnClick="Close">
+                                取消
+                            </MButton>
+                            <MButton Color="blue darken-1"
+                                     Text
+                                     OnClick="Save">
+                                保存
+                            </MButton>
+                        </MCardActions>
+                    </MCard>
+                </MDialog>
+                <MDialog @bind-Value="_dialogDelete" MaxWidth="500">
+                    <MCard>
+                        <MCardTitle Class="text-h5">是否确认删除该项?</MCardTitle>
+                        <MCardActions>
+                            <MSpacer></MSpacer>
+                            <MButton Color="blue darken-1" Text OnClick="CloseDelete">取消</MButton>
+                            <MButton Color="blue darken-1" Text OnClick="DeleteItemConfirm">确定</MButton>
+                            <MSpacer></MSpacer>
+                        </MCardActions>
+                    </MCard>
+                </MDialog>
+            </MToolbar>
+        </TopContent>
         <ItemColContent>
-            @context.Value
+            @if (context.Header.Value == "actions")
+            {
+                <MIcon Small
+                       Class="mr-2"
+                       OnClick="()=>EditItem(context.Item)">mdi-pencil</MIcon>
+                <MIcon Small
+                       OnClick="()=>DeleteItem(context.Item)">mdi-delete</MIcon>
+            }
+            else
+            {
+                @context.Value
+            }
         </ItemColContent>
+        <NoDataContent>
+            <MButton Color="primary"
+                     OnClick="GetUserListDataFromApi">
+                Reset
+            </MButton>
+        </NoDataContent>
     </MDataTable>
 }
 
 @code {
-    private IEnumerable<UserEntity> _userList = new List<UserEntity>();
+    private List<UserEntity> _userList = new List<UserEntity>();
     private int _total;
     private bool _loading = true;
     private int _itemsPerPage = 5;
@@ -37,15 +169,101 @@ else
 
     private List<DataTableHeader<UserEntity>> _headers = new()
     {
-        new() { Text = "Mobile", Value = nameof(UserEntity.Mobile) },
-        new() { Text = "UserId", Value = nameof(UserEntity.UserId) },
+        new() { Text = "手机号", Value = nameof(UserEntity.Mobile) },
+        new() { Text = "预约茅台ID", Value = nameof(UserEntity.UserId),Ellipsis = new DataTableEllipsis() },
         new() { Text = "Token", Value = nameof(UserEntity.Token),Ellipsis = new DataTableEllipsis() },
-        new() { Text = "ItemCode", Value = nameof(UserEntity.ItemCode)},
-        new() { Text = "ProvinceName", Value = nameof(UserEntity.ProvinceName) },
-        new() { Text = "CityName", Value = nameof(UserEntity.CityName) },
-        new() { Text = "Lat", Value = nameof(UserEntity.Lat) },
-        new() { Text = "Lng", Value = nameof(UserEntity.Lng) },
+        new() { Text = "预约项目Code", Value = nameof(UserEntity.ItemCode),Ellipsis = new DataTableEllipsis()},
+        new() { Text = "省份", Value = nameof(UserEntity.ProvinceName) },
+        new() { Text = "城市", Value = nameof(UserEntity.CityName) },
+        new() { Text = "经度", Value = nameof(UserEntity.Lng) },
+        new() { Text = "纬度", Value = nameof(UserEntity.Lat) },
+        new() { Text = "店铺类型", Value = nameof(UserEntity.ShopType) },
+        new() { Text = "到期时间", Value = nameof(UserEntity.ExpireTime) },
+        new() { Text = "操作", Value = "actions",Sortable=false },
     };
+
+
+    private bool _dialog;
+    private bool _dialogDelete;
+    private UserEntity _editedItem = new UserEntity()
+    {
+
+    };
+    private int _editedIndex = -1;
+
+    public string FormTitle
+    {
+        get
+        {
+            return _editedIndex == -1 ? "新建用户" : "编辑用户";
+        }
+    }
+
+    public void Close()
+    {
+        _dialog = false;
+        _editedItem = new UserEntity();
+        _editedIndex = -1;
+    }
+
+    /// <summary>
+    /// 编辑和新增实际逻辑
+    /// </summary>
+    public void Save()
+    {
+        (bool, string) resultItem = (false,"");
+        if (_editedIndex > -1)//编辑
+        {
+            // var item = _userList[_editedIndex];
+            //只能修改 用户ID，预约code,经度，维度，省份，城市，类型，token
+            resultItem = UserService.ModifyUser(_editedItem);
+        }
+        else // 新增
+        {
+            resultItem = UserService.InsertUser(_editedItem);
+        }
+        if (resultItem.Item1)
+        {
+            //GetUserListDataFromApi();
+            StateHasChanged();
+        }
+        Close();
+    }
+
+    /// <summary>
+    ///编辑
+    /// </summary>
+    /// <param name="item"></param>
+    public void EditItem(UserEntity item)
+    {
+        _editedIndex = _userList.IndexOf(item);
+        _editedItem = item;
+        _dialog = true;
+    }
+
+    public void DeleteItem(UserEntity item)
+    {
+        _editedIndex = _userList.IndexOf(item);
+        _editedItem = new UserEntity()
+        {
+           Mobile = item.Mobile,
+           UserId = item.UserId
+        };
+        _dialogDelete = true;
+    }
+
+    public void DeleteItemConfirm()
+    {
+        UserService.DeleteUser(_editedItem);
+        CloseDelete();
+    }
+
+    public void CloseDelete()
+    {
+        _dialogDelete = false;
+        _editedItem = new();
+        _editedIndex = -1;
+    }
 
     // protected override async Task OnInitializedAsync()
     // {
@@ -57,35 +275,32 @@ else
     private async Task HandleOnOptionsUpdate(DataOptions options)
     {
         _options = options;
-        await GetDataFromApi();
+        await GetUserListDataFromApi();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await GetDataFromApi();
+            await GetUserListDataFromApi();
             StateHasChanged();
         }
     }
 
-    private async Task GetDataFromApi()
+    /// <summary>
+    /// 获取用户列表信息
+    /// </summary>
+    /// <returns></returns>
+    private async Task GetUserListDataFromApi()
     {
         _loading = true;
-        var result = UserService.GetUserList(new Domain.UserManageViewModel()
+        var result = await UserService.GetUserList(new Domain.UserManageViewModel()
         {
                 Current = _options.Page,
                 PageSize = _options.ItemsPerPage,
         });
-        if (result != null && result.UserList != null){
-            _userList = result.UserList;
-            _total = Convert.ToInt32( result.Total);
-        }
-        else
-        {
-            _total = 0;
-        }
+        _userList = result.UserList;
+        _total = Convert.ToInt32(result.Total);
         _loading = false;
-        await Task.CompletedTask;
     }
 }
