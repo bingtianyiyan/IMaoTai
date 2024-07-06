@@ -72,6 +72,9 @@ else
         <ItemColContent>
             @if (context.Header.Value == "actions")
             {
+                 <MButton Small
+                           Class="mr-2"
+                             OnClick="()=>ReserveItem(context.Item)">预约</MButton>
                 <MIcon Small
                        Class="mr-2"
                        OnClick="()=>EditItem(context.Item)">mdi-pencil</MIcon>
@@ -469,6 +472,24 @@ else
             StateHasChanged();
         }
         Close();
+    }
+
+    /// <summary>
+    ///预约
+    /// </summary>
+    /// <param name="item"></param>
+    public async Task ReserveItem(UserEntity item)
+    {
+        try
+        {
+            await IMTService.Reservation(item);
+            _warnMsg = "手动发起预约成功,响应结果请查看日志";
+        }
+        catch (Exception e)
+        {
+            _warnMsg = "手动发起预约失败,响应结果请查看日志";
+        }
+        _dialogWarn = true;
     }
 
     /// <summary>
