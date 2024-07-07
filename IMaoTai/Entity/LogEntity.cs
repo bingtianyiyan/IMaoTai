@@ -10,7 +10,7 @@ namespace IMaoTai.Entity
         #region Properties
 
         [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Status { get; set; }
 

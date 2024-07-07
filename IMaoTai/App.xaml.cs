@@ -8,6 +8,7 @@ using Quartz.Impl;
 using System.Configuration;
 using System.IO;
 using System.Windows;
+using Yitter.IdGenerator;
 
 namespace IMaoTai
 {
@@ -77,6 +78,11 @@ namespace IMaoTai
         {
             base.OnStartup(e);
 
+            //雪花id
+            var options = new IdGeneratorOptions(8);
+            // 保存参数（务必调用，否则参数设置不生效）：
+            YitIdHelper.SetIdGenerator(options);
+
             // 判断cache文件夹是否存在
             if (!Directory.Exists(CacheDir))
                 Directory.CreateDirectory(CacheDir);
@@ -117,9 +123,23 @@ namespace IMaoTai
 
         public static List<T> GetListFromFile<T>(string path) where T : class
         {
-            var json = File.ReadAllText(path);
-            var result = JsonConvert.DeserializeObject<List<T>>(json);
-            return result;
+            if (File.Exists(path))
+            {
+                var json = File.ReadAllText(path);
+                var result = JsonConvert.DeserializeObject<List<T>>(json);
+                return result;
+            }
+            return new List<T>();
+        }
+
+        public static void WriteDataToCache<T>(string path, List<T> list)
+        {
+            File.WriteAllText(path, JsonConvert.SerializeObject(list));
+        }
+
+        public static void FileContentClear(string path, string content)
+        {
+            File.WriteAllText(path, content);
         }
     }
 }

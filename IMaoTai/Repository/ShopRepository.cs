@@ -122,11 +122,14 @@ namespace IMaoTai.Repository
                 return list;
             }
 
-            list = DB.SqlConn.Select<ShopEntity>().ToList();
-            if (list.Count != 0)
-                File.WriteAllText(App.StoreListFile, JsonConvert.SerializeObject(list));
-            if (list.Count == 0)
-                throw new Exception("未获取到可用商店列表,请先尝试刷新商店列表");
+            if (!App.LoadFromFile)
+            {
+                list = DB.SqlConn.Select<ShopEntity>().ToList();
+                if (list.Count != 0)
+                    File.WriteAllText(App.StoreListFile, JsonConvert.SerializeObject(list));
+                if (list.Count == 0)
+                    throw new Exception("未获取到可用商店列表,请先尝试刷新商店列表");
+            }
             return list;
         }
 

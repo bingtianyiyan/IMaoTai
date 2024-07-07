@@ -1,6 +1,7 @@
 ﻿using Flurl.Http;
 using IMaoTai.Domain;
 using IMaoTai.Entity;
+using IMaoTai.Pages;
 using IMaoTai.Repository;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -9,6 +10,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Yitter.IdGenerator;
 
 namespace IMaoTai
 {
@@ -152,37 +154,55 @@ namespace IMaoTai
             var responseCode = (string)responseJson["code"];
             if (responseCode != "2000") throw new Exception(responseJson.TryGetValue("message", out var value) ? value.Value<string>() : responseString);
             // 存储一下数据
-            var foundUserEntity = await DB.SqlConn.Select<UserEntity>().Where(x => x.Mobile == phone).FirstAsync();
-            if (foundUserEntity != null)
-            {
-                //更新token
-                var data = responseJson["data"];
-                string token = data["token"].Value<string>();
-                string jsonResult = responseJson.ToString();
 
-                var res = await DB.SqlConn.Update<UserEntity>()
-                    //.Set(i => i.UserId, foundUserEntity.UserId)
-                    .Set(i => i.Token, token)
-                    //.Set(i => i.ItemCode, foundUserEntity.ItemCode)
-                    //.Set(i => i.ProvinceName, foundUserEntity.ProvinceName)
-                    //.Set(i => i.CityName, foundUserEntity.CityName)
-                    //.Set(i => i.Address, foundUserEntity.Address)
-                    //.Set(i => i.Lat, foundUserEntity.Lat)
-                    //.Set(i => i.Lng, foundUserEntity.Lng)
-                    //.Set(i => i.ShopType, foundUserEntity.ShopType)
-                    //.Set(i => i.PushPlusToken, foundUserEntity.PushPlusToken)
-                    .Set(i => i.JsonResult, jsonResult)
-                    //.Set(i => i.CreateTime, foundUserEntity.CreateTime)
-                    //.Set(i => i.ExpireTime, foundUserEntity.ExpireTime)
-                    .Where(i => i.Mobile == foundUserEntity.Mobile).ExecuteAffrowsAsync();
-                return res > 0;
-            }
-            else
+            if (App.LoadFromFile)
             {
-                var res = await DB.SqlConn.Insert(new UserEntity(phone, responseJson)).ExecuteAffrowsAsync();
-                return res > 0;
+                //lod from file
+                var list = App.GetListFromFile<UserEntity>(App.UserListFile);
+                if (list.Any())
+                {
+                    var foundUserEntity = list.FirstOrDefault(x => x.Mobile == phone);
+                    if (foundUserEntity != null && foundUserEntity.UserId > 0)
+                    {
+                        list.Remove(foundUserEntity);
+                        //更新token
+                        var data = responseJson["data"];
+                        string token = data["token"].Value<string>();
+                        string jsonResult = responseJson.ToString();
+                       foundUserEntity.JsonResult = jsonResult;
+                        foundUserEntity.Token = token;
+                        list.Add(foundUserEntity);
+                        if (list.Count != 0)
+                            App.WriteDataToCache(App.UserListFile, list);
+                        return true;
+                    }
+                }
+                list.Add(new UserEntity(phone, responseJson));
+                App.WriteDataToCache(App.UserListFile, list);
+                return true;
             }
-            return true;
+            else{
+
+                var foundUserEntity = await DB.SqlConn.Select<UserEntity>().Where(x => x.Mobile == phone).FirstAsync();
+                if (foundUserEntity != null)
+                {
+                    //更新token
+                    var data = responseJson["data"];
+                    string token = data["token"].Value<string>();
+                    string jsonResult = responseJson.ToString();
+
+                    var res = await DB.SqlConn.Update<UserEntity>()
+                        .Set(i => i.Token, token)
+                        .Set(i => i.JsonResult, jsonResult)
+                        .Where(i => i.Mobile == foundUserEntity.Mobile).ExecuteAffrowsAsync();
+                    return res > 0;
+                }
+                else
+                {
+                    var res = await DB.SqlConn.Insert(new UserEntity(phone, responseJson)).ExecuteAffrowsAsync();
+                    return res > 0;
+                }
+            }
         }
 
         /// <summary>
@@ -206,14 +226,15 @@ namespace IMaoTai
             }
             catch (Exception ex)
             {
-                await DB.SqlConn.Insert<LogEntity>(new LogEntity()
+                var logData = new LogEntity()
                 {
                     CreateTime = DateTime.Now,
                     MobilePhone = userEntity.Mobile,
                     Content = $"[userId]:{userEntity.UserId}",
                     Response = ex.Message,
                     Status = "异常"
-                }).ExecuteAffrowsAsync();
+                };
+                 await LogWriteAsync(logData);
             }
         }
 
@@ -263,14 +284,15 @@ namespace IMaoTai
             {
                 var responseString = await response.GetStringAsync();
                 var responseJson = JObject.Parse(responseString);
-                await DB.SqlConn.Insert<LogEntity>(new LogEntity()
+                var logData = new LogEntity()
                 {
                     CreateTime = DateTime.Now,
                     MobilePhone = user.Mobile,
                     Content = $"[userId]:{user.UserId} [shopId]:{itemId}",
                     Response = responseString,
                     Status = responseJson["code"].Value<int>() == 2000 ? "预约成功" : "预约失败"
-                }).ExecuteAffrowsAsync();
+                };
+                await LogWriteAsync(logData);
             }
             else
             {
@@ -286,7 +308,7 @@ namespace IMaoTai
                 {
                     logEntity.Response = await response.GetStringAsync();
                 }
-                await DB.SqlConn.Insert<LogEntity>(logEntity).ExecuteAffrowsAsync();
+                await LogWriteAsync(logEntity);
             }
         }
 
@@ -374,14 +396,14 @@ namespace IMaoTai
                 catch (Exception e)
                 {
                     Logger.Error($"用户{userEntity.Mobile}预约产生异常,错误原因:{e.Message}");
-                    DB.SqlConn.Insert(new LogEntity()
+                    LogWrite(new LogEntity()
                     {
                         CreateTime = DateTime.Now,
                         MobilePhone = userEntity.Mobile,
                         Content = $"[userId]:{userEntity.UserId}",
                         Response = e.Message,
                         Status = "异常"
-                    }).ExecuteAffrows();
+                    });
                 }
             }
         }
@@ -398,7 +420,18 @@ namespace IMaoTai
         public static async Task RefreshShop()
         {
             ShopListCache.StoreList.Clear();
-            await DB.SqlConn.Delete<ShopEntity>().ExecuteAffrowsAsync();
+            if (App.LoadFromFile)
+            {
+                // 判断App.StoreListFile是否存在,存在则删除
+                if (System.IO.File.Exists(App.StoreListFile))
+                {
+                    System.IO.File.Delete(App.StoreListFile);
+                }
+            }
+            else
+            {
+                await DB.SqlConn.Delete<ShopEntity>().ExecuteAffrowsAsync();
+            }
 
             var responseStr = await "https://static.moutai519.com.cn/mt-backend/xhr/front/mall/resource/get"
                 .GetStringAsync();
@@ -407,16 +440,57 @@ namespace IMaoTai
             var shopInnerJson = await shopsUrl.GetStringAsync();
 
             var shopInnerJObject = JObject.Parse(shopInnerJson);
-            var task = Task.Run(() =>
+            List<ShopEntity> shopList = new List<ShopEntity>();
+            foreach (var property in shopInnerJObject.Properties())
             {
-                foreach (var property in shopInnerJObject.Properties())
+                var shopId = property.Name;
+                var nestedObject = (JObject)property.Value;
+                shopList.Add(new ShopEntity(shopId, nestedObject));
+            }
+            if (shopList.Any())
+            {
+                if (App.LoadFromFile)
                 {
-                    var shopId = property.Name;
-                    var nestedObject = (JObject)property.Value;
-                    DB.SqlConn.Insert(new ShopEntity(shopId, nestedObject)).ExecuteAffrows();
+                    App.WriteDataToCache(App.StoreListFile, shopList);
                 }
-            });
-            await task;
+                else
+                {
+                    await DB.SqlConn.Insert(shopList).ExecuteAffrowsAsync();
+                }
+            }
+            await Task.CompletedTask;
+        }
+
+        private static void LogWrite(LogEntity logData)
+        {
+            if (App.LoadFromFile)
+            {
+                logData.Id = YitIdHelper.NextId();
+                // 判断App.StoreListFile是否存在,存在则删除
+                var logHistoryList = App.GetListFromFile<LogEntity>(App.LogListFile);
+                logHistoryList.Add(logData);
+                App.WriteDataToCache(App.LogListFile, logHistoryList);
+            }
+            else
+            {
+                DB.SqlConn.Insert(logData).ExecuteAffrows();
+            }
+        }
+
+        private static async Task LogWriteAsync(LogEntity logData)
+        {
+            if (App.LoadFromFile)
+            {
+                logData.Id = YitIdHelper.NextId();
+                // 判断App.StoreListFile是否存在,存在则删除
+                var logHistoryList = App.GetListFromFile<LogEntity>(App.LogListFile);
+                logHistoryList.Add(logData);
+                App.WriteDataToCache(App.LogListFile, logHistoryList);
+            }
+            else
+            {
+               await  DB.SqlConn.Insert(logData).ExecuteAffrowsAsync();
+            }
         }
     }
 }
