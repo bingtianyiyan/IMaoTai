@@ -355,7 +355,9 @@ namespace IMaoTai
                     AppointProjectViewModel.ProductList.Add(new ProductEntity(itemElement["itemCode"].Value<string>(),
                         itemElement["title"].Value<string>(),
                         itemElement["content"].Value<string>(),
-                        itemElement["picture"].Value<string>(), DateTime.Now));
+                        itemElement["picture"].Value<string>(),
+                        itemElement["pictureV2"].Value<string>(),
+                        DateTime.Now));
                 }
                 App.WriteCache("productList.json", JsonConvert.SerializeObject(AppointProjectViewModel.ProductList));
                 App.WriteCache("mtSessionId.txt", App.MtSessionId);

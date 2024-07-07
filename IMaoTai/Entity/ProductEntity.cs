@@ -11,12 +11,13 @@ namespace IMaoTai.Entity
         {
         }
 
-        public ProductEntity(string code, string title, string description, string img, DateTime created)
+        public ProductEntity(string code, string title, string description, string img,string picV2, DateTime created)
         {
             Code = code;
             Title = title;
             Description = description;
             Img = img;
+            PictureV2 = picV2;
             Created = created;
         }
 
@@ -31,6 +32,7 @@ namespace IMaoTai.Entity
         public string Description { get; set; }
 
         public string Img { get; set; }
+        public string PictureV2 { get; set; }
 
         public DateTime Created { get; set; }
 
