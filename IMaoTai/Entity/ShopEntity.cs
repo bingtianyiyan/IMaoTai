@@ -8,23 +8,8 @@ namespace IMaoTai.Entity
     /// <summary>
     /// 店铺的实体类
     /// </summary>
-    public class ShopEntity:ViewModelBase
+    public class ShopEntity
     {
-        #region Field
-
-        private string _shopId;
-        private string _province;
-        private string _city;
-        private string _area;
-        private string _unbrokenAddress;
-        private string _lat;
-        private string _lng;
-        private string _name;
-        private string _companyName;
-        private DateTime _createdAt;
-
-
-        #endregion
 
         #region Construct
 
@@ -49,81 +34,41 @@ namespace IMaoTai.Entity
 
         public ShopEntity(string shopId, string province, string city, string area, string unbrokenAddress, string lat, string lng, string name, string companyName)
         {
-            _shopId = shopId;
-            _province = province;
-            _city = city;
-            _area = area;
-            _unbrokenAddress = unbrokenAddress;
-            _lat = lat;
-            _lng = lng;
-            _name = name;
-            _companyName = companyName;
-            _createdAt = DateTime.Now;
+            ShopId = shopId;
+            Province = province;
+            City = city;
+            Area = area;
+            UnbrokenAddress = unbrokenAddress;
+            Lat = lat;
+            Lng = lng;
+            Name = name;
+            CompanyName = companyName;
+            CreatedAt = DateTime.Now;
         }
 
         #endregion
 
         #region Properties
 
-        public string ShopId
-        {
-            get => _shopId;
-            set => SetProperty(ref _shopId, value);
-        }
+        public string ShopId { get; set; }
 
-        public string Province
-        {
-            get => _province;
-            set => SetProperty(ref _province, value);
-        }
+        public string Province { get; set; }
 
-        public string City
-        {
-            get => _city;
-            set => SetProperty(ref _city, value);
-        }
+        public string City { get; set; }
 
-        public string Area
-        {
-            get => _area;
-            set => SetProperty(ref _area, value);
-        }
+        public string Area { get; set; }
 
-        public string UnbrokenAddress
-        {
-            get => _unbrokenAddress;
-            set => SetProperty(ref _unbrokenAddress, value);
-        }
+        public string UnbrokenAddress { get; set; }
 
-        public string Lat
-        {
-            get => _lat;
-            set => SetProperty(ref _lat, value);
-        }
+        public string Lat { get; set; }
 
-        public string Lng
-        {
-            get => _lng;
-            set => SetProperty(ref _lng, value);
-        }
+        public string Lng { get; set; }
 
-        public string Name
-        {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
+        public string Name { get; set; }
 
-        public string CompanyName
-        {
-            get => _companyName;
-            set => SetProperty(ref _companyName, value);
-        }
+        public string CompanyName { get; set; }
 
-        public DateTime CreatedAt
-        {
-            get => _createdAt;
-            set => SetProperty(ref _createdAt, value);
-        }
+        public DateTime CreatedAt { get; set; }
 
         [Column(IsIgnore = true)]
         public double Distance { get; set; }

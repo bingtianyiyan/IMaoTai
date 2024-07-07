@@ -4,11 +4,7 @@
 @using System.Windows.Threading;
 @inject IMaoTai.Service.IAppointProjectService AppointProjectService
 
-<PageTitle>Weather forecast</PageTitle>
-
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
+<PageTitle>预约商品管理</PageTitle>
 
 @if (_productList == null)
 {
@@ -16,6 +12,17 @@
 }
 else
 {
+    <MCard>
+        <MRow Align="@AlignTypes.Center"
+              Justify="@JustifyTypes.Center">
+            <MToolbar>
+                <MButton Depressed Color="primary"
+                         Dark
+                         OnClick="GetProductListDataFromApi">
+                    刷新商品
+                </MButton>
+            </MToolbar>
+        </MRow>
     <MDataTable Headers="_headers" Items="_productList" ItemsPerPage="5">
         <ItemColContent>
             @if (context.Header.Value == nameof(ProductEntity.Img))
@@ -28,6 +35,7 @@ else
             }
         </ItemColContent>
     </MDataTable>
+    </MCard>
 }
 
 @code {
@@ -46,5 +54,12 @@ else
     {
         _productList = AppointProjectViewModel.ProductList;
         await Task.CompletedTask;
+    }
+
+    private async Task GetProductListDataFromApi()
+    {
+        await AppointProjectService.RefreshProduct();
+        _productList = AppointProjectViewModel.ProductList;
+        StateHasChanged();
     }
 }

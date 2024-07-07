@@ -29,6 +29,22 @@ namespace IMaoTai.Domain
         #endregion
     }
 
+    public class ShopListModel
+    {
+        public List<ShopEntity> ShopList { get; set; } = new List<ShopEntity>();
+
+        public long Total { get; set; }
+
+        /// <summary>
+        /// 有几页
+        /// </summary>
+        public long PageCount { get; set; }
+
+        public int Current { get; set; }
+
+        public int PageSize { get; set; }
+    }
+
     public class ShopListCache
     {
         public static List<ShopEntity> StoreList { get; set; } = new List<ShopEntity>();

@@ -5,17 +5,6 @@ namespace IMaoTai.Entity
 {
     public class ProductEntity
     {
-        #region Fields
-        private string _code;
-        private string _title;
-        private string _description;
-        private string _img;
-        private DateTime _created;
-
-
-        #endregion
-
-
         #region Construct
 
         public ProductEntity()
@@ -24,14 +13,14 @@ namespace IMaoTai.Entity
 
         public ProductEntity(string code, string title, string description, string img, DateTime created)
         {
-            _code = code;
-            _title = title;
-            _description = description;
-            _img = img;
-            _created = created;
+            Code = code;
+            Title = title;
+            Description = description;
+            Img = img;
+            Created = created;
         }
 
-        #endregion
+        #endregion Construct
 
         #region Properties
 
@@ -45,12 +34,6 @@ namespace IMaoTai.Entity
 
         public DateTime Created { get; set; }
 
-
-        #endregion
-
-
-
-
-
+        #endregion Properties
     }
 }

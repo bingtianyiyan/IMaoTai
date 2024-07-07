@@ -10,69 +10,6 @@ namespace IMaoTai.Entity
 {
     public class UserEntity
     {
-        #region Field
-
-
-        private bool _isSelected;
-
-        private long _userId;
-        private string _mobile;
-        private string _token;
-        /// <summary>
-        /// 商品预约code，用@间隔
-        /// </summary>
-        private string _itemCode = string.Empty;
-        /// <summary>
-        /// 省份
-        /// </summary>
-        private string _provinceName = string.Empty;
-
-        /// <summary>
-        /// 城市
-        /// </summary>
-        private string _cityName = string.Empty;
-
-        /// <summary>
-        /// 完整地址
-        /// </summary>
-        private string _address = string.Empty;
-
-        /// <summary>
-        /// 纬度
-        /// </summary>
-        private string _lat = string.Empty;
-
-        /// <summary>
-        /// 经度
-        /// </summary>
-        private string _lng = string.Empty;
-
-        /// <summary>
-        /// 类型
-        /// </summary>
-        private int _shopType =  1;
-        /// <summary>
-        /// 对接推送令牌
-        /// </summary>
-        private string _pushPlusToken = string.Empty;
-
-        /// <summary>
-        /// 返回参数
-        /// </summary>
-        private string _jsonResult = string.Empty;
-
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        private DateTime _createTime = DateTime.Now;
-
-        /// <summary>
-        /// token过期时间
-        /// </summary>
-        private DateTime _expireTime = DateTime.Now.AddDays(30);
-        #endregion
-
-
         #region Properties
         [Column(IsIgnore = true)]
         public bool IsSelected { get; set; }
@@ -95,14 +32,14 @@ namespace IMaoTai.Entity
 
         public string Lng { get; set; }
 
-        public int ShopType { get; set; }
+        public int ShopType { get; set; } = 1;
 
         [Column(DbType ="longtext")]
         public string JsonResult { get; set; }
 
         public DateTime CreateTime { get; set; }
 
-        public DateTime ExpireTime { get; set; }
+        public DateTime ExpireTime { get; set; } = DateTime.Now.AddDays(30);
 
         #endregion
 
@@ -173,25 +110,6 @@ namespace IMaoTai.Entity
             this.Lat = string.Empty;
             this.Lng = string.Empty;
             this.PushPlusToken = string.Empty;
-        }
-
-        public UserEntity(bool isSelected, long userId, string mobile, string token, string itemCode, string provinceName, string cityName, string address, string lat, string lng, int shopType,string pushToken, string jsonResult, DateTime createTime, DateTime expireTime) : base()
-        {
-            _isSelected = isSelected;
-            _userId = userId;
-            _mobile = mobile;
-            _token = token;
-            _itemCode = itemCode;
-            _provinceName = provinceName;
-            _cityName = cityName;
-            _address = address;
-            _lat = lat;
-            _lng = lng;
-            _shopType = shopType;
-            _jsonResult = jsonResult;
-            _createTime = createTime;
-            _pushPlusToken = pushToken;
-            _expireTime = expireTime;
         }
 
         #endregion
