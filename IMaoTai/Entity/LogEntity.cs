@@ -8,55 +8,23 @@ namespace IMaoTai.Entity
     /// <summary>
     /// 日志的模型
     /// </summary>
-    public class LogEntity : ViewModelBase
+    public class LogEntity 
     {
-        #region Fields
-
-        private int _id;
-        private string _status;
-        private string _mobilePhone;
-        private string _content;
-        private string _response;
-        private DateTime _createTime;
-
-        #endregion
         #region Properties
         [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id
-        {
-            get => _id;
-            set => SetProperty(ref _id, value);
-        }
+        public int Id { get;set; }
 
-        public string Status
-        {
-            get => _status;
-            set => SetProperty(ref _status, value);
-        }
+        public string Status { get; set; }
 
-        public string MobilePhone
-        {
-            get => _mobilePhone;
-            set => SetProperty(ref _mobilePhone, value);
-        }
+        public string MobilePhone { get; set; }
+
         [Column(DbType = "longtext")]
-        public string Content
-        {
-            get => _content;
-            set => SetProperty(ref _content, value);
-        }
-        [Column(DbType = "longtext")]
-        public string Response
-        {
-            get => _response;
-            set => SetProperty(ref _response, value);
-        }
+        public string Content { get; set; }
 
-        public DateTime CreateTime
-        {
-            get => _createTime;
-            set => SetProperty(ref _createTime, value);
-        }
+        [Column(DbType = "longtext")]
+        public string Response { get; set; }
+
+        public DateTime CreateTime { get; set; }
 
         #endregion
 
@@ -80,10 +48,5 @@ namespace IMaoTai.Entity
 
         #endregion
 
-        #region Functions
-
-        
-
-        #endregion
     }
 }

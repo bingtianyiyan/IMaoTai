@@ -28,6 +28,7 @@ namespace IMaoTai.Service
                 .WhereIf(!string.IsNullOrEmpty(storeListViewModel.Area), i => i.Area.Contains(storeListViewModel.Area))
                 .WhereIf(!string.IsNullOrEmpty(storeListViewModel.CompanyName), i => i.CompanyName.Contains(storeListViewModel.CompanyName))
                 .Count(out var total)
+               .OrderByDescending(x => x.ShopId)
                .Page(storeListViewModel.Current, storeListViewModel.PageSize)
                 .ToListAsync();
             foreach (var item in list)

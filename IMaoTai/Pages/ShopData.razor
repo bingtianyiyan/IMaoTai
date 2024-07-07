@@ -102,18 +102,12 @@ else
         new() { Text = "维度", Value = nameof(ShopEntity.Lat) },
         new() { Text = "创建时间", Value = nameof(ShopEntity.CreatedAt) },
     };
-   
-    private bool _dialog;
-
-
-    public void Close()
-    {
-        _dialog = false;
-    }
+  
 
     public void ClearSearch()
     {
         _search = new();
+        _options.Page = 1;
     }
 
     //刷新店铺数据

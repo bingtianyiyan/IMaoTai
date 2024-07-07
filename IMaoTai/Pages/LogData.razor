@@ -1,0 +1,125 @@
+@page "/logData"
+@using IMaoTai.Entity
+@using System.Windows.Threading;
+@inject IMaoTai.Service.ILogService LogService
+
+<PageTitle>日志管理</PageTitle>
+
+<h1>日志管理</h1>
+
+@if (_logList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+  <MCard>
+    <MCardTitle>
+        查询条件
+        <MSpacer></MSpacer>
+            <MTextField @bind-Value="_search.Mobile"
+                    Label="手机号"
+                    SingleLine
+                    HideDetails="true"></MTextField>
+            <MTextField @bind-Value="_search.Status"
+                        Label="状态"
+                        SingleLine
+                        HideDetails="true"></MTextField>
+            <MTextField @bind-Value="_search.SearchContent"
+                        Label="模糊匹配的内容"
+                        SingleLine
+                        HideDetails="true"></MTextField>
+
+      </MCardTitle>
+        <MRow Align="@AlignTypes.Center"
+              Justify="@JustifyTypes.Center">
+            <MToolbar>
+                <MButton Depressed Color="primary"
+                         Dark
+                         OnClick="GetListDataFromApi">
+                    搜索
+                </MButton> 
+                <MButton Depressed Color="primary"
+                         Dark
+                         OnClick="ClearSearch">
+                    重置
+                </MButton>    
+            </MToolbar>
+        </MRow>
+        <MDataTable Headers="_headers" DisableFiltering
+          Items="_logList"
+                    Id="Id" ItemKey="(a)=>{ return a.Id.ToString(); }"
+                    ShowSelect="true"
+                Page="@_page"
+                ItemsPerPage="@_itemsPerPage"
+                OnOptionsUpdate="@HandleOnOptionsUpdate"
+                ServerItemsLength="@_total"
+                Loading="_loading"
+                Class="elevation-1">
+        <ItemColContent>
+                @context.Value
+        </ItemColContent>
+        <NoDataContent>
+                暂无数据.......
+        </NoDataContent>
+    </MDataTable>
+  </MCard>
+
+}
+
+@code {
+    private List<LogEntity> _logList = new List<LogEntity>();
+    private Domain.LogListViewModel _search = new Domain.LogListViewModel();
+    private int _total;
+    private bool _loading = true;
+    private int _itemsPerPage = 10;
+    private int _page = 1;
+    private DataOptions _options = new(1, 10);
+
+    private List<DataTableHeader<LogEntity>> _headers = new()
+    {
+        new() { Text = "日志ID", Value = nameof(LogEntity.Id) },
+        new() { Text = "手机号", Value = nameof(LogEntity.MobilePhone) },
+        new() { Text = "状态", Value = nameof(LogEntity.Status) },
+        new() { Text = "日志内容", Value = nameof(LogEntity.Content),Ellipsis = new DataTableEllipsis() },
+        new() { Text = "响应信息", Value = nameof(LogEntity.Response),Ellipsis = new DataTableEllipsis() },
+        new() { Text = "操作日期", Value = nameof(LogEntity.CreateTime) },
+    };
+
+    public void ClearSearch()
+    {
+        _search = new();
+        _options.Page = 1;
+    }
+
+
+    private async Task HandleOnOptionsUpdate(DataOptions options)
+    {
+        _options = options;
+        await GetListDataFromApi();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await GetListDataFromApi();
+            StateHasChanged();
+        }
+    }
+
+    /// <summary>
+    /// 获取列表信息
+    /// </summary>
+    /// <returns></returns>
+    private async Task GetListDataFromApi()
+    {
+        _loading = true;
+        _search.Current = _options.Page;
+        _search.PageSize = _options.ItemsPerPage;
+        var result = await LogService.GetList(_search);
+        _logList = result.LogList;
+        _total = Convert.ToInt32(result.Total);
+        _loading = false;
+    }
+}

@@ -24,6 +24,7 @@ namespace IMaoTai.Service
                     i => i.ProvinceName.Contains(userListViewModel.Province))
                 .WhereIf(!string.IsNullOrEmpty(userListViewModel.City), i => i.CityName.Contains(userListViewModel.City))
                 .Count(out var total)
+                .OrderByDescending(x => x.CreateTime)
                 .Page(userListViewModel.Current, userListViewModel.PageSize)
                 .ToListAsync();
             foreach (var item in list) {

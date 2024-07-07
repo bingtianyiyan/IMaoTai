@@ -6,7 +6,14 @@
       <ImplicitUsings>enable</ImplicitUsings>
       <UseWPF>true</UseWPF>
       <RootNamespace>IMaoTai</RootNamespace>
+      <ApplicationIcon>favicon.ico</ApplicationIcon>
     </PropertyGroup>
+    <ItemGroup>
+      <None Remove="favicon.ico" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="favicon.ico" />
+    </ItemGroup>
 
      <ItemGroup>
 		 <PackageReference Include="BlazorComponent" Version="0.6.0" />
@@ -41,6 +48,12 @@
        <None Include="wwwroot\imgs\home.png">
          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
        </None>
+     </ItemGroup>
+
+     <ItemGroup>
+       <Resource Include="favicon.ico">
+         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+       </Resource>
      </ItemGroup>
 
 </Project>

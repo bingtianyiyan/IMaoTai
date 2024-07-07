@@ -26,6 +26,7 @@ public static class IocHelper
         _services.TryAddSingleton<IUserService, UserService>();
         _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
         _services.TryAddSingleton<IShopService, ShopService>();
+        _services.TryAddSingleton<ILogService, LogService>();
         // _services.TryAddSingleton<IWindowService, WindowService>();
         //_services.TryAddScoped<MainInterop>();
 
