@@ -7,8 +7,13 @@ namespace IMaoTai.Domain
     /// <summary>
     /// 预约项目页面对应的VM
     /// </summary>
-    public class AppointProjectViewModel : ViewModelBase
+    public class AppointProjectViewModel
     {
-        public static ObservableCollection<ProductEntity> ProductList { get; set; } = new ObservableCollection<ProductEntity>();
+        public static List<ProductEntity> ProductList { get; set; } = new List<ProductEntity>();
+    }
+
+    public class AppointProjectListModel
+    {
+        public List<ProductEntity> ProductList { get; set; } = new List<ProductEntity>();
     }
 }

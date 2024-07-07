@@ -73,7 +73,7 @@ namespace IMaoTai
             if (File.Exists(_productListFile))
             {
                 var json = File.ReadAllText(_productListFile);
-                AppointProjectViewModel.ProductList = JsonConvert.DeserializeObject<ObservableCollection<ProductEntity>>(json);
+                AppointProjectViewModel.ProductList = JsonConvert.DeserializeObject<List<ProductEntity>>(json);
             }
             // 开始初始化数据库
             CommonRepository.CreateDatabase();

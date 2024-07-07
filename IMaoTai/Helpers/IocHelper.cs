@@ -24,7 +24,9 @@ public static class IocHelper
         _services.AddWpfBlazorWebView();
         _services.AddBlazorWebViewDeveloperTools();
         _services.TryAddSingleton<IUserService, UserService>();
-       // _services.TryAddSingleton<IWindowService, WindowService>();
+        _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
+        _services.TryAddSingleton<IShopService, ShopService>();
+        // _services.TryAddSingleton<IWindowService, WindowService>();
         //_services.TryAddScoped<MainInterop>();
 
         return _services!;

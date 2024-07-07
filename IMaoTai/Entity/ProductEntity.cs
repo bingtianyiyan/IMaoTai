@@ -3,7 +3,7 @@ using IMaoTai.Domain;
 
 namespace IMaoTai.Entity
 {
-    public class ProductEntity:ViewModelBase
+    public class ProductEntity
     {
         #region Fields
         private string _code;
@@ -35,35 +35,16 @@ namespace IMaoTai.Entity
 
         #region Properties
 
-        public string Code
-        {
-            get => _code;
-            set => SetProperty(ref _code, value);
-        }
+        public string Code { get; set; }
 
-        public string Title
-        {
-            get => _title;
-            set => SetProperty(ref _title, value);
-        }
+        public string Title { get; set; }
 
-        public string Description
-        {
-            get => _description;
-            set => SetProperty(ref _description, value);
-        }
+        public string Description { get; set; }
 
-        public string Img
-        {
-            get => _img;
-            set => SetProperty(ref _img, value);
-        }
+        public string Img { get; set; }
 
-        public DateTime Created
-        {
-            get => _created;
-            set => SetProperty(ref _created, value);
-        }
+        public DateTime Created { get; set; }
+
 
         #endregion
 

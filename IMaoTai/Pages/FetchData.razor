@@ -1,4 +1,8 @@
 @page "/fetchdata"
+@using IMaoTai.Entity
+@using IMaoTai.Domain
+@using System.Windows.Threading;
+@inject IMaoTai.Service.IAppointProjectService AppointProjectService
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -6,17 +10,17 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (_forecasts == null)
+@if (_productList == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <MDataTable Headers="_headers" Items="_forecasts" ItemsPerPage="5">
+    <MDataTable Headers="_headers" Items="_productList" ItemsPerPage="5">
         <ItemColContent>
-            @if (context.Header.Value == nameof(WeatherForecast.Date))
+            @if (context.Header.Value == nameof(ProductEntity.Img))
             {
-                @context.Item.Date.ToShortDateString()
+                <img src="@context.Item.Img" width="80" height="80" />
             }
             else
             {
@@ -27,33 +31,20 @@ else
 }
 
 @code {
-    private WeatherForecast[]? _forecasts;
+    private List<ProductEntity> _productList;
 
-    private List<DataTableHeader<WeatherForecast>> _headers = new()
+    private List<DataTableHeader<ProductEntity>> _headers = new()
     {
-        new() { Text = "Date", Value = nameof(WeatherForecast.Date) },
-        new() { Text = "Temp. (C)", Value = nameof(WeatherForecast.TemperatureC) },
-        new() { Text = "Temp. (F)", Value = nameof(WeatherForecast.TemperatureF) },
-        new() { Text = "Summary", Value = nameof(WeatherForecast.Summary), Sortable = false }
+        new() { Text = "商品Code", Value = nameof(ProductEntity.Code) },
+        new() { Text = "标题", Value = nameof(ProductEntity.Title) },
+        new() { Text = "内容", Value = nameof(ProductEntity.Description),Ellipsis = new DataTableEllipsis() },
+        new() { Text = "图片", Value = nameof(ProductEntity.Img) },
+        new() { Text = "创建时间", Value = nameof(ProductEntity.Created)}
     };
 
     protected override async Task OnInitializedAsync()
     {
-        var json = await File.ReadAllTextAsync("./wwwroot/sample-data/weather.json");
-        _forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-    }
-
-    public class WeatherForecast
-    {
-        public DateTime Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        _productList = AppointProjectViewModel.ProductList;
+        await Task.CompletedTask;
     }
 }

@@ -406,7 +406,7 @@ namespace IMaoTai
 
         public static async Task RefreshShop()
         {
-            ShopListViewModel.StoreList.Clear();
+            ShopListCache.StoreList.Clear();
             await DB.SqlConn.Delete<ShopEntity>().ExecuteAffrowsAsync();
 
             var responseStr = await "https://static.moutai519.com.cn/mt-backend/xhr/front/mall/resource/get"
