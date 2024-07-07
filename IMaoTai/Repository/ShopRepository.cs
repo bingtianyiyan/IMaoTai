@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Flurl.Http;
-using IMaoTai.Domain;
+﻿using Flurl.Http;
 using IMaoTai.Entity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace IMaoTai.Repository
 {

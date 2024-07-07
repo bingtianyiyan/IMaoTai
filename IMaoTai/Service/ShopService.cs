@@ -1,19 +1,12 @@
 ﻿using IMaoTai.Domain;
 using IMaoTai.Entity;
 using IMaoTai.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.IO;
 
 namespace IMaoTai.Service
 {
-   public class ShopService:IShopService
+    public class ShopService : IShopService
     {
-
         public async Task<ShopListModel> GetShopList(ShopListViewModel storeListViewModel)
         {
             var result = new ShopListModel();
@@ -44,7 +37,7 @@ namespace IMaoTai.Service
             return result;
         }
 
-        public  async Task RefreshShop()
+        public async Task RefreshShop()
         {
             // 判断App.StoreListFile是否存在,存在则删除
             if (File.Exists(App.StoreListFile))

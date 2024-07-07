@@ -1,12 +1,7 @@
 ﻿using IMaoTai.Domain;
 using IMaoTai.Entity;
 using IMaoTai.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace IMaoTai.Service
 {
@@ -27,7 +22,8 @@ namespace IMaoTai.Service
                 .OrderByDescending(x => x.CreateTime)
                 .Page(userListViewModel.Current, userListViewModel.PageSize)
                 .ToListAsync();
-            foreach (var item in list) {
+            foreach (var item in list)
+            {
                 result.UserList.Add(item);
             }
 
@@ -44,15 +40,15 @@ namespace IMaoTai.Service
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<(bool,string)> ModifyUser(UserEntity model)
+        public async Task<(bool, string)> ModifyUser(UserEntity model)
         {
             var dataLogicalItem = DataLogical(model);
             if (!dataLogicalItem.Item1)
             {
-                return  dataLogicalItem;
+                return dataLogicalItem;
             }
             var foundUserEntity = await DB.SqlConn.Select<UserEntity>()
-                .Where(x=> x.Mobile == model.Mobile).FirstAsync();
+                .Where(x => x.Mobile == model.Mobile).FirstAsync();
             if (foundUserEntity != null)
             {
                 // 此处执行更新操作o
@@ -69,7 +65,7 @@ namespace IMaoTai.Service
                     .Set(i => i.ExpireTime, model.ExpireTime)
                     .Where(i => i.Mobile == model.Mobile).ExecuteAffrowsAsync();
 
-                return (res >0 ? true:false, res > 0 ? "":"编辑失败");
+                return (res > 0 ? true : false, res > 0 ? "" : "编辑失败");
             }
             return (false, "手机号不存在");
         }
@@ -93,7 +89,8 @@ namespace IMaoTai.Service
                 return (false, "用户已存在");
             }
             var res = await DB.SqlConn.Insert(model).ExecuteAffrowsAsync();
-            if (res > 0) {
+            if (res > 0)
+            {
                 return (true, "");
             }
             return (false, "新增失败");
@@ -106,7 +103,7 @@ namespace IMaoTai.Service
         /// <returns></returns>
         public async Task<bool> DeleteUser(UserEntity model)
         {
-            var res = await DB.SqlConn.Delete<UserEntity>().Where(x=> x.Mobile == model.Mobile).ExecuteAffrowsAsync();
+            var res = await DB.SqlConn.Delete<UserEntity>().Where(x => x.Mobile == model.Mobile).ExecuteAffrowsAsync();
             return res > 0;
         }
 
@@ -117,7 +114,7 @@ namespace IMaoTai.Service
             bool latIsFloat = Regex.IsMatch(model.Lat, @"^\d+(\.\d+)?$");
             if (!latIsFloat && !latIsInteger)
             {
-                return (false,"纬度不符合规范");
+                return (false, "纬度不符合规范");
             }
 
             bool lngIsInteger = Regex.IsMatch(model.Lng, @"^\d+$");

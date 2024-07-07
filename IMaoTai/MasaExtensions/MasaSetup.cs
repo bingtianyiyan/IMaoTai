@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BlazorComponent.I18n;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using BlazorComponent.I18n;
 
 namespace IMaoTai.MasaExtensions;
 

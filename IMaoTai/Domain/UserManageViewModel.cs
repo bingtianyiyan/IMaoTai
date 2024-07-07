@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using IMaoTai.Entity;
-using IMaoTai.Repository;
+﻿using IMaoTai.Entity;
 
 namespace IMaoTai.Domain
 {
     /// <summary>
     /// 用户管理 - 搜索的condition
     /// </summary>
-    public class UserManageViewModel 
+    public class UserManageViewModel
     {
         #region Properties
 
         public string? Phone { get; set; }
-
 
         public string? UserId { get; set; }
 
@@ -28,7 +21,7 @@ namespace IMaoTai.Domain
 
         public int PageSize { get; set; } = 10;
 
-        #endregion
+        #endregion Properties
     }
 
     public class UserListModel

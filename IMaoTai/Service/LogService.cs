@@ -1,15 +1,10 @@
 ﻿using IMaoTai.Domain;
 using IMaoTai.Entity;
 using IMaoTai.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IMaoTai.Service
 {
-    public class LogService:ILogService
+    public class LogService : ILogService
     {
         public async Task<LogListModel> GetList(LogListViewModel storeListViewModel)
         {
@@ -22,7 +17,7 @@ namespace IMaoTai.Service
                 .WhereIf(!string.IsNullOrEmpty(storeListViewModel.Status),
                     i => i.Status.Contains(storeListViewModel.Status))
                 .Count(out var total)
-                .OrderByDescending(x=> x.CreateTime)
+                .OrderByDescending(x => x.CreateTime)
                .Page(storeListViewModel.Current, storeListViewModel.PageSize)
                 .ToListAsync();
             foreach (var item in list)
@@ -40,7 +35,7 @@ namespace IMaoTai.Service
 
         public async Task DeleteAll()
         {
-           await DB.SqlConn.Delete<LogEntity>().ExecuteAffrowsAsync();
+            await DB.SqlConn.Delete<LogEntity>().ExecuteAffrowsAsync();
         }
     }
 }

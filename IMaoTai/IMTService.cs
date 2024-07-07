@@ -1,32 +1,24 @@
 ﻿using Flurl.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using IMaoTai.Domain;
 using IMaoTai.Entity;
 using IMaoTai.Repository;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
-using System.Threading;
-using System.Text.Json.Nodes;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace IMaoTai
 {
     public class IMTService
     {
-
         #region Fields
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
-        #endregion
-
+        #endregion Fields
 
         private const string Salt = "2af72f100c356273d46284f6fd1dfc08";
         private static string _mtVersion = "";
@@ -168,8 +160,8 @@ namespace IMaoTai
                 string token = data["token"].Value<string>();
                 string jsonResult = responseJson.ToString();
 
-                var res =   await DB.SqlConn.Update<UserEntity>()
-                     //.Set(i => i.UserId, foundUserEntity.UserId)
+                var res = await DB.SqlConn.Update<UserEntity>()
+                    //.Set(i => i.UserId, foundUserEntity.UserId)
                     .Set(i => i.Token, token)
                     //.Set(i => i.ItemCode, foundUserEntity.ItemCode)
                     //.Set(i => i.ProvinceName, foundUserEntity.ProvinceName)
@@ -210,7 +202,6 @@ namespace IMaoTai
                     {
                         await Reservation(userEntity, item, shopId);
                     }
-
                 }
             }
             catch (Exception ex)
@@ -225,7 +216,6 @@ namespace IMaoTai
                 }).ExecuteAffrowsAsync();
             }
         }
-
 
         public static async Task Reservation(UserEntity user, string itemId, string shopId)
         {
@@ -298,7 +288,6 @@ namespace IMaoTai
                 }
                 await DB.SqlConn.Insert<LogEntity>(logEntity).ExecuteAffrowsAsync();
             }
-
         }
 
         /// <summary>

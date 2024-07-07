@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using IMaoTai.Entity;
+﻿using IMaoTai.Entity;
 
 namespace IMaoTai.Domain
 {

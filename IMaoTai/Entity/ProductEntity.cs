@@ -1,7 +1,4 @@
-﻿using System;
-using IMaoTai.Domain;
-
-namespace IMaoTai.Entity
+﻿namespace IMaoTai.Entity
 {
     public class ProductEntity
     {
@@ -11,7 +8,7 @@ namespace IMaoTai.Entity
         {
         }
 
-        public ProductEntity(string code, string title, string description, string img,string picV2, DateTime created)
+        public ProductEntity(string code, string title, string description, string img, string picV2, DateTime created)
         {
             Code = code;
             Title = title;

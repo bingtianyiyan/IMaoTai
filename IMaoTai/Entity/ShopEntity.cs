@@ -1,6 +1,4 @@
-﻿using System;
-using FreeSql.DataAnnotations;
-using IMaoTai.Domain;
+﻿using FreeSql.DataAnnotations;
 using Newtonsoft.Json.Linq;
 
 namespace IMaoTai.Entity
@@ -10,18 +8,16 @@ namespace IMaoTai.Entity
     /// </summary>
     public class ShopEntity
     {
-
         #region Construct
 
         public ShopEntity()
         {
         }
 
-
         public ShopEntity(string shopId, JObject jObject)
         {
             ShopId = shopId;
-            Province =  jObject.GetValue("provinceName").Value<string>();
+            Province = jObject.GetValue("provinceName").Value<string>();
             City = jObject.GetValue("cityName").Value<string>();
             Area = jObject.GetValue("districtName").Value<string>();
             UnbrokenAddress = jObject.GetValue("fullAddress").Value<string>();
@@ -46,7 +42,7 @@ namespace IMaoTai.Entity
             CreatedAt = DateTime.Now;
         }
 
-        #endregion
+        #endregion Construct
 
         #region Properties
 
@@ -73,6 +69,6 @@ namespace IMaoTai.Entity
         [Column(IsIgnore = true)]
         public double Distance { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 }

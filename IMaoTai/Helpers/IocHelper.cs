@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using IMaoTai.MasaExtensions;
+﻿using IMaoTai.MasaExtensions;
 using IMaoTai.Service;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Windows;
 
 namespace IMaoTai.Helpers;

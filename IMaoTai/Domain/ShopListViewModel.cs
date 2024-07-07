@@ -1,16 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-using IMaoTai.Entity;
-using IMaoTai.Repository;
+﻿using IMaoTai.Entity;
 
 namespace IMaoTai.Domain
 {
     /// <summary>
     /// 门店列表Page的ViewModel
     /// </summary>
-    public class ShopListViewModel 
+    public class ShopListViewModel
     {
-
         #region Properties
 
         public string ShopId { get; set; }
@@ -26,7 +22,7 @@ namespace IMaoTai.Domain
 
         public int PageSize { get; set; } = 10;
 
-        #endregion
+        #endregion Properties
     }
 
     public class ShopListModel

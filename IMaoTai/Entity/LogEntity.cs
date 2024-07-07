@@ -1,18 +1,16 @@
-﻿using System;
-using System.Security.Principal;
-using FreeSql.DataAnnotations;
-using IMaoTai.Domain;
+﻿using FreeSql.DataAnnotations;
 
 namespace IMaoTai.Entity
 {
     /// <summary>
     /// 日志的模型
     /// </summary>
-    public class LogEntity 
+    public class LogEntity
     {
         #region Properties
+
         [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get;set; }
+        public int Id { get; set; }
 
         public string Status { get; set; }
 
@@ -26,9 +24,10 @@ namespace IMaoTai.Entity
 
         public DateTime CreateTime { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Construct
+
         /// <summary>
         /// No Parameter Construct
         /// </summary>
@@ -46,7 +45,6 @@ namespace IMaoTai.Entity
             CreateTime = createTime;
         }
 
-        #endregion
-
+        #endregion Construct
     }
 }

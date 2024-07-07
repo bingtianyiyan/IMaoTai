@@ -15,7 +15,7 @@
 
         public int Inventory { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Construct
 
@@ -31,6 +31,6 @@
         {
         }
 
-        #endregion
+        #endregion Construct
     }
 }

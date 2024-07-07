@@ -1,9 +1,8 @@
-﻿using System.Configuration;
+﻿using IMaoTai.Entity;
+using MySql.Data.MySqlClient;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
-using IMaoTai.Entity;
-using MySql.Data.MySqlClient;
 
 namespace IMaoTai.Repository
 {
@@ -17,6 +16,7 @@ namespace IMaoTai.Repository
         /// </summary>
         public static void CreateDatabase()
         {
+            if(App.LoadFromFile) { return; }
             if (App.DbType == FreeSql.DataType.Sqlite.ToString())
             {
                 // 判断数据库文件是否存在
@@ -35,9 +35,8 @@ namespace IMaoTai.Repository
             }
             sqlConnection.Open();
             // 创建表结构
-            var types = new[] { typeof(UserEntity),typeof(ShopEntity),typeof(LogEntity) };
+            var types = new[] { typeof(UserEntity), typeof(ShopEntity), typeof(LogEntity) };
             DB.SqlConn.CodeFirst.SyncStructure(types);
-            
         }
     }
 }

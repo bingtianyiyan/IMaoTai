@@ -7,7 +7,7 @@
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Construct
 
@@ -21,6 +21,6 @@
         {
         }
 
-        #endregion
+        #endregion Construct
     }
 }

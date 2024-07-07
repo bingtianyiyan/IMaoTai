@@ -1,15 +1,6 @@
 ﻿using IMaoTai.Helpers;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace IMaoTai
 {
@@ -28,10 +19,10 @@ namespace IMaoTai
             serviceCollection.AddMasaBlazor();
 
 #if DEBUG
-    		serviceCollection.AddBlazorWebViewDeveloperTools();
+            serviceCollection.AddBlazorWebViewDeveloperTools();
 #endif
 
-           // Resources.Add("services", serviceCollection.BuildServiceProvider());
+            // Resources.Add("services", serviceCollection.BuildServiceProvider());
         }
     }
 }

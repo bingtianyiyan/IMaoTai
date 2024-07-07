@@ -1,9 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-using FreeSql.DataAnnotations;
-using IMaoTai.Domain;
-using IMaoTai.Repository;
-using Newtonsoft.Json;
+﻿using FreeSql.DataAnnotations;
 using Newtonsoft.Json.Linq;
 
 namespace IMaoTai.Entity
@@ -11,8 +6,10 @@ namespace IMaoTai.Entity
     public class UserEntity
     {
         #region Properties
+
         [Column(IsIgnore = true)]
         public bool IsSelected { get; set; }
+
         public long UserId { get; set; }
 
         public string Mobile { get; set; }
@@ -34,14 +31,14 @@ namespace IMaoTai.Entity
 
         public int ShopType { get; set; } = 1;
 
-        [Column(DbType ="longtext")]
+        [Column(DbType = "longtext")]
         public string JsonResult { get; set; }
 
         public DateTime CreateTime { get; set; }
 
         public DateTime ExpireTime { get; set; } = DateTime.Now.AddDays(30);
 
-        #endregion
+        #endregion Properties
 
         #region Commond
 
@@ -84,7 +81,8 @@ namespace IMaoTai.Entity
         //    //    }
         //    //}
         //}
-        #endregion
+
+        #endregion Commond
 
         #region Construct Function
 
@@ -112,7 +110,6 @@ namespace IMaoTai.Entity
             this.PushPlusToken = string.Empty;
         }
 
-        #endregion
-
+        #endregion Construct Function
     }
 }

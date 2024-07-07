@@ -1,16 +1,12 @@
 ﻿using IMaoTai.Entity;
-using System.Collections.ObjectModel;
-using IMaoTai.Repository;
-using System.Windows.Input;
 
 namespace IMaoTai.Domain
 {
     /// <summary>
     /// 日志用户控件的ViewModel
     /// </summary>
-    public class LogListViewModel:ViewModelBase
+    public class LogListViewModel
     {
-
         #region Properties
 
         public string Mobile { get; set; }
@@ -22,8 +18,8 @@ namespace IMaoTai.Domain
         public int Current { get; set; } = 1;
 
         public int PageSize { get; set; } = 10;
-        #endregion
 
+        #endregion Properties
     }
 
     public class LogListModel
