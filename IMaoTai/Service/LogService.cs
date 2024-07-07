@@ -37,5 +37,10 @@ namespace IMaoTai.Service
             result.Current = storeListViewModel.Current;
             return result;
         }
+
+        public async Task DeleteAll()
+        {
+           await DB.SqlConn.Delete<LogEntity>().ExecuteAffrowsAsync();
+        }
     }
 }
