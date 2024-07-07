@@ -313,9 +313,9 @@ else
     private Domain.UserManageViewModel _search = new Domain.UserManageViewModel();
     private int _total;
     private bool _loading = true;
-    private int _itemsPerPage = 5;
+    private int _itemsPerPage = 10;
     private int _page = 1;
-    private DataOptions _options = new(1, 5);
+    private DataOptions _options = new(1, 10);
 
     private List<DataTableHeader<UserEntity>> _headers = new()
     {
