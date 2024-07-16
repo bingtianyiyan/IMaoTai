@@ -114,7 +114,8 @@ else
     public async Task RefreshShopFromRemote()
     {
         await ShopService.RefreshShop();
-        StateHasChanged();
+        //StateHasChanged();
+        await GetShopListDataFromApi();
     }
 
 
