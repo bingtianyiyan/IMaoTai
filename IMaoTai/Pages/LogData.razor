@@ -1,7 +1,8 @@
 @page "/logData"
-@using IMaoTai.Entity
+@using IMaoTai.Core.Entity
+@using IMaoTai.Core.Domain
 @using System.Windows.Threading;
-@inject IMaoTai.Service.ILogService LogService
+@inject IMaoTai.Core.Service.ILogService LogService
 
 <PageTitle>日志管理</PageTitle>
 
@@ -74,7 +75,7 @@ else
 
 @code {
     private List<LogEntity> _logList = new List<LogEntity>();
-    private Domain.LogListViewModel _search = new Domain.LogListViewModel();
+    private LogListViewModel _search = new LogListViewModel();
     private int _total;
     private bool _loading = true;
     private int _itemsPerPage = 10;

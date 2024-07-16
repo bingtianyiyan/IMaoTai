@@ -17,20 +17,10 @@
 
      <ItemGroup>
 		 <PackageReference Include="BlazorComponent" Version="0.6.0" />
-		 <PackageReference Include="Flurl" Version="3.0.7" />
-		 <PackageReference Include="Flurl.Http" Version="3.2.4" />
-		 <PackageReference Include="FreeSql" Version="3.2.698" />
-		 <PackageReference Include="FreeSql.Provider.MySql" Version="3.2.698" />
-		 <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.698" />
-		 <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-		 <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
-		 <PackageReference Include="NLog" Version="5.2.2" />
-		 <PackageReference Include="Quartz" Version="3.6.3" />
-       <PackageReference Include="Masa.Blazor" Version="1.6.0" />
+         <PackageReference Include="Masa.Blazor" Version="1.6.0" />
 		 <PackageReference Include="ModernWpfUI" Version="0.9.7-preview.2" />
 		 <PackageReference Include="Simplify.Windows.Forms" Version="1.1.3" />
        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="7.0.81" />
-       <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
      </ItemGroup>
 
      <ItemGroup>
@@ -43,6 +33,10 @@
        <None Include="wwwroot\imgs\home.png">
          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
        </None>
+     </ItemGroup>
+
+     <ItemGroup>
+       <ProjectReference Include="..\IMaoTai.Core\IMaoTai.Core.csproj" />
      </ItemGroup>
 
      <ItemGroup>

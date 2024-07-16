@@ -1,19 +1,21 @@
-﻿using IMaoTai.Entity;
+﻿using IMaoTai.Core.Entity;
 
-namespace IMaoTai.Domain
+namespace IMaoTai.Core.Domain
 {
     /// <summary>
-    /// 日志用户控件的ViewModel
+    /// 用户管理 - 搜索的condition
     /// </summary>
-    public class LogListViewModel
+    public class UserManageViewModel
     {
         #region Properties
 
-        public string Mobile { get; set; }
+        public string? Phone { get; set; }
 
-        public string Status { get; set; }
+        public string? UserId { get; set; }
 
-        public string SearchContent { get; set; }
+        public string? Province { get; set; }
+
+        public string? City { get; set; }
 
         public int Current { get; set; } = 1;
 
@@ -22,9 +24,9 @@ namespace IMaoTai.Domain
         #endregion Properties
     }
 
-    public class LogListModel
+    public class UserListModel
     {
-        public List<LogEntity> LogList { get; set; } = new List<LogEntity>();
+        public List<UserEntity> UserList { get; set; } = new List<UserEntity>();
 
         public long Total { get; set; }
 

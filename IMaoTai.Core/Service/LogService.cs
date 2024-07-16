@@ -1,9 +1,9 @@
-﻿using IMaoTai.Domain;
-using IMaoTai.Entity;
-using IMaoTai.Repository;
-using IMaoTai.Helpers;
+﻿using IMaoTai.Core.Domain;
+using IMaoTai.Core.Entity;
+using IMaoTai.Core.Helpers;
+using IMaoTai.Core.Repository;
 
-namespace IMaoTai.Service
+namespace IMaoTai.Core.Service
 {
     public class LogService : ILogService
     {
@@ -12,10 +12,10 @@ namespace IMaoTai.Service
             var result = new LogListModel();
             List<LogEntity> list = new List<LogEntity>();
             long total = 0;
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
                 //lod from file
-                list = App.GetListFromFile<LogEntity>(App.LogListFile);
+                list = CommonX.GetListFromFile<LogEntity>(CommonX.LogListFile);
                 total = list.Count;
                 //过滤数据
                 if (list.Any())
@@ -60,12 +60,12 @@ namespace IMaoTai.Service
 
         public async Task DeleteAll()
         {
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
-                // 判断App.StoreListFile是否存在,存在则删除
-                if (System.IO.File.Exists(App.LogListFile))
+                // 判断CommonX.StoreListFile是否存在,存在则删除
+                if (System.IO.File.Exists(CommonX.LogListFile))
                 {
-                    System.IO.File.Delete(App.LogListFile);
+                    System.IO.File.Delete(CommonX.LogListFile);
                 }
             }
             else

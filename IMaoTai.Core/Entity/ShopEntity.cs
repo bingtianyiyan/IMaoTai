@@ -1,7 +1,7 @@
 ﻿using FreeSql.DataAnnotations;
 using Newtonsoft.Json.Linq;
 
-namespace IMaoTai.Entity
+namespace IMaoTai.Core.Entity
 {
     /// <summary>
     /// 店铺的实体类

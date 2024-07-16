@@ -1,6 +1,6 @@
-﻿using IMaoTai.Entity;
+﻿using IMaoTai.Core.Entity;
 
-namespace IMaoTai.Domain
+namespace IMaoTai.Core.Domain
 {
     /// <summary>
     /// 预约项目页面对应的VM

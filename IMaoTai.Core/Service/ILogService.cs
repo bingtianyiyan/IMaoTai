@@ -1,6 +1,6 @@
-﻿using IMaoTai.Domain;
+﻿using IMaoTai.Core.Domain;
 
-namespace IMaoTai.Service
+namespace IMaoTai.Core.Service
 {
     public interface ILogService
     {

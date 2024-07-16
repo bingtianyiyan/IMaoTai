@@ -1,7 +1,7 @@
-﻿using IMaoTai.Domain;
-using IMaoTai.Entity;
+﻿using IMaoTai.Core.Domain;
+using IMaoTai.Core.Entity;
 
-namespace IMaoTai.Service
+namespace IMaoTai.Core.Service
 {
     public interface IUserService
     {

@@ -1,7 +1,10 @@
 @page "/userData"
-@using IMaoTai.Entity
+@using IMaoTai.Core
+@using IMaoTai.Core.Entity
+@using IMaoTai.Core.Domain
+@using IMaoTai.Core.Service
 @using System.Windows.Threading;
-@inject IMaoTai.Service.IUserService UserService
+@inject IMaoTai.Core.Service.IUserService UserService
 
 <PageTitle>用户管理</PageTitle>
 
@@ -310,7 +313,7 @@ else
 
 @code {
     private List<UserEntity> _userList = new List<UserEntity>();
-    private Domain.UserManageViewModel _search = new Domain.UserManageViewModel();
+    private UserManageViewModel _search = new UserManageViewModel();
     private int _total;
     private bool _loading = true;
     private int _itemsPerPage = 10;

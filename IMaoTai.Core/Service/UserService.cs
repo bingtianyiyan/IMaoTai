@@ -1,11 +1,10 @@
-﻿using IMaoTai.Domain;
-using IMaoTai.Entity;
-using IMaoTai.Repository;
+﻿using IMaoTai.Core.Domain;
+using IMaoTai.Core.Entity;
+using IMaoTai.Core.Helpers;
+using IMaoTai.Core.Repository;
 using System.Text.RegularExpressions;
-using IMaoTai.Helpers;
-using Newtonsoft.Json;
 
-namespace IMaoTai.Service
+namespace IMaoTai.Core.Service
 {
     public class UserService : IUserService
     {
@@ -14,13 +13,14 @@ namespace IMaoTai.Service
             long total = 0;
             var result = new UserListModel();
             List<UserEntity> list = new List<UserEntity>();
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
                 //lod from file
-                list = App.GetListFromFile<UserEntity>(App.UserListFile);
+                list = CommonX.GetListFromFile<UserEntity>(CommonX.UserListFile);
                 total = list.Count;
                 //过滤数据
-                if (list.Any()) {
+                if (list.Any())
+                {
                     list = list.WhereIf(!string.IsNullOrEmpty(userListViewModel.Phone),
                         i => i.Mobile.Contains(userListViewModel.Phone))
                     .WhereIf(!string.IsNullOrEmpty(userListViewModel.UserId),
@@ -31,7 +31,6 @@ namespace IMaoTai.Service
                     .OrderByDescending(x => x.CreateTime)
                     .PageSkipAndTake(userListViewModel.Current, userListViewModel.PageSize)
                     .ToList();
-
                 }
             }
             else
@@ -54,7 +53,7 @@ namespace IMaoTai.Service
                 result.UserList.Add(item);
             }
 #if DEBUG
-          //  App.WriteDataToCache(App.UserListFile,result.UserList);
+            //  CommonX.WriteDataToCache(CommonX.UserListFile,result.UserList);
 #endif
 
             // 分页数据
@@ -79,10 +78,10 @@ namespace IMaoTai.Service
             }
             List<UserEntity> list = new List<UserEntity>();
             UserEntity foundUserEntity = null;
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
                 //lod from file
-                list = App.GetListFromFile<UserEntity>(App.UserListFile);
+                list = CommonX.GetListFromFile<UserEntity>(CommonX.UserListFile);
                 if (list.Any())
                 {
                     foundUserEntity = list.FirstOrDefault(x => x.Mobile == model.Mobile);
@@ -95,16 +94,16 @@ namespace IMaoTai.Service
             }
             if (foundUserEntity != null && foundUserEntity.UserId > 0)
             {
-                if (App.LoadFromFile)
+                if (CommonX.LoadFromFile)
                 {
                     list.Remove(foundUserEntity);
                     //更新文件
                     // List<UserEntity> listNew = new List<UserEntity>();
-                   model.JsonResult = foundUserEntity.JsonResult;
-                   model.CreateTime = foundUserEntity.CreateTime;
-                   list.Add(model);
+                    model.JsonResult = foundUserEntity.JsonResult;
+                    model.CreateTime = foundUserEntity.CreateTime;
+                    list.Add(model);
                     if (list.Count != 0)
-                       App.WriteDataToCache(App.UserListFile, list);
+                        CommonX.WriteDataToCache(CommonX.UserListFile, list);
                     return (true, "");
                 }
                 else
@@ -141,10 +140,10 @@ namespace IMaoTai.Service
             {
                 return dataLogicalItem;
             }
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
                 //lod from file
-                var list = App.GetListFromFile<UserEntity>(App.UserListFile);
+                var list = CommonX.GetListFromFile<UserEntity>(CommonX.UserListFile);
                 if (list.Any())
                 {
                     var foundUserEntity = list.FirstOrDefault(x => x.Mobile == model.Mobile);
@@ -155,7 +154,7 @@ namespace IMaoTai.Service
 
                     list.Add(model);
                     if (list.Count != 0)
-                        App.WriteDataToCache(App.UserListFile, list);
+                        CommonX.WriteDataToCache(CommonX.UserListFile, list);
                     return (true, "");
                 }
             }
@@ -183,10 +182,10 @@ namespace IMaoTai.Service
         /// <returns></returns>
         public async Task<bool> DeleteUser(UserEntity model)
         {
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
                 //lod from file
-                var list = App.GetListFromFile<UserEntity>(App.UserListFile);
+                var list = CommonX.GetListFromFile<UserEntity>(CommonX.UserListFile);
                 if (list.Any())
                 {
                     var foundUserEntity = list.FirstOrDefault(x => x.Mobile == model.Mobile);
@@ -198,11 +197,11 @@ namespace IMaoTai.Service
                     list.Remove(foundUserEntity);
                     if (list.Count != 0 && list.Count > 0)
                     {
-                        App.WriteDataToCache(App.UserListFile, list);
+                        CommonX.WriteDataToCache(CommonX.UserListFile, list);
                     }
                     else
-                    {                       
-                        App.FileContentClear(App.UserListFile, string.Empty);
+                    {
+                        CommonX.FileContentClear(CommonX.UserListFile, string.Empty);
                     }
                 }
                 return true;

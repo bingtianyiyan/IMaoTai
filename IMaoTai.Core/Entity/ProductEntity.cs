@@ -1,4 +1,4 @@
-﻿namespace IMaoTai.Entity
+﻿namespace IMaoTai.Core.Entity
 {
     public class ProductEntity
     {

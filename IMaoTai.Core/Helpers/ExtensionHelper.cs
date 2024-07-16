@@ -1,14 +1,8 @@
-﻿using FreeSql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
-namespace IMaoTai.Helpers
+namespace IMaoTai.Core.Helpers
 {
-   public static class ExtensionHelper
+    public static class ExtensionHelper
     {
         public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition, Expression<Func<T, bool>> predicate)
         {
@@ -25,10 +19,9 @@ namespace IMaoTai.Helpers
             return condition ? query.Where(predicate) : query;
         }
 
-        public static IEnumerable<T> PageSkipAndTake<T>(this IEnumerable<T> query, int skip,int takeSize)
+        public static IEnumerable<T> PageSkipAndTake<T>(this IEnumerable<T> query, int skip, int takeSize)
         {
             return query.Skip((skip - 1) * takeSize).Take(takeSize);
         }
-
     }
 }

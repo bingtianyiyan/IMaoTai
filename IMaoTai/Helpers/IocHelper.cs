@@ -1,5 +1,5 @@
-﻿using IMaoTai.MasaExtensions;
-using IMaoTai.Service;
+﻿using IMaoTai.Core.Service;
+using IMaoTai.MasaExtensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Windows;
@@ -27,9 +27,6 @@ public static class IocHelper
         _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
         _services.TryAddSingleton<IShopService, ShopService>();
         _services.TryAddSingleton<ILogService, LogService>();
-        // _services.TryAddSingleton<IWindowService, WindowService>();
-        //_services.TryAddScoped<MainInterop>();
-
         return _services!;
     }
 

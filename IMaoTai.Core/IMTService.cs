@@ -1,18 +1,16 @@
 ﻿using Flurl.Http;
-using IMaoTai.Domain;
-using IMaoTai.Entity;
-using IMaoTai.Pages;
-using IMaoTai.Repository;
+using IMaoTai.Core.Domain;
+using IMaoTai.Core.Entity;
+using IMaoTai.Core.Repository;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Yitter.IdGenerator;
 
-namespace IMaoTai
+namespace IMaoTai.Core
 {
     public class IMTService
     {
@@ -81,7 +79,7 @@ namespace IMaoTai
             client.DefaultRequestHeaders.Add("MT-Lat", "28.499562");
             client.DefaultRequestHeaders.Add("MT-K", "1675213490331");
             client.DefaultRequestHeaders.Add("MT-Lng", "102.182324");
-            client.DefaultRequestHeaders.Add("Host", "app.moutai519.com.cn");
+            client.DefaultRequestHeaders.Add("Host", "CommonX.moutai519.com.cn");
             client.DefaultRequestHeaders.Add("MT-User-Tag", "0");
             client.DefaultRequestHeaders.Add("MT-Network-Type", "WIFI");
             client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Team-ID", "");
@@ -97,7 +95,7 @@ namespace IMaoTai
             client.DefaultRequestHeaders.Add("Connection", "keep-alive");
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
             var response = await client
-                .PostAsync("https://app.moutai519.com.cn/xhr/front/user/register/vcode", content);
+                .PostAsync("https://CommonX.moutai519.com.cn/xhr/front/user/register/vcode", content);
             var responseString = await response.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             var code = (string)responseJson["code"];
@@ -132,7 +130,7 @@ namespace IMaoTai
             client.DefaultRequestHeaders.Add("MT-Lat", "28.499562");
             client.DefaultRequestHeaders.Add("MT-K", "1675213490331");
             client.DefaultRequestHeaders.Add("MT-Lng", "102.182324");
-            client.DefaultRequestHeaders.Add("Host", "app.moutai519.com.cn");
+            client.DefaultRequestHeaders.Add("Host", "CommonX.moutai519.com.cn");
             client.DefaultRequestHeaders.Add("MT-User-Tag", "0");
             client.DefaultRequestHeaders.Add("MT-Network-Type", "WIFI");
             client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Team-ID", "");
@@ -148,17 +146,17 @@ namespace IMaoTai
             client.DefaultRequestHeaders.Add("Connection", "keep-alive");
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
             var response = await client
-                .PostAsync("https://app.moutai519.com.cn/xhr/front/user/register/login", content);
+                .PostAsync("https://CommonX.moutai519.com.cn/xhr/front/user/register/login", content);
             var responseString = await response.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             var responseCode = (string)responseJson["code"];
             if (responseCode != "2000") throw new Exception(responseJson.TryGetValue("message", out var value) ? value.Value<string>() : responseString);
             // 存储一下数据
 
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
                 //lod from file
-                var list = App.GetListFromFile<UserEntity>(App.UserListFile);
+                var list = CommonX.GetListFromFile<UserEntity>(CommonX.UserListFile);
                 if (list.Any())
                 {
                     var foundUserEntity = list.FirstOrDefault(x => x.Mobile == phone);
@@ -169,20 +167,20 @@ namespace IMaoTai
                         var data = responseJson["data"];
                         string token = data["token"].Value<string>();
                         string jsonResult = responseJson.ToString();
-                       foundUserEntity.JsonResult = jsonResult;
+                        foundUserEntity.JsonResult = jsonResult;
                         foundUserEntity.Token = token;
                         list.Add(foundUserEntity);
                         if (list.Count != 0)
-                            App.WriteDataToCache(App.UserListFile, list);
+                            CommonX.WriteDataToCache(CommonX.UserListFile, list);
                         return true;
                     }
                 }
                 list.Add(new UserEntity(phone, responseJson));
-                App.WriteDataToCache(App.UserListFile, list);
+                CommonX.WriteDataToCache(CommonX.UserListFile, list);
                 return true;
             }
-            else{
-
+            else
+            {
                 var foundUserEntity = await DB.SqlConn.Select<UserEntity>().Where(x => x.Mobile == phone).FirstAsync();
                 if (foundUserEntity != null)
                 {
@@ -234,7 +232,7 @@ namespace IMaoTai
                     Response = ex.Message,
                     Status = "异常"
                 };
-                 await LogWriteAsync(logData);
+                await LogWriteAsync(logData);
             }
         }
 
@@ -256,7 +254,7 @@ namespace IMaoTai
             values.Add("actParam", EncryptAES_CBC(JsonConvert.SerializeObject(values).Replace("\\\"", "\"")));
             var requestBody = JsonConvert.SerializeObject(values);
 
-            var response = await "https://app.moutai519.com.cn/xhr/front/mall/reservation/add"
+            var response = await "https://CommonX.moutai519.com.cn/xhr/front/mall/reservation/add"
                 .WithHeader("userId", user.UserId + "")
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("Connection", "keep-alive")
@@ -267,7 +265,7 @@ namespace IMaoTai
                 .WithHeader("MT-Lat", user.Lat)
                 .WithHeader("MT-K", "1675213490331")
                 .WithHeader("MT-Lng", user.Lng)
-                .WithHeader("Host", "app.moutai519.com.cn")
+                .WithHeader("Host", "CommonX.moutai519.com.cn")
                 .WithHeader("MT-User-Tag", "0")
                 .WithHeader("Accept", "*/*")
                 .WithHeader("MT-Network-Type", "WIFI")
@@ -343,7 +341,7 @@ namespace IMaoTai
         /// <returns></returns>
         public static async Task<string> GetCurrentSessionId()
         {
-            var mtSessionId = App.MtSessionId;
+            var mtSessionId = CommonX.MtSessionId;
             if (!string.IsNullOrEmpty(mtSessionId)) return mtSessionId;
 
             var midNight = DateTime.Now.Date;
@@ -358,7 +356,7 @@ namespace IMaoTai
             if (jObject.GetValue("code").Value<int>() == 2000)
             {
                 var dataJObject = jObject["data"];
-                App.MtSessionId = dataJObject["sessionId"].Value<string>();
+                CommonX.MtSessionId = dataJObject["sessionId"].Value<string>();
                 var itemList = (JArray)dataJObject["itemList"];
                 AppointProjectViewModel.ProductList.Clear();
                 foreach (var itemElement in itemList)
@@ -370,8 +368,8 @@ namespace IMaoTai
                         itemElement["pictureV2"].Value<string>(),
                         DateTime.Now));
                 }
-                App.WriteCache("productList.json", JsonConvert.SerializeObject(AppointProjectViewModel.ProductList));
-                App.WriteCache("mtSessionId.txt", App.MtSessionId);
+                CommonX.WriteCache("productList.json", JsonConvert.SerializeObject(AppointProjectViewModel.ProductList));
+                CommonX.WriteCache("mtSessionId.txt", CommonX.MtSessionId);
             }
 
             return mtSessionId;
@@ -413,19 +411,19 @@ namespace IMaoTai
             _mtVersion = string.Empty;
             await GetMtVersion();
             await RefreshShop();
-            App.MtSessionId = string.Empty;
+            CommonX.MtSessionId = string.Empty;
             await GetCurrentSessionId();
         }
 
         public static async Task RefreshShop()
         {
             ShopListCache.StoreList.Clear();
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
-                // 判断App.StoreListFile是否存在,存在则删除
-                if (System.IO.File.Exists(App.StoreListFile))
+                // 判断CommonX.StoreListFile是否存在,存在则删除
+                if (System.IO.File.Exists(CommonX.StoreListFile))
                 {
-                    System.IO.File.Delete(App.StoreListFile);
+                    System.IO.File.Delete(CommonX.StoreListFile);
                 }
             }
             else
@@ -449,9 +447,9 @@ namespace IMaoTai
             }
             if (shopList.Any())
             {
-                if (App.LoadFromFile)
+                if (CommonX.LoadFromFile)
                 {
-                    App.WriteDataToCache(App.StoreListFile, shopList);
+                    CommonX.WriteDataToCache(CommonX.StoreListFile, shopList);
                 }
                 else
                 {
@@ -463,13 +461,13 @@ namespace IMaoTai
 
         private static void LogWrite(LogEntity logData)
         {
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
                 logData.Id = YitIdHelper.NextId();
-                // 判断App.StoreListFile是否存在,存在则删除
-                var logHistoryList = App.GetListFromFile<LogEntity>(App.LogListFile);
+                // 判断CommonX.StoreListFile是否存在,存在则删除
+                var logHistoryList = CommonX.GetListFromFile<LogEntity>(CommonX.LogListFile);
                 logHistoryList.Add(logData);
-                App.WriteDataToCache(App.LogListFile, logHistoryList);
+                CommonX.WriteDataToCache(CommonX.LogListFile, logHistoryList);
             }
             else
             {
@@ -479,17 +477,17 @@ namespace IMaoTai
 
         private static async Task LogWriteAsync(LogEntity logData)
         {
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
                 logData.Id = YitIdHelper.NextId();
-                // 判断App.StoreListFile是否存在,存在则删除
-                var logHistoryList = App.GetListFromFile<LogEntity>(App.LogListFile);
+                // 判断CommonX.StoreListFile是否存在,存在则删除
+                var logHistoryList = CommonX.GetListFromFile<LogEntity>(CommonX.LogListFile);
                 logHistoryList.Add(logData);
-                App.WriteDataToCache(App.LogListFile, logHistoryList);
+                CommonX.WriteDataToCache(CommonX.LogListFile, logHistoryList);
             }
             else
             {
-               await  DB.SqlConn.Insert(logData).ExecuteAffrowsAsync();
+                await DB.SqlConn.Insert(logData).ExecuteAffrowsAsync();
             }
         }
     }

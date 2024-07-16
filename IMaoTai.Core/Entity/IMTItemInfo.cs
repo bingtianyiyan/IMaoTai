@@ -1,4 +1,4 @@
-﻿namespace IMaoTai.Entity
+﻿namespace IMaoTai.Core.Entity
 {
     /// <summary>
     /// I茅台预约商品信息

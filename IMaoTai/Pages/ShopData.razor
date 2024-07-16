@@ -1,7 +1,8 @@
 @page "/shopData"
-@using IMaoTai.Entity
+@using IMaoTai.Core.Entity
+@using IMaoTai.Core.Domain
 @using System.Windows.Threading;
-@inject IMaoTai.Service.IShopService ShopService
+@inject IMaoTai.Core.Service.IShopService ShopService
 
 <PageTitle>µÍ∆Ãπ‹¿Ì</PageTitle>
 
@@ -82,7 +83,7 @@ else
 
 @code {
     private List<ShopEntity> _shopList = new List<ShopEntity>();
-    private Domain.ShopListViewModel _search = new Domain.ShopListViewModel();
+    private ShopListViewModel _search = new ShopListViewModel();
     private int _total;
     private bool _loading = true;
     private int _itemsPerPage = 10;

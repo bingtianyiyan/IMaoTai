@@ -1,10 +1,9 @@
-﻿using IMaoTai.Domain;
-using IMaoTai.Entity;
-using IMaoTai.Helpers;
-using IMaoTai.Repository;
-using System.IO;
+﻿using IMaoTai.Core.Domain;
+using IMaoTai.Core.Entity;
+using IMaoTai.Core.Helpers;
+using IMaoTai.Core.Repository;
 
-namespace IMaoTai.Service
+namespace IMaoTai.Core.Service
 {
     public class ShopService : IShopService
     {
@@ -14,10 +13,10 @@ namespace IMaoTai.Service
             List<ShopEntity> list = new List<ShopEntity>();
             long total = 0;
             ShopListCache.StoreList.Clear();
-            if (App.LoadFromFile)
+            if (CommonX.LoadFromFile)
             {
                 //lod from file
-                list = App.GetListFromFile<ShopEntity>(App.StoreListFile);
+                list = CommonX.GetListFromFile<ShopEntity>(CommonX.StoreListFile);
                 total = list.Count;
                 //过滤数据
                 if (list.Any())
@@ -51,28 +50,28 @@ namespace IMaoTai.Service
               .Page(storeListViewModel.Current, storeListViewModel.PageSize)
                .ToListAsync();
             }
-                foreach (var item in list)
-                {
-                    result.ShopList.Add(item);
-                }
-
-                // 分页数据
-                var pageCount = total / 10 + 1;
-                result.Total = total;
-                result.PageCount = pageCount;
-                result.Current = storeListViewModel.Current;
-                return result;
-            }
-
-            public async Task RefreshShop()
+            foreach (var item in list)
             {
-                // 判断App.StoreListFile是否存在,存在则删除
-                if (File.Exists(App.StoreListFile))
-                {
-                    File.Delete(App.StoreListFile);
-                }
-                await IMTService.RefreshShop();
-                await GetShopList(new ShopListViewModel());
+                result.ShopList.Add(item);
             }
+
+            // 分页数据
+            var pageCount = total / 10 + 1;
+            result.Total = total;
+            result.PageCount = pageCount;
+            result.Current = storeListViewModel.Current;
+            return result;
+        }
+
+        public async Task RefreshShop()
+        {
+            // 判断CommonX.StoreListFile是否存在,存在则删除
+            if (File.Exists(CommonX.StoreListFile))
+            {
+                File.Delete(CommonX.StoreListFile);
+            }
+            await IMTService.RefreshShop();
+            await GetShopList(new ShopListViewModel());
         }
     }
+}

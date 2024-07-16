@@ -1,4 +1,4 @@
-﻿namespace IMaoTai.Service
+﻿namespace IMaoTai.Core.Service
 {
     public interface IAppointProjectService
     {

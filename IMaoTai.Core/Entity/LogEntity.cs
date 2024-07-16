@@ -1,6 +1,6 @@
 ﻿using FreeSql.DataAnnotations;
 
-namespace IMaoTai.Entity
+namespace IMaoTai.Core.Entity
 {
     /// <summary>
     /// 日志的模型

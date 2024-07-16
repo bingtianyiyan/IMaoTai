@@ -1,6 +1,6 @@
-﻿using IMaoTai.Entity;
+﻿using IMaoTai.Core.Entity;
 
-namespace IMaoTai.Domain
+namespace IMaoTai.Core.Domain
 {
     /// <summary>
     /// 门店列表Page的ViewModel

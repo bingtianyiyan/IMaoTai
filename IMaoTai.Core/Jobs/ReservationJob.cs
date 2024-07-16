@@ -1,7 +1,7 @@
 ﻿using NLog;
 using Quartz;
 
-namespace IMaoTai.Jobs
+namespace IMaoTai.Core.Jobs
 {
     public class ReservationJob : IJob
     {

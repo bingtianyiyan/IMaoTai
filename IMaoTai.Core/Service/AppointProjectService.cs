@@ -1,13 +1,13 @@
-﻿using IMaoTai.Domain;
+﻿using IMaoTai.Core.Domain;
 
-namespace IMaoTai.Service
+namespace IMaoTai.Core.Service
 {
     public class AppointProjectService : IAppointProjectService
     {
         public async Task RefreshProduct()
         {
-            App.MtSessionId = string.Empty;
-            App.WriteCache("mtSessionId.txt", string.Empty);
+            CommonX.MtSessionId = string.Empty;
+            CommonX.WriteCache("mtSessionId.txt", string.Empty);
             AppointProjectViewModel.ProductList.Clear();
             await IMTService.GetCurrentSessionId();
         }

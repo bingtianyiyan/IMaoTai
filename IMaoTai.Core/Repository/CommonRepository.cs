@@ -1,37 +1,36 @@
-﻿using IMaoTai.Entity;
+﻿using IMaoTai.Core.Entity;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Data.SQLite;
-using System.IO;
 
-namespace IMaoTai.Repository
+namespace IMaoTai.Core.Repository
 {
     /// <summary>
     /// 共用或基本的数据库操作
     /// </summary>
-    internal class CommonRepository
+    public class CommonRepository
     {
         /// <summary>
         /// 创建订单数据库
         /// </summary>
         public static void CreateDatabase()
         {
-            if(App.LoadFromFile) { return; }
-            if (App.DbType == FreeSql.DataType.Sqlite.ToString())
+            if (CommonX.LoadFromFile) { return; }
+            if (CommonX.DbType == FreeSql.DataType.Sqlite.ToString())
             {
                 // 判断数据库文件是否存在
-                if (File.Exists(App.OrderDatabasePath)) return;
-                SQLiteConnection.CreateFile(App.OrderDatabasePath);
+                if (File.Exists(CommonX.OrderDatabasePath)) return;
+                SQLiteConnection.CreateFile(CommonX.OrderDatabasePath);
             }
             // 创建数据库连接
             IDbConnection sqlConnection = null;
-            if (App.DbType == FreeSql.DataType.MySql.ToString())
+            if (CommonX.DbType == FreeSql.DataType.MySql.ToString())
             {
-                sqlConnection = new MySqlConnection(App.OrderDatabaseConnectStr);
+                sqlConnection = new MySqlConnection(CommonX.OrderDatabaseConnectStr);
             }
             else
             {
-                sqlConnection = new SQLiteConnection(App.OrderDatabaseConnectStr);
+                sqlConnection = new SQLiteConnection(CommonX.OrderDatabaseConnectStr);
             }
             sqlConnection.Open();
             // 创建表结构

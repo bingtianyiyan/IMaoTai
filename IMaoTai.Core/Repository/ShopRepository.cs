@@ -1,10 +1,9 @@
 ﻿using Flurl.Http;
-using IMaoTai.Entity;
+using IMaoTai.Core.Entity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
 
-namespace IMaoTai.Repository
+namespace IMaoTai.Core.Repository
 {
     /// <summary>
     /// 对i_shop表的操作
@@ -114,19 +113,19 @@ namespace IMaoTai.Repository
         private static List<ShopEntity> GetAllShopList()
         {
             var list = new List<ShopEntity>();
-            if (File.Exists(App.StoreListFile))
+            if (File.Exists(CommonX.StoreListFile))
             {
-                list = JsonConvert.DeserializeObject<List<ShopEntity>>(File.ReadAllText(App.StoreListFile));
+                list = JsonConvert.DeserializeObject<List<ShopEntity>>(File.ReadAllText(CommonX.StoreListFile));
                 if (list.Count == 0)
                     throw new Exception("未获取到可用商店列表,请先尝试刷新商店列表");
                 return list;
             }
 
-            if (!App.LoadFromFile)
+            if (!CommonX.LoadFromFile)
             {
                 list = DB.SqlConn.Select<ShopEntity>().ToList();
                 if (list.Count != 0)
-                    File.WriteAllText(App.StoreListFile, JsonConvert.SerializeObject(list));
+                    File.WriteAllText(CommonX.StoreListFile, JsonConvert.SerializeObject(list));
                 if (list.Count == 0)
                     throw new Exception("未获取到可用商店列表,请先尝试刷新商店列表");
             }
