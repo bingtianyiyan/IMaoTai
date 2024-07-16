@@ -40,12 +40,6 @@
      </ItemGroup>
 
      <ItemGroup>
-       <None Update="FodyWeavers.xml">
-         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-       </None>
-     </ItemGroup>
-
-     <ItemGroup>
        <None Include="wwwroot\imgs\home.png">
          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
        </None>
