@@ -125,6 +125,11 @@ else
         await GetShopListDataFromApi();
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await GetShopListDataFromApi();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

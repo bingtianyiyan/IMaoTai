@@ -1,0 +1,56 @@
+﻿<MAppBar App>
+    <MAppBarNavIcon @onclick="() => _drawer = !_drawer"></MAppBarNavIcon>
+    <MToolbarTitle>i茅台预约助手</MToolbarTitle>
+    <MSpacer></MSpacer>
+</MAppBar>
+
+<MNavigationDrawer App @bind-Value="_drawer">
+    <MList Nav Routable>
+        <MListItem Href="/" ActiveClass="primary--text">
+            <MListItemIcon>
+                <MIcon>mdi-home</MIcon>
+            </MListItemIcon>
+            <MListItemContent>
+                <MListItemTitle>Home</MListItemTitle>
+            </MListItemContent>
+        </MListItem>
+        <MListItem Href="/userData" ActiveClass="primary--text">
+            <MListItemIcon>
+                <MIcon>mdi-plus</MIcon>
+            </MListItemIcon>
+            <MListItemContent>
+                <MListItemTitle>用户管理</MListItemTitle>
+            </MListItemContent>
+        </MListItem>
+        <MListItem Href="/productdata" ActiveClass="primary--text">
+            <MListItemIcon>
+                <MIcon>mdi-list-box</MIcon>
+            </MListItemIcon>
+            <MListItemContent>
+                <MListItemTitle>预约商品管理</MListItemTitle>
+            </MListItemContent>
+        </MListItem>
+        <MListItem Href="/shopdata" ActiveClass="primary--text">
+            <MListItemIcon>
+                <MIcon>mdi-list-box</MIcon>
+            </MListItemIcon>
+            <MListItemContent>
+                <MListItemTitle>店铺管理</MListItemTitle>
+            </MListItemContent>
+        </MListItem>
+        <MListItem Href="/logdata" ActiveClass="primary--text">
+            <MListItemIcon>
+                <MIcon>mdi-list-box</MIcon>
+            </MListItemIcon>
+            <MListItemContent>
+                <MListItemTitle>日志管理</MListItemTitle>
+            </MListItemContent>
+        </MListItem>
+    </MList>
+</MNavigationDrawer>
+
+@code {
+
+    private bool? _drawer;
+
+}

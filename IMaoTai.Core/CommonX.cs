@@ -5,7 +5,7 @@ namespace IMaoTai.Core
 {
     public class CommonX
     {
-        public const string CacheDir = "cache";
+        public static string CacheDir = Path.Combine( AppContext.BaseDirectory,"cache");
 
         // 内部使用缓存文件
         public static string _productListFile = Path.Combine(CacheDir, "productList.json");

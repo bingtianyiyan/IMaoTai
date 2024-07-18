@@ -4,53 +4,26 @@ using IMaoTai.Core.Jobs;
 using IMaoTai.Core.Repository;
 using IMaoTai.Core;
 using IMaoTai.Core.Service;
-using IMaoTai.MasaExtensions;
-using Microsoft.Extensions.DependencyInjection;
+using Masa.Blazor;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Quartz.Impl;
 using Quartz;
-using System.IO;
-using System.Windows;
 using Yitter.IdGenerator;
 
-namespace IMaoTai.Helpers;
+namespace IMaoTai.MasaBlazor.Web.Helpers;
 
 public static class IocHelper
 {
-    public const string IocKey = "services";
-
-    private static ServiceCollection? _services = null;
-
-    public static ServiceCollection GetIoc()
+    public static IServiceCollection RegisterService(IServiceCollection _services)
     {
-        if (_services != null)
-        {
-            return _services!;
-        }
-
-        _services = new ServiceCollection();
-        _services.AddMasaSetup();
-        _services.AddWpfBlazorWebView();
-        _services.AddBlazorWebViewDeveloperTools();
         _services.TryAddSingleton<IUserService, UserService>();
         _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
         _services.TryAddSingleton<IShopService, ShopService>();
         _services.TryAddSingleton<ILogService, LogService>();
+        _services.TryAddScoped<I18n>();
+        //_services.TryAddScoped<CookieStorage>();
+        _services.AddHttpContextAccessor();
         return _services!;
-    }
-
-    public static void SetIoc(this ResourceDictionary resourceDictionary, ServiceCollection services)
-    {
-        if (!resourceDictionary.Contains(IocKey))
-        {
-            resourceDictionary.Add(IocKey, services.BuildServiceProvider());
-        }
-    }
-
-    public static void SetIoc(this ResourceDictionary resourceDictionary)
-    {
-        var service = GetIoc();
-        resourceDictionary.SetIoc(service);
     }
 
     public static async Task InitBusiness()

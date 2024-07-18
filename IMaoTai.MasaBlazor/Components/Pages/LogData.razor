@@ -111,6 +111,11 @@ else
         await GetListDataFromApi();
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await GetListDataFromApi();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

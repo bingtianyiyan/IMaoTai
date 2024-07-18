@@ -5,7 +5,11 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMaoTai", "IMaoTai\IMaoTai.csproj", "{23F81749-E5CD-42C6-BC4C-38A4E4A7AC7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMaoTai.Core", "IMaoTai.Core\IMaoTai.Core.csproj", "{B288603C-C8C1-4749-83EF-9CAFE419E4E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMaoTai.Core", "IMaoTai.Core\IMaoTai.Core.csproj", "{B288603C-C8C1-4749-83EF-9CAFE419E4E1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMaoTai.MasaUI", "IMaoTai.MasaUI\IMaoTai.MasaUI.csproj", "{F7FD82E6-F424-4775-A821-7768EF677055}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMaoTai.MasaBlazor", "IMaoTai.MasaBlazor\IMaoTai.MasaBlazor.csproj", "{159829BA-B867-4883-92F8-CF217EF48673}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{B288603C-C8C1-4749-83EF-9CAFE419E4E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B288603C-C8C1-4749-83EF-9CAFE419E4E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B288603C-C8C1-4749-83EF-9CAFE419E4E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7FD82E6-F424-4775-A821-7768EF677055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7FD82E6-F424-4775-A821-7768EF677055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7FD82E6-F424-4775-A821-7768EF677055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7FD82E6-F424-4775-A821-7768EF677055}.Release|Any CPU.Build.0 = Release|Any CPU
+		{159829BA-B867-4883-92F8-CF217EF48673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{159829BA-B867-4883-92F8-CF217EF48673}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{159829BA-B867-4883-92F8-CF217EF48673}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{159829BA-B867-4883-92F8-CF217EF48673}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
