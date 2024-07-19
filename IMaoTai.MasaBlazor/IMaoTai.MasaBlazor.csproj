@@ -18,16 +18,21 @@
 
   <ItemGroup>
     <PackageReference Include="Masa.Blazor" Version="1.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IMaoTai.Core\IMaoTai.Core.csproj" />
+    <ProjectReference Include="..\IMaoTai.MasaUI\IMaoTai.MasaUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Layout\" />
   </ItemGroup>
 
 </Project>

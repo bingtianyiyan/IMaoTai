@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMaoTai.Core", "IMaoTai.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMaoTai.MasaUI", "IMaoTai.MasaUI\IMaoTai.MasaUI.csproj", "{F7FD82E6-F424-4775-A821-7768EF677055}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMaoTai.MasaBlazor", "IMaoTai.MasaBlazor\IMaoTai.MasaBlazor.csproj", "{159829BA-B867-4883-92F8-CF217EF48673}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMaoTai.MasaBlazor", "IMaoTai.MasaBlazor\IMaoTai.MasaBlazor.csproj", "{159829BA-B867-4883-92F8-CF217EF48673}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4A9F5E44-052A-49B6-9991-EA486B282A21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IMaoTai.Masa.Wpf", "IMaoTai.Masa.Wpf", "{40DFB0BF-7D23-41CD-A8B4-F0B56F245913}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IMaoTai.Masa.BlazorWeb", "IMaoTai.Masa.BlazorWeb", "{38D48092-AC81-4B71-9852-831C2F7C8BFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +42,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{23F81749-E5CD-42C6-BC4C-38A4E4A7AC7E} = {40DFB0BF-7D23-41CD-A8B4-F0B56F245913}
+		{B288603C-C8C1-4749-83EF-9CAFE419E4E1} = {4A9F5E44-052A-49B6-9991-EA486B282A21}
+		{F7FD82E6-F424-4775-A821-7768EF677055} = {4A9F5E44-052A-49B6-9991-EA486B282A21}
+		{159829BA-B867-4883-92F8-CF217EF48673} = {38D48092-AC81-4B71-9852-831C2F7C8BFF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E877ACA-6D8C-4C01-9D3A-25ECDBDA698F}

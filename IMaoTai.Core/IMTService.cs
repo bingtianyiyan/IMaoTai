@@ -79,7 +79,7 @@ namespace IMaoTai.Core
             client.DefaultRequestHeaders.Add("MT-Lat", "28.499562");
             client.DefaultRequestHeaders.Add("MT-K", "1675213490331");
             client.DefaultRequestHeaders.Add("MT-Lng", "102.182324");
-            client.DefaultRequestHeaders.Add("Host", "CommonX.moutai519.com.cn");
+            client.DefaultRequestHeaders.Add("Host", "app.moutai519.com.cn");
             client.DefaultRequestHeaders.Add("MT-User-Tag", "0");
             client.DefaultRequestHeaders.Add("MT-Network-Type", "WIFI");
             client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Team-ID", "");
@@ -95,7 +95,7 @@ namespace IMaoTai.Core
             client.DefaultRequestHeaders.Add("Connection", "keep-alive");
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
             var response = await client
-                .PostAsync("https://CommonX.moutai519.com.cn/xhr/front/user/register/vcode", content);
+                .PostAsync("https://app.moutai519.com.cn/xhr/front/user/register/vcode", content);
             var responseString = await response.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             var code = (string)responseJson["code"];
@@ -130,7 +130,7 @@ namespace IMaoTai.Core
             client.DefaultRequestHeaders.Add("MT-Lat", "28.499562");
             client.DefaultRequestHeaders.Add("MT-K", "1675213490331");
             client.DefaultRequestHeaders.Add("MT-Lng", "102.182324");
-            client.DefaultRequestHeaders.Add("Host", "CommonX.moutai519.com.cn");
+            client.DefaultRequestHeaders.Add("Host", "app.moutai519.com.cn");
             client.DefaultRequestHeaders.Add("MT-User-Tag", "0");
             client.DefaultRequestHeaders.Add("MT-Network-Type", "WIFI");
             client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Team-ID", "");
@@ -146,7 +146,7 @@ namespace IMaoTai.Core
             client.DefaultRequestHeaders.Add("Connection", "keep-alive");
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
             var response = await client
-                .PostAsync("https://CommonX.moutai519.com.cn/xhr/front/user/register/login", content);
+                .PostAsync("https://app.moutai519.com.cn/xhr/front/user/register/login", content);
             var responseString = await response.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             var responseCode = (string)responseJson["code"];
@@ -254,7 +254,7 @@ namespace IMaoTai.Core
             values.Add("actParam", EncryptAES_CBC(JsonConvert.SerializeObject(values).Replace("\\\"", "\"")));
             var requestBody = JsonConvert.SerializeObject(values);
 
-            var response = await "https://CommonX.moutai519.com.cn/xhr/front/mall/reservation/add"
+            var response = await "https://app.moutai519.com.cn/xhr/front/mall/reservation/add"
                 .WithHeader("userId", user.UserId + "")
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("Connection", "keep-alive")
@@ -265,7 +265,7 @@ namespace IMaoTai.Core
                 .WithHeader("MT-Lat", user.Lat)
                 .WithHeader("MT-K", "1675213490331")
                 .WithHeader("MT-Lng", user.Lng)
-                .WithHeader("Host", "CommonX.moutai519.com.cn")
+                .WithHeader("Host", "app.moutai519.com.cn")
                 .WithHeader("MT-User-Tag", "0")
                 .WithHeader("Accept", "*/*")
                 .WithHeader("MT-Network-Type", "WIFI")

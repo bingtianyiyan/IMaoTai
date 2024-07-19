@@ -1,18 +1,21 @@
 using IMaoTai.MasaBlazor.Components;
 using IMaoTai.MasaBlazor.Web.Helpers;
+using IMaoTai.MasaUI;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    .AddInteractiveWebAssemblyComponents();
 
 IocHelper.RegisterService(builder.Services);
 
 builder.Services.AddMasaBlazor();
 
 await IocHelper.InitBusiness();
+builder.Services.AddAdminCaviar(new Type[] { typeof(Program), typeof(IMaoTai.MasaUI._Imports) });
 
 var app = builder.Build();
 
@@ -26,6 +29,9 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddAdditionalAssemblies(
+    typeof(IMaoTai.MasaUI._Imports).Assembly);
 
 app.Run();
