@@ -380,10 +380,25 @@ namespace IMaoTai.Core
         /// </summary>
         public static void ReservationBatch()
         {
-            var users = DB.SqlConn.Select<UserEntity>().Where(i =>
-                    i.ExpireTime > DateTime.Now && !string.IsNullOrEmpty(i.Lat) && !string.IsNullOrEmpty(i.Lng) &&
-                    !string.IsNullOrEmpty(i.ShopType + "") && !string.IsNullOrEmpty(i.ItemCode))
-                .ToList();
+            List<UserEntity> users = new List<UserEntity>();
+            if (CommonX.LoadFromFile)
+            {
+                var userList = CommonX.GetListFromFile<UserEntity>(CommonX.UserListFile);
+                if (userList != null && userList.Count > 0)
+                {
+                    users = userList.Where(i =>
+                        i.ExpireTime > DateTime.Now && !string.IsNullOrEmpty(i.Lat) && !string.IsNullOrEmpty(i.Lng) &&
+                        !string.IsNullOrEmpty(i.ShopType + "") && !string.IsNullOrEmpty(i.ItemCode))
+                    .ToList();
+                }
+            }
+            else
+            {
+                users = DB.SqlConn.Select<UserEntity>().Where(i =>
+                        i.ExpireTime > DateTime.Now && !string.IsNullOrEmpty(i.Lat) && !string.IsNullOrEmpty(i.Lng) &&
+                        !string.IsNullOrEmpty(i.ShopType + "") && !string.IsNullOrEmpty(i.ItemCode))
+                    .ToList();
+            }
             foreach (var userEntity in users)
             {
                 try
