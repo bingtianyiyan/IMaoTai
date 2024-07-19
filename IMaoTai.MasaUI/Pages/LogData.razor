@@ -101,6 +101,7 @@ else
     {
         _options.Page = 1;
         await LogService.DeleteAll();
+        await GetListDataFromApi();
         StateHasChanged();
     }
 

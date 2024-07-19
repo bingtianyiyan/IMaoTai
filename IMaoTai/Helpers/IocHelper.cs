@@ -12,6 +12,7 @@ using Quartz;
 using System.IO;
 using System.Windows;
 using Yitter.IdGenerator;
+using IMaoTai.MasaUI;
 
 namespace IMaoTai.Helpers;
 
@@ -36,6 +37,7 @@ public static class IocHelper
         _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
         _services.TryAddSingleton<IShopService, ShopService>();
         _services.TryAddSingleton<ILogService, LogService>();
+        _services.AddAdminCaviar(new Type[] { typeof(IocHelper), typeof(IMaoTai.MasaUI._Imports) });
         return _services!;
     }
 
