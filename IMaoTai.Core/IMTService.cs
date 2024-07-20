@@ -522,47 +522,80 @@ namespace IMaoTai.Core
                 { "idCardName", user.IdCardName },
                 {"idCardNo",user.IdCardNo}
             };
-            var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
-            client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "*/*");
-            client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "iOS;16.3;Apple;?unrecognized?");
-            client.DefaultRequestHeaders.Add("MT-Token", user.Token);
-            client.DefaultRequestHeaders.Add("MT-Lat", user.Lat);
-            client.DefaultRequestHeaders.Add("MT-K", "1675213490331");
-            client.DefaultRequestHeaders.Add("MT-Lng", user.Lng);
-            client.DefaultRequestHeaders.Add("Host", "app.moutai519.com.cn");
-            client.DefaultRequestHeaders.Add("MT-User-Tag", "0");
-            client.DefaultRequestHeaders.Add("MT-Network-Type", "WIFI");
-            client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Team-ID", "");
-            client.DefaultRequestHeaders.Add("MT-SN", "clips_ehwpSC0fLBggRnJAdxYgFiAYLxl9Si5PfEl/TC0afkw=");
-            client.DefaultRequestHeaders.Add("MT-DTIME", DateTimeOffset.UtcNow.ToString());
-            client.DefaultRequestHeaders.Add("MT-RS", "1080*1794");
-            client.DefaultRequestHeaders.Add("BS-DVID", "hWr62Q591-OLfaOq1ge1xkVW4OZfwq8jzbHpK2tx-B0Mhg0ZB8SVmhl0MzjFvXjHo7cnRUKQz5p9ChG1rFMxykw");
-            client.DefaultRequestHeaders.Add("MT-DOUBLE", "0");
-            client.DefaultRequestHeaders.Add("MT-SIM", "0");
-            client.DefaultRequestHeaders.Add("MT-ACBE", "0");
-            client.DefaultRequestHeaders.Add("MT-ACB", "0");
-            client.DefaultRequestHeaders.Add("MT-ACBM", "0");
-            client.DefaultRequestHeaders.Add("MT-Info", "028e7f96f6369cafe1d105579c5b9377");
-            client.DefaultRequestHeaders.Add("MT-Device-ID", "2F2075D0-B66C-4287-A903-DBFF6358342A");
-            client.DefaultRequestHeaders.Add("MT-Bundle-ID", "com.moutai.mall");
-            client.DefaultRequestHeaders.Add("Accept-Language", "en-CN;q=1, zh-Hans-CN;q=0.9");
-            client.DefaultRequestHeaders.Add("MT-Request-ID", "167560018873318465");
-            client.DefaultRequestHeaders.Add("MT-APP-Version", await GetMtVersion());
-            client.DefaultRequestHeaders.Add("MT-R", "clips_OlU6TmFRag5rCXwbNAQ/Tz1SKlN8THcecBp/HGhHdw==");
-            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Length", "65");
-            client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
-            client.DefaultRequestHeaders.Add("Connection", "keep-alive");
-            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json;");
+            var requestBody = JsonConvert.SerializeObject(values);
+            //var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "*/*");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "iOS;16.3;Apple;?unrecognized?");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Token", user.Token);
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Lat", "");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-K", "1675213490331");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Lng", "");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("Host", "app.moutai519.com.cn");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-User-Tag", "0");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Network-Type", "WIFI");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Team-ID", "");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-SN", "clips_ehwpSC0fLBggRnJAdxYgFiAYLxl9Si5PfEl/TC0afkw=");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-DTIME", DateTimeOffset.UtcNow.ToString());
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-RS", (1080 * 1794).ToString());
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("BS-DVID", "hWr62Q591-OLfaOq1ge1xkVW4OZfwq8jzbHpK2tx-B0Mhg0ZB8SVmhl0MzjFvXjHo7cnRUKQz5p9ChG1rFMxykw");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-DOUBLE", "0");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-SIM", "0");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-ACBE", "0");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-ACB", "0");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-ACBM", "0");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Info", "028e7f96f6369cafe1d105579c5b9377");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Device-ID", "2F2075D0-B66C-4287-A903-DBFF6358342A");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Bundle-ID", "com.moutai.mall");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Language", "en-CN;q=1, zh-Hans-CN;q=0.9");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Request-ID", "167560018873318465");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-APP-Version", await GetMtVersion());
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-R", "clips_OlU6TmFRag5rCXwbNAQ/Tz1SKlN8THcecBp/HGhHdw==");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Length", "65");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate, br");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("Connection", "keep-alive");
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json;charset=UTF-8");
             try
             {
-                var response = await client
-                    .PostAsync("https://app.moutai519.com.cn/xhr/front/user/realNameAuth", content);
-                var responseString = await response.Content.ReadAsStringAsync();
+                //var response = await client
+                //    .PostAsync("https://app.moutai519.com.cn/xhr/front/user/realNameAuth", content);
+                var response = await "https://app.moutai519.com.cn/xhr/front/user/realNameAuth"
+                .WithHeader("Content-Type", "application/json;charset=UTF-8")
+                .WithHeader("Connection", "keep-alive")
+                .WithHeader("MT-Bundle-ID", "com.moutai.mall")
+                .WithHeader("MT-R", "clips_OlU6TmFRag5rCXwbNAQ/Tz1SKlN8THcecBp/HGhHdw==")
+                .WithHeader("Accept-Encoding", "gzip, deflate, br")
+                .WithHeader("Accept-Language", "en-CN;q=1, zh-Hans-CN;q=0.9")
+                .WithHeader("MT-Lat", user.Lat)
+                .WithHeader("MT-K", "1675213490331")
+                .WithHeader("MT-Lng", user.Lng)
+                .WithHeader("Host", "app.moutai519.com.cn")
+                .WithHeader("MT-User-Tag", "0")
+                .WithHeader("Accept", "*/*")
+                .WithHeader("MT-Network-Type", "WIFI")
+                .WithHeader("MT-Token", user.Token)
+                .WithHeader("BS-DVID", "hWr62Q591-OLfaOq1ge1xkVW4OZfwq8jzbHpK2tx-B0Mhg0ZB8SVmhl0MzjFvXjHo7cnRUKQz5p9ChG1rFMxykw")
+               .WithHeader("MT-DOUBLE", "0")
+               .WithHeader("MT-SIM", "0")
+              .WithHeader("MT-ACBE", "0")
+               .WithHeader("MT-ACB", "0")
+               .WithHeader("MT-ACBM", "0")
+               .WithHeader("MT-Info", "028e7f96f6369cafe1d105579c5b9377")
+                .WithHeader("MT-Team-ID", "")
+                .WithHeader("MT-Info", "028e7f96f6369cafe1d105579c5b9377")
+                .WithHeader("MT-Device-ID", "2F2075D0-B66C-4287-A903-DBFF6358342A")
+                .WithHeader("MT-Request-ID", "167560018873318465")
+                .WithHeader("MT-APP-Version", await GetMtVersion())
+                .WithHeader("User-Agent", "iOS;16.3;Apple;?unrecognized?")
+                .AllowAnyHttpStatus()
+                .PostStringAsync(requestBody);
+                //var responseString = await response.Content.ReadAsStringAsync();
+                var responseString = await response.GetStringAsync();
                 var responseJson = JObject.Parse(responseString);
                 var responseCode = (string)responseJson["code"];
                 if (responseCode != "2000") return false;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Logger.Error($"用户{user.Mobile}实名认证,错误原因:{ex.Message}");
                 return false;
             }
