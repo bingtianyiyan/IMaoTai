@@ -9,6 +9,22 @@ namespace IMaoTai.Core.Entity
 
         [Column(IsIgnore = true)]
         public bool IsSelected { get; set; }
+        /// <summary>
+        /// 姓名
+        /// </summary>
+
+        [Column(IsIgnore = true)]
+        public string IdCardName { get; set; }
+        /// <summary>
+        /// 身份证
+        /// </summary>
+        [Column(IsIgnore = true)]
+        public string IdCardNo { get; set; }
+
+        /// <summary>
+        /// 是否已实名认证(1已实名,0 未实名)
+        /// </summary>
+        public int IdCardAuth {  get; set; }
 
         public long UserId { get; set; }
 

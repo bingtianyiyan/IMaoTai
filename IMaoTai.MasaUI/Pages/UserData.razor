@@ -86,6 +86,9 @@ else
                 <MIcon Small
                        Class="mr-2"
                        OnClick="()=>EditItem(context.Item)">mdi-pencil</MIcon>
+                 <MButton Small
+                        Class="mr-2"
+                             OnClick="()=>RealNameAuthItem(context.Item)">实名认证</MButton>
                 <MIcon Small
                        OnClick="()=>DeleteItem(context.Item)">mdi-delete</MIcon>
             }
@@ -290,6 +293,62 @@ else
         </MCard>
     </MDialog>
 
+    //实名认证弹框
+    <MDialog @bind-Value="_dialogRealNameAuth"
+             MaxWidth="500">
+        <MCard>
+            <MCardTitle>
+                <span class="text-h5">实名认证</span>
+            </MCardTitle>
+
+            <MCardText>
+                <MContainer>
+                    <MRow>
+                        <MCol Cols="12"
+                              Sm="6"
+                              Md="4">
+                            <MTextField @bind-Value="_editedItem.Mobile"
+                                        Label="手机号"></MTextField>
+                        </MCol>
+                        <MCol Cols="12"
+                              Sm="6"
+                              Md="4">
+                            <MTextField @bind-Value="_editedItem.UserId"
+                                        Label="i茅台用户id"></MTextField>
+                        </MCol>
+                        <MCol Cols="12"
+                              Sm="6"
+                              Md="4">
+                            <MTextField @bind-Value="_editedItem.IdCardName"
+                                        Label="姓名"></MTextField>
+                        </MCol>
+                        <MCol Cols="12"
+                              Sm="6"
+                              Md="4">
+                            <MTextField @bind-Value="_editedItem.IdCardNo"
+                                        Label="身份证"></MTextField>
+                        </MCol>
+                    </MRow>
+                </MContainer>
+            </MCardText>
+
+            <MCardActions>
+                <MSpacer></MSpacer>
+                <MButton Color="blue darken-1"
+                         Text
+                         OnClick="CloseRealNameAuth">
+                    取消
+                </MButton>
+                <MButton Color="blue darken-1"
+                         Text
+                         OnClick="RealNameAuthSave">
+                    保存
+                </MButton>
+            </MCardActions>
+
+        </MCard>
+    </MDialog>
+
     //告警弹窗
     <MDialog @bind-Value="_dialogWarn"
              Width="400">
@@ -344,6 +403,7 @@ else
     private bool _dialog;
     private bool _dialogRegister;
     private bool _dialogDelete;
+    private bool _dialogRealNameAuth;
     private UserEntity _editedItem = new UserEntity();
     private int _editedIndex = -1;
     private Timer timer = new(1000);
@@ -365,6 +425,14 @@ else
     {
         _dialog = false;
         _dialogRegister = false;
+        _editedItem = new UserEntity();
+        _editedIndex = -1;
+    }
+
+    public void CloseRealNameAuth()
+    {
+        _dialog = false;
+        _dialogRealNameAuth = false;
         _editedItem = new UserEntity();
         _editedIndex = -1;
     }
@@ -511,6 +579,40 @@ else
         _editedIndex = _userList.IndexOf(item);
         _editedItem = item;
         _dialog = true;
+    }
+
+    /// <summary>
+    ///认证
+    /// </summary>
+    /// <param name="item"></param>
+    public void RealNameAuthItem(UserEntity item)
+    {
+        _editedIndex = _userList.IndexOf(item);
+        _editedItem = item;
+        _dialogRealNameAuth = true;
+    }
+
+    /// <summary>
+    /// 认证实际逻辑
+    /// </summary>
+    public async Task RealNameAuthSave()
+    {
+        if (string.IsNullOrEmpty(_editedItem.IdCardName))
+        {
+            _warnMsg = "姓名不能为空";
+            _dialogWarn = true;
+            return;
+        }
+        if (string.IsNullOrEmpty(_editedItem.IdCardNo))
+        {
+            _warnMsg = "身份证不能为空";
+            _dialogWarn = true;
+            return;
+        }
+        var resultItem = await UserService.RealNameAuth(_editedItem);
+        _warnMsg = resultItem ? "成功" : "失败";
+        _dialogWarn = true;
+        CloseRealNameAuth();
     }
 
     public void DeleteItem(UserEntity item)

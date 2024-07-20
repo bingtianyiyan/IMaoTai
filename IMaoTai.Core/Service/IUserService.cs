@@ -12,5 +12,7 @@ namespace IMaoTai.Core.Service
         Task<(bool, string)> InsertUser(UserEntity model);
 
         Task<bool> DeleteUser(UserEntity model);
+
+        Task<bool> RealNameAuth(UserEntity model);
     }
 }

@@ -50,11 +50,10 @@ namespace IMaoTai.Core.Service
             }
             foreach (var item in list)
             {
+                item.IdCardName = "";
+                item.IdCardNo = "";
                 result.UserList.Add(item);
             }
-#if DEBUG
-            //  CommonX.WriteDataToCache(CommonX.UserListFile,result.UserList);
-#endif
 
             // 分页数据
             var pageCount = total / 10 + 1;
@@ -119,6 +118,7 @@ namespace IMaoTai.Core.Service
                     .Set(i => i.Lat, model.Lat)
                     .Set(i => i.Lng, model.Lng)
                     .Set(i => i.ShopType, model.ShopType)
+                    .SetIf(model.IdCardAuth >0, i => i.IdCardAuth, model.IdCardAuth)
                     .Set(i => i.ExpireTime, model.ExpireTime)
                     .Where(i => i.Mobile == model.Mobile).ExecuteAffrowsAsync();
 
@@ -211,7 +211,6 @@ namespace IMaoTai.Core.Service
                 var res = await DB.SqlConn.Delete<UserEntity>().Where(x => x.Mobile == model.Mobile).ExecuteAffrowsAsync();
                 return res > 0;
             }
-            return true;
         }
 
         private (bool, string) DataLogical(UserEntity model)
@@ -231,6 +230,21 @@ namespace IMaoTai.Core.Service
                 return (false, "经度不符合规范");
             }
             return (true, "");
+        }
+
+        /// <summary>
+        /// 用户认证
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<bool> RealNameAuth(UserEntity model)
+        {
+           var res = await  IMTService.RealNameAuth(model);
+            if (res)
+            {
+                await ModifyUser(model);
+            }
+            return res;
         }
     }
 }

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\imgs\home.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Masa.Blazor" Version="1.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7" />
   </ItemGroup>
@@ -23,6 +27,12 @@
 
   <ItemGroup>
     <Folder Include="Components\Layout\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\imgs\home.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

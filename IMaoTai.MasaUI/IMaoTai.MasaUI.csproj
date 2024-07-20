@@ -6,16 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\imgs\home.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\imgs\home.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
