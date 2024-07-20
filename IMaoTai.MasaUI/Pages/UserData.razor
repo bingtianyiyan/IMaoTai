@@ -4,7 +4,7 @@
 @using IMaoTai.Core.Entity
 @using IMaoTai.Core.Domain
 @using IMaoTai.Core.Service
-@inject IMaoTai.Core.Service.IUserService UserService
+@inject IMaoTai.Core.Service.IUserService _userService
 @implements IDisposable
 
 <PageTitle>用户管理</PageTitle>
@@ -307,13 +307,13 @@ else
                         <MCol Cols="12"
                               Sm="6"
                               Md="4">
-                            <MTextField @bind-Value="_editedItem.Mobile"
+                            <MTextField @bind-Value="_editedItem.Mobile" Readonly
                                         Label="手机号"></MTextField>
                         </MCol>
                         <MCol Cols="12"
                               Sm="6"
                               Md="4">
-                            <MTextField @bind-Value="_editedItem.UserId"
+                            <MTextField @bind-Value="_editedItem.UserId" Readonly
                                         Label="i茅台用户id"></MTextField>
                         </MCol>
                         <MCol Cols="12"
@@ -536,11 +536,11 @@ else
         {
             // var item = _userList[_editedIndex];
             //只能修改 用户ID，预约code,经度，维度，省份，城市，类型，token
-            resultItem = await UserService.ModifyUser(_editedItem);
+            resultItem = await _userService.ModifyUser(_editedItem);
         }
         else // 新增
         {
-            resultItem = await UserService.InsertUser(_editedItem);
+            resultItem = await _userService.InsertUser(_editedItem);
         }
         _warnMsg = resultItem.Item1 ? "成功" : "失败";
         _dialogWarn = true;
@@ -609,10 +609,10 @@ else
             _dialogWarn = true;
             return;
         }
-        var resultItem = await UserService.RealNameAuth(_editedItem);
+        var resultItem = await _userService.RealNameAuth(_editedItem);
         _warnMsg = resultItem ? "成功" : "失败";
         _dialogWarn = true;
-        CloseRealNameAuth();
+       // CloseRealNameAuth();
     }
 
     public void DeleteItem(UserEntity item)
@@ -628,7 +628,7 @@ else
 
     public async Task DeleteItemConfirm()
     {
-        var res = await UserService.DeleteUser(_editedItem);
+        var res = await _userService.DeleteUser(_editedItem);
         if (res)
         {
             await GetUserListDataFromApi();
@@ -644,12 +644,6 @@ else
         _editedIndex = -1;
     }
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     var result = UserService.GetUserList(new Domain.UserManageViewModel());
-    //     if (result != null && result.UserList != null)
-    //     _userList = result.UserList;
-    // }
 
     private async Task HandleOnOptionsUpdate(DataOptions options)
     {
@@ -681,7 +675,7 @@ else
         _loading = true;
         _search.Current = _options.Page;
         _search.PageSize = _options.ItemsPerPage;
-        var result = await UserService.GetUserList(_search);
+        var result = await _userService.GetUserList(_search);
         _userList = result.UserList;
         _total = Convert.ToInt32(result.Total);
         _loading = false;

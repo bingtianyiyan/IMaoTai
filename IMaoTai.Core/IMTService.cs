@@ -550,15 +550,22 @@ namespace IMaoTai.Core
             client.DefaultRequestHeaders.Add("MT-APP-Version", await GetMtVersion());
             client.DefaultRequestHeaders.Add("MT-R", "clips_OlU6TmFRag5rCXwbNAQ/Tz1SKlN8THcecBp/HGhHdw==");
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Length", "65");
-            client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
+            client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
             client.DefaultRequestHeaders.Add("Connection", "keep-alive");
-            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json;charset=UTF-8");
-            var response = await client
-                .PostAsync("https://app.moutai519.com.cn/xhr/front/user/realNameAuth", content);
-            var responseString = await response.Content.ReadAsStringAsync();
-            var responseJson = JObject.Parse(responseString);
-            var responseCode = (string)responseJson["code"];
-            if (responseCode != "2000") throw new Exception(responseJson.TryGetValue("message", out var value) ? value.Value<string>() : responseString);
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json;");
+            try
+            {
+                var response = await client
+                    .PostAsync("https://app.moutai519.com.cn/xhr/front/user/realNameAuth", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+                var responseJson = JObject.Parse(responseString);
+                var responseCode = (string)responseJson["code"];
+                if (responseCode != "2000") return false;
+            }
+            catch (Exception ex) {
+                Logger.Error($"用户{user.Mobile}实名认证,错误原因:{ex.Message}");
+                return false;
+            }
             return true;
         }
     }
