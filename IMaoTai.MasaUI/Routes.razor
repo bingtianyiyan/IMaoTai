@@ -1,12 +1,48 @@
-﻿<Router AppAssembly="@typeof(IMaoTai.MasaUI.Config).Assembly"
+﻿@using Microsoft.AspNetCore.Components.Routing;
+@using IMaoTai.Core
+<CascadingAuthenticationState>
+<Router AppAssembly="@typeof(IMaoTai.MasaUI.Config).Assembly"
     AdditionalAssemblies="Config.AdditionalAssemblies">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(Shared.MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            <AuthorizeView Context="authCountext">
+                <Authorized>
+                    <CascadingValue Value="routeData">
+                        <RouteView RouteData="@routeData" DefaultLayout="@typeof(Shared.MainLayout)" />
+                        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+                    </CascadingValue>
+                </Authorized>
+                <NotAuthorized>
+                    <IMaoTai.MasaUI.Pages.LoginData></IMaoTai.MasaUI.Pages.LoginData>
+                    <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+                </NotAuthorized>
+            </AuthorizeView>
+
     </Found>
     <NotFound>
-        <LayoutView Layout="@typeof(Shared.MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
+          <IMaoTai.MasaUI.Shared._404></IMaoTai.MasaUI.Shared._404>
     </NotFound>
 </Router>
+</CascadingAuthenticationState>
+
+@code{
+    private Microsoft.AspNetCore.Components.Routing.Router router;
+
+    protected override void OnInitialized()
+    {
+        // 获取当前页面的 Router
+        // router = (Microsoft.AspNetCore.Components.Routing.Router)NavigationManager.GetType().GetField("_router", BindingFlags.NonPublic).GetValue(NavigationManager);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+    }
+
+    [Inject]
+    public NavigationManager Navigation { get; set; } = default!;
+
+    public void ReturnToLoginPage()
+    {
+        Navigation.NavigateTo("/login");
+    }
+}

@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Quartz.Impl;
 using Quartz;
 using Yitter.IdGenerator;
+using IMaoTai.MasaUI.Core;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace IMaoTai.MasaBlazor.Web.Helpers;
 
@@ -16,10 +18,15 @@ public static class IocHelper
 {
     public static IServiceCollection RegisterService(IServiceCollection _services)
     {
+        _services.AddAuthorizationCore();
+        _services.AddScoped<HostAuthenticationStateProvider>();
+        _services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
+
         _services.TryAddSingleton<IUserService, UserService>();
         _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
         _services.TryAddSingleton<IShopService, ShopService>();
         _services.TryAddSingleton<ILogService, LogService>();
+        _services.TryAddSingleton<ILoginUserService, LoginUserService>();
         _services.TryAddScoped<I18n>();
         //_services.TryAddScoped<CookieStorage>();
         _services.AddHttpContextAccessor();

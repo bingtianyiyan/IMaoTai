@@ -13,6 +13,8 @@ using System.IO;
 using System.Windows;
 using Yitter.IdGenerator;
 using IMaoTai.MasaUI;
+using IMaoTai.MasaUI.Core;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace IMaoTai.Helpers;
 
@@ -33,10 +35,17 @@ public static class IocHelper
         _services.AddMasaSetup();
         _services.AddWpfBlazorWebView();
         _services.AddBlazorWebViewDeveloperTools();
+
+        _services.AddAuthorizationCore();
+        _services.AddScoped<HostAuthenticationStateProvider>();
+        _services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
+
+
         _services.TryAddSingleton<IUserService, UserService>();
         _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
         _services.TryAddSingleton<IShopService, ShopService>();
         _services.TryAddSingleton<ILogService, LogService>();
+        _services.TryAddSingleton<ILoginUserService, LoginUserService>();
         _services.AddAdminCaviar(new Type[] { typeof(IocHelper), typeof(IMaoTai.MasaUI._Imports) });
         return _services!;
     }

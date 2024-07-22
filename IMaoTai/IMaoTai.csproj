@@ -49,4 +49,19 @@
        <Folder Include="Pages\" />
      </ItemGroup>
 
+     <ItemGroup>
+       <Content Update="wwwroot\img\login\2.jpg">
+         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+       </Content>
+       <Content Update="wwwroot\img\login\2873.png">
+         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+       </Content>
+       <Content Update="wwwroot\img\login\Gxwd.png">
+         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+       </Content>
+       <Content Update="wwwroot\img\login\left.svg">
+         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+       </Content>
+     </ItemGroup>
+
 </Project>

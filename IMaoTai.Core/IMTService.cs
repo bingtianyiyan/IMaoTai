@@ -523,41 +523,8 @@ namespace IMaoTai.Core
                 {"idCardNo",user.IdCardNo}
             };
             var requestBody = JsonConvert.SerializeObject(values);
-            //var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "*/*");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "iOS;16.3;Apple;?unrecognized?");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Token", user.Token);
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Lat", "");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-K", "1675213490331");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Lng", "");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("Host", "app.moutai519.com.cn");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-User-Tag", "0");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Network-Type", "WIFI");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Team-ID", "");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-SN", "clips_ehwpSC0fLBggRnJAdxYgFiAYLxl9Si5PfEl/TC0afkw=");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-DTIME", DateTimeOffset.UtcNow.ToString());
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-RS", (1080 * 1794).ToString());
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("BS-DVID", "hWr62Q591-OLfaOq1ge1xkVW4OZfwq8jzbHpK2tx-B0Mhg0ZB8SVmhl0MzjFvXjHo7cnRUKQz5p9ChG1rFMxykw");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-DOUBLE", "0");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-SIM", "0");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-ACBE", "0");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-ACB", "0");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-ACBM", "0");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Info", "028e7f96f6369cafe1d105579c5b9377");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Device-ID", "2F2075D0-B66C-4287-A903-DBFF6358342A");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Bundle-ID", "com.moutai.mall");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Language", "en-CN;q=1, zh-Hans-CN;q=0.9");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-Request-ID", "167560018873318465");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-APP-Version", await GetMtVersion());
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("MT-R", "clips_OlU6TmFRag5rCXwbNAQ/Tz1SKlN8THcecBp/HGhHdw==");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Length", "65");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate, br");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("Connection", "keep-alive");
-            //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json;charset=UTF-8");
             try
             {
-                //var response = await client
-                //    .PostAsync("https://app.moutai519.com.cn/xhr/front/user/realNameAuth", content);
                 var response = await "https://app.moutai519.com.cn/xhr/front/user/realNameAuth"
                 .WithHeader("Content-Type", "application/json;charset=UTF-8")
                 .WithHeader("Connection", "keep-alive")
@@ -588,7 +555,6 @@ namespace IMaoTai.Core
                 .WithHeader("User-Agent", "iOS;16.3;Apple;?unrecognized?")
                 .AllowAnyHttpStatus()
                 .PostStringAsync(requestBody);
-                //var responseString = await response.Content.ReadAsStringAsync();
                 var responseString = await response.GetStringAsync();
                 var responseJson = JObject.Parse(responseString);
                 var responseCode = (string)responseJson["code"];

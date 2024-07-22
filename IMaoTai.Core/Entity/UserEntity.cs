@@ -56,50 +56,6 @@ namespace IMaoTai.Core.Entity
 
         #endregion Properties
 
-        #region Commond
-
-        //public ICommand DeleteCommand => new AnotherCommandImplementation(DeleteItemFunc);
-        //public ICommand ModifyCommand => new AnotherCommandImplementation(ModifyItemFunc);
-        //public ICommand ReserveCommand => new AnotherCommandImplementation(ReserveCommandItemFunc);
-
-        //private static void DeleteItemFunc(object? parameter)
-        //{
-        //    var userEntity = (parameter as UserEntity)!;
-        //    DB.SqlConn.Delete<UserEntity>().Where(i => i.Mobile == userEntity.Mobile).ExecuteAffrows();
-        //    UserManageViewModel.UserList.Remove((parameter as UserEntity)!);
-        //}
-
-        //private static void ModifyItemFunc(object? parameter)
-        //{
-        //    //var userEntity = parameter as UserEntity;
-        //    //// 深拷贝一份userEntity
-        //    //var view = new DirectAddAccountDialogUserControl(JsonConvert.DeserializeObject<UserEntity>(JsonConvert.SerializeObject(userEntity)), true);
-        //    //DialogHost.Show(view, "RootDialog");
-        //}
-
-        //private static async void ReserveCommandItemFunc(object? parameter)
-        //{
-        //    //var userEntity = parameter as UserEntity;
-        //    //if (string.IsNullOrEmpty(userEntity?.ItemCode))
-        //    //{
-        //    //    new MessageBoxCustom("预约商品码未填写", MessageType.Error, MessageButtons.Ok).ShowDialog();
-        //    //}
-        //    //else
-        //    //{
-        //    //    try
-        //    //    {
-        //    //        await IMTService.Reservation(userEntity);
-        //    //        new MessageBoxCustom("手动发起预约成功,响应结果请查看日志", MessageType.Success, MessageButtons.Ok).ShowDialog();
-        //    //    }
-        //    //    catch (Exception e)
-        //    //    {
-        //    //        new MessageBoxCustom("预约请求失败,响应结果详细请查看日志", MessageType.Error, MessageButtons.Ok).ShowDialog();
-        //    //    }
-        //    //}
-        //}
-
-        #endregion Commond
-
         #region Construct Function
 
         public UserEntity()

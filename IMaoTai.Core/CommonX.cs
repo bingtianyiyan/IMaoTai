@@ -21,6 +21,10 @@ namespace IMaoTai.Core
         //日志信息缓存
         public static string LogListFile = Path.Combine(CacheDir, "logList.json");
 
+
+        //登录用户账号缓存
+        public static string LoginUserListFile = Path.Combine(CacheDir, "loginUserList.json");
+
         /// <summary>
         /// 订单数据库表名
         /// </summary>

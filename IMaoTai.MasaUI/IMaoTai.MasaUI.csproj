@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Masa.Blazor" Version="1.6.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.20" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.20" />
 	</ItemGroup>
 
@@ -27,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="NoAuthorizeRoutes.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
     <Content Update="wwwroot\favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

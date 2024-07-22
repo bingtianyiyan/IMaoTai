@@ -1,9 +1,11 @@
-@page "/userData"
+@page "/user/index"
 @using IMaoTai.Core
 @using System.Timers
 @using IMaoTai.Core.Entity
 @using IMaoTai.Core.Domain
 @using IMaoTai.Core.Service
+@using IMaoTai.MasaUI.Core
+@inherits AuthComponentBase
 @inject IMaoTai.Core.Service.IUserService _userService
 @implements IDisposable
 
