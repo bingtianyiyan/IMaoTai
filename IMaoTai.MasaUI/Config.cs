@@ -33,18 +33,8 @@ namespace IMaoTai.MasaUI
         /// </summary>
         public static List<Assembly> AdditionalAssemblies;
 
-        public static WebAssemblyHostBuilder AddCavWasm(this WebAssemblyHostBuilder builder)
-        {
-            //IsServer = false;
-            //builder.Services.AddScoped<IAuthService, WasmAuthService>();
-            builder.Services.AddOptions();
-            //builder.Services.AddAuthorizationCore();
-            //builder.Services.AddSingleton<IAuthorizationPolicyProvider, DefaultAuthorizationPolicyProvider>();
-            //builder.Services.AddSingleton<IAuthorizationService, DefaultAuthorizationService>();
-            return builder;
-        }
 
-        public static IServiceCollection AddAdminCaviar(this IServiceCollection services, Type[] assemblies)
+        public static IServiceCollection AddIMaoTaiAdmin(this IServiceCollection services, Type[] assemblies)
         {
             if (assemblies != null)
             {

@@ -25,6 +25,9 @@ namespace IMaoTai.Core
         //登录用户账号缓存
         public static string LoginUserListFile = Path.Combine(CacheDir, "loginUserList.json");
 
+        //登录账户session缓存(wpf)
+        public static string LoginCacheUserListFile = Path.Combine(CacheDir, "loginCacheUserList.json");
+
         /// <summary>
         /// 订单数据库表名
         /// </summary>

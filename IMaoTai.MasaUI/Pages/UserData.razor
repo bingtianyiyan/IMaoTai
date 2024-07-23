@@ -654,11 +654,6 @@ else
     }
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        await GetUserListDataFromApi();
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

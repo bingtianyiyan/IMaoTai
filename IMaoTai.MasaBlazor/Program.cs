@@ -15,7 +15,17 @@ IocHelper.RegisterService(builder.Services);
 builder.Services.AddMasaBlazor();
 
 await IocHelper.InitBusiness();
-builder.Services.AddAdminCaviar(new Type[] { typeof(Program), typeof(IMaoTai.MasaUI._Imports) });
+builder.Services.AddIMaoTaiAdmin(new Type[] { typeof(Program), typeof(IMaoTai.MasaUI._Imports) });
+
+//增加API允许跨域调用
+builder.Services.AddCors(options => options.AddPolicy("Any",
+    builder =>
+    {
+        builder.AllowAnyMethod()
+            .AllowAnyHeader()
+            .SetIsOriginAllowed(_ => true)
+            .AllowCredentials();
+    }));
 
 var app = builder.Build();
 
@@ -24,7 +34,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
-
+app.UseCors("Any");
 app.UseStaticFiles();
 app.UseAntiforgery();
 

@@ -11,6 +11,7 @@ using Quartz;
 using Yitter.IdGenerator;
 using IMaoTai.MasaUI.Core;
 using Microsoft.AspNetCore.Components.Authorization;
+using Blazored.LocalStorage;
 
 namespace IMaoTai.MasaBlazor.Web.Helpers;
 
@@ -19,9 +20,11 @@ public static class IocHelper
     public static IServiceCollection RegisterService(IServiceCollection _services)
     {
         _services.AddAuthorizationCore();
+        _services.AddCascadingAuthenticationState();
         _services.AddScoped<HostAuthenticationStateProvider>();
-        _services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
-
+        _services.AddScoped<AuthenticationStateProvider, HostAuthenticationStateProvider>();
+        _services.AddBlazoredLocalStorage(config =>
+         config.JsonSerializerOptions.WriteIndented = true);
         _services.TryAddSingleton<IUserService, UserService>();
         _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
         _services.TryAddSingleton<IShopService, ShopService>();

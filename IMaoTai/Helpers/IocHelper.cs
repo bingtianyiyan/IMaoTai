@@ -37,16 +37,16 @@ public static class IocHelper
         _services.AddBlazorWebViewDeveloperTools();
 
         _services.AddAuthorizationCore();
-        _services.AddScoped<HostAuthenticationStateProvider>();
-        _services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<HostAuthenticationStateProvider>());
-
+        _services.AddCascadingAuthenticationState();
+        _services.AddScoped<WHostAuthenticationStateProvider>();
+        _services.AddScoped<AuthenticationStateProvider, WHostAuthenticationStateProvider>();
 
         _services.TryAddSingleton<IUserService, UserService>();
         _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
         _services.TryAddSingleton<IShopService, ShopService>();
         _services.TryAddSingleton<ILogService, LogService>();
         _services.TryAddSingleton<ILoginUserService, LoginUserService>();
-        _services.AddAdminCaviar(new Type[] { typeof(IocHelper), typeof(IMaoTai.MasaUI._Imports) });
+        _services.AddIMaoTaiAdmin(new Type[] { typeof(IocHelper), typeof(IMaoTai.MasaUI._Imports) });
         return _services!;
     }
 

@@ -10,13 +10,14 @@
     <link rel="stylesheet" href="IMaoTai.MasaBlazor.styles.css" />
     <link href="css/materialdesign/v7.1.96/css/materialdesignicons.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png" />
-    <HeadOutlet @rendermode="@InteractiveServer" />
+    <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" />
 </head>
 
 <body>
-    <Routes @rendermode="@InteractiveServer" />
+    <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
     <script src="_framework/blazor.web.js"></script>
     <script src="_content/Masa.Blazor/js/masa-blazor.js"></script>
+    <script src="https://cdn.masastack.com/npm/echarts/5.1.1/echarts.min.js"></script>
 </body>
 
 </html>

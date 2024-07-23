@@ -1,48 +1,38 @@
-﻿@using Microsoft.AspNetCore.Components.Routing;
+﻿@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components.Authorization
 @using IMaoTai.Core
 <CascadingAuthenticationState>
-<Router AppAssembly="@typeof(IMaoTai.MasaUI.Config).Assembly"
-    AdditionalAssemblies="Config.AdditionalAssemblies">
-    <Found Context="routeData">
-            <AuthorizeView Context="authCountext">
-                <Authorized>
-                    <CascadingValue Value="routeData">
+    <Router AppAssembly="@typeof(IMaoTai.MasaUI.Config).Assembly"
+            AdditionalAssemblies="Config.AdditionalAssemblies">
+        <Found Context="routeData">
+            <CascadingValue Value="routeData">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(Shared.MainLayout)">
+                    <NotAuthorized>
+                        您没有权限访问此页面
+                    </NotAuthorized>
+                    <Authorizing>
                         <RouteView RouteData="@routeData" DefaultLayout="@typeof(Shared.MainLayout)" />
-                        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-                    </CascadingValue>
-                </Authorized>
-                <NotAuthorized>
-                    <IMaoTai.MasaUI.Pages.LoginData></IMaoTai.MasaUI.Pages.LoginData>
-                    <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-                </NotAuthorized>
-            </AuthorizeView>
-
-    </Found>
-    <NotFound>
-          <IMaoTai.MasaUI.Shared._404></IMaoTai.MasaUI.Shared._404>
-    </NotFound>
-</Router>
+                    </Authorizing>
+                </AuthorizeRouteView>
+            </CascadingValue>
+        </Found>
+        <NotFound>
+            <IMaoTai.MasaUI.Shared._404></IMaoTai.MasaUI.Shared._404>
+        </NotFound>
+    </Router>
 </CascadingAuthenticationState>
 
-@code{
-    private Microsoft.AspNetCore.Components.Routing.Router router;
-
-    protected override void OnInitialized()
+@code {
+    private RenderFragment RedirectToLogin => builder =>
     {
-        // 获取当前页面的 Router
-        // router = (Microsoft.AspNetCore.Components.Routing.Router)NavigationManager.GetType().GetField("_router", BindingFlags.NonPublic).GetValue(NavigationManager);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-
-    }
-
-    [Inject]
-    public NavigationManager Navigation { get; set; } = default!;
-
-    public void ReturnToLoginPage()
-    {
-        Navigation.NavigateTo("/login");
-    }
+        var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        if (string.IsNullOrWhiteSpace(returnUrl))
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
+        }
+    };
 }

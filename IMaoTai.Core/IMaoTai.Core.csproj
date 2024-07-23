@@ -12,6 +12,7 @@
 		<PackageReference Include="FreeSql" Version="3.2.698" />
 		<PackageReference Include="FreeSql.Provider.MySql" Version="3.2.698" />
 		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.698" />
+		<PackageReference Include="JsonFlatFileDataStore" Version="2.4.2" />
 		<PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.20" />
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />

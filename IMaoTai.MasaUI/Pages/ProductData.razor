@@ -57,10 +57,13 @@ else
         new() { Text = "创建时间", Value = nameof(ProductEntity.Created)}
     };
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _productList = AppointProjectViewModel.ProductList;
-        await Task.CompletedTask;
+        if (firstRender)
+        {
+            await GetProductListDataFromApi();
+            StateHasChanged();
+        }
     }
 
     private async Task GetProductListDataFromApi()

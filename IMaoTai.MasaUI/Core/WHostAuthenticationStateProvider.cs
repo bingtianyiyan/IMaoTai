@@ -2,41 +2,43 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using IMaoTai.Core.Domain;
 using IMaoTai.Core.Service;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using JsonFlatFileDataStore;
+using IMaoTai.Core;
 
 namespace IMaoTai.MasaUI.Core
 {
-    public class HostAuthenticationStateProvider : AuthenticationStateProvider
+    public class WHostAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly ILoginUserService _loginUserService;
-        private ProtectedSessionStorage _protectedSessionStore;
 
         private ClaimsIdentity identity = new ClaimsIdentity();
 
-        public HostAuthenticationStateProvider(
-            ILoginUserService loginUserService,
-            ProtectedSessionStorage protectedSessionStore)
+        public WHostAuthenticationStateProvider(
+            ILoginUserService loginUserService)
         {
             _loginUserService = loginUserService;
-            _protectedSessionStore = protectedSessionStore;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var userSessionStorageResult = await _protectedSessionStore.GetAsync<UserLogin>("UserSession");
-            var userSession = userSessionStorageResult.Success ? userSessionStorageResult.Value : null;
+            // Open database (create new if file doesn't exist)
+            var store = new DataStore(CommonX.LoginCacheUserListFile);
+            // Get employee collection
+            var collection = store.GetCollection<UserLogin>();
+
+            // Find item with name
+            var userSession = collection
+                                .AsQueryable()
+                                .FirstOrDefault();
+
             if (userSession != null)
             {
                 var claims = new[] {
                     new Claim(ClaimTypes.Name, userSession.UserName)};
-                identity = new ClaimsIdentity(claims,"IMaoTai");
+                identity = new ClaimsIdentity(claims, "IMaoTai");
             }
             var user = new ClaimsPrincipal(identity);
             return await Task.FromResult( new AuthenticationState(user));
-
-
-            //var user = new ClaimsPrincipal(identity);
-            //return new AuthenticationState(new ClaimsPrincipal(identity));
 
         }
 
@@ -65,7 +67,26 @@ namespace IMaoTai.MasaUI.Core
             {
                 var claims = new[] { new Claim(ClaimTypes.Name, loginParameters.UserName) };
                 identity = new ClaimsIdentity(claims, "IMaoTai");
-                await _protectedSessionStore.SetAsync("UserSession", loginParameters);
+
+                // Open database (create new if file doesn't exist)
+                var store = new DataStore(CommonX.LoginCacheUserListFile);
+                // Get employee collection
+                var collection = store.GetCollection<UserLogin>();
+
+                // Find item with name
+                var userDynamic = collection
+                                    .AsQueryable()
+                                    .FirstOrDefault(p => p.UserName == loginParameters.UserName);
+                if (userDynamic == null)
+                {
+                    await collection.InsertOneAsync(loginParameters);
+                }
+                else
+                {
+                    await collection.UpdateOneAsync(p => p.UserName == loginParameters.UserName, loginParameters);
+                }
+
+
                 NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             }
             return result;

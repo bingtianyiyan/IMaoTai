@@ -5,9 +5,10 @@
 @using System
 @using System.Web
 @using Microsoft.AspNetCore.Components
-@using Microsoft.JSInterop
+@using AlertTypes = Masa.Blazor.AlertTypes
 @using IMaoTai.MasaUI.Core
 @layout EmptyLayout
+@inject NavigationManager NavigationManager
 
 <MRow Class="max-height ma-0">
     <MCol Md=4 Sm=12 Class="neutral-lighten-5">
@@ -16,10 +17,7 @@
         </image>
         <div class="d-flex pb-12" style="height: calc(100% - 88px);">
             <div style="width:450px;" class="ma-auto">
-                <h3 class="neutral-lighten-1--text">让预约更简单</h3>
-                <div class="mt-12 neutral-lighten-1--text">
-                    i茅台预约。
-                </div>
+                <h3 class="neutral-lighten-1--text">让i茅台预约更简单</h3>
                 <image class="mt-12" src="/img/login/left.svg"></image>
             </div>
         </div>
@@ -33,7 +31,9 @@
                     </MImage>
                 </MAvatar>
                 <h5 class="mt-2 mb-12">欢迎来到i茅台预约! 👋</h5>
-
+                <MAlert Type="@_alertTypes" Value="@_alertShow" Dismissible Width=340>
+                    @Msg
+                </MAlert>
                 <MTextField TValue="string" Label="用户名" @bind-Value="@ApplicationUser.UserName" Placeholder="@ApplicationUser.UserName" Outlined HideDetails="@("auto")">
                 </MTextField>
                 <MTextField TValue="string" Class="mt-10" Label="密码"
@@ -43,11 +43,9 @@
                             AppendIcon="@(_show ? "mdi-eye" : "mdi-eye-off")"
                             OnAppendClick="()=>_show = !_show" Outlined HideDetails="@("auto")">
                 </MTextField>
-
                 <MButton Class="mt-11 rounded-4 text-btn white--text" OnClick=Login Height=46 Width=340 Color="primary">
                     Login
                 </MButton>
-                <MLabel>@Msg</MLabel>
             </div>
         </MCard>
     </MCol>
@@ -56,31 +54,39 @@
 @code{
 
     [Inject]
-    public NavigationManager Navigation { get; set; } = default!;
+    AuthenticationStateProvider AuthStateProvider { get; set; }
 
-    [Inject]
-    HostAuthenticationStateProvider AuthStateProvider { get; set; }
-
-    [Inject]
-    IJSRuntime JSRuntime { get; set; }
 
     public async Task Login(MouseEventArgs args)
     {
-        var returnUrl = HttpUtility.ParseQueryString(new Uri(Navigation.Uri).Query)["returnUrl"];
+        var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
         if (returnUrl == null) returnUrl = "/";
-        var result = await AuthStateProvider.Login(ApplicationUser, returnUrl);
-        if (result)
+        bool result;
+        if (AuthStateProvider is HostAuthenticationStateProvider)
         {
-            Msg = "";
-            Navigation.NavigateTo(returnUrl, false, false);
-            return;
+            result = await (AuthStateProvider as HostAuthenticationStateProvider).Login(ApplicationUser, returnUrl);
+        }else
+        {
+            result = await (AuthStateProvider as WHostAuthenticationStateProvider).Login(ApplicationUser, returnUrl);
         }
-        Msg = "账号或者密码错误";
+
+        _alertShow = true;
+        if (!result)
+        {
+            _alertTypes = AlertTypes.Error;
+            Msg = "账号或者密码错误";       
+        }
+        else
+        {
+            Msg = "登录成功";
+            NavigationManager.NavigateTo(returnUrl, true, true);
+        }
         return;
-        // Navigation.NavigateTo(Navigation.BaseUri);
     }
 
-    public string Msg;
+    private string Msg;
+    private AlertTypes _alertTypes = AlertTypes.Success;
+    private bool _alertShow = false;
 
 
 
@@ -107,50 +113,3 @@
     }
 }
 
-
-@* <MCard>
-<MRow Class="max-height ma-0">
-    <MCol Class="fill-lighten-1 block-center">
-        <MCard Height=680 Class="mx-auto my-auto">
-            <div style="height:60px;"></div>
-            <div class="mt-2 mx-auto text-center">
-                <MAvatar Size=80>
-                        <MImage Src="/img/login/2.jpg">
-                    </MImage>
-                </MAvatar>
-                    <h5 class="mt-2 mb-12">欢迎来到i茅台预约! 👋</h5>
-
-                <MTextField TValue="string" Label="用户名" Placeholder="admin" Outlined HideDetails="@("auto")">
-                </MTextField>
-                <MTextField TValue="string" Class="mt-10" Label="密码" Type="@(_show ? "text" : "password")"
-                            Placeholder="admin" AppendIcon="@(_show ? "mdi-eye" : "mdi-eye-off")"
-                            OnAppendClick="()=>_show = !_show" Outlined HideDetails="@("auto")">
-                </MTextField>
-                <MButton Class="mt-11 rounded-4 text-btn white--text" OnClick="Login" Height=46 Width=340 Color="primary">
-                    登录
-                </MButton>
-            </div>
-        </MCard>
-    </MCol>
-</MRow>
-</MCard>
-
-
-@code {
-    [Inject]
-    public NavigationManager Navigation { get; set; } = default!;
-
-    public void Login(MouseEventArgs args)
-    {
-        Navigation.NavigateTo(Navigation.BaseUri);
-    }
-
-    private bool _show;
-
-    [Parameter]
-    public bool HideLogo { get; set; }
-
-    [Parameter]
-    public double Width { get; set; } = 410;
-}
- *@

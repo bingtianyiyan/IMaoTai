@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IMaoTai.Masa.Wpf", "IMaoTai
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IMaoTai.Masa.BlazorWeb", "IMaoTai.Masa.BlazorWeb", "{38D48092-AC81-4B71-9852-831C2F7C8BFF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{F7901042-F1D1-4135-A445-12A394D715FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aspire", "Aspire", "{10FFE24D-CF0C-4466-B806-BDE64C924306}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
