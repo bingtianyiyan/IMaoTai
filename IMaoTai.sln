@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{F79010
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aspire", "Aspire", "{10FFE24D-CF0C-4466-B806-BDE64C924306}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMaoTai.MasaBlazor.Aspire.AppHost", "IMaoTai.MasaBlazor.Aspire.AppHost\IMaoTai.MasaBlazor.Aspire.AppHost.csproj", "{B4291669-C908-4F81-86FE-750C323C37B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMaoTai.MasaBlazor.Aspire.ServiceDefaults", "IMaoTai.MasaBlazor.Aspire.ServiceDefaults\IMaoTai.MasaBlazor.Aspire.ServiceDefaults.csproj", "{AB5F6421-B569-4234-A1EB-C84FEB1E7E31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{159829BA-B867-4883-92F8-CF217EF48673}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{159829BA-B867-4883-92F8-CF217EF48673}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{159829BA-B867-4883-92F8-CF217EF48673}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4291669-C908-4F81-86FE-750C323C37B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4291669-C908-4F81-86FE-750C323C37B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4291669-C908-4F81-86FE-750C323C37B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4291669-C908-4F81-86FE-750C323C37B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB5F6421-B569-4234-A1EB-C84FEB1E7E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB5F6421-B569-4234-A1EB-C84FEB1E7E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB5F6421-B569-4234-A1EB-C84FEB1E7E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB5F6421-B569-4234-A1EB-C84FEB1E7E31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +64,8 @@ Global
 		{B288603C-C8C1-4749-83EF-9CAFE419E4E1} = {4A9F5E44-052A-49B6-9991-EA486B282A21}
 		{F7FD82E6-F424-4775-A821-7768EF677055} = {4A9F5E44-052A-49B6-9991-EA486B282A21}
 		{159829BA-B867-4883-92F8-CF217EF48673} = {38D48092-AC81-4B71-9852-831C2F7C8BFF}
+		{B4291669-C908-4F81-86FE-750C323C37B1} = {10FFE24D-CF0C-4466-B806-BDE64C924306}
+		{AB5F6421-B569-4234-A1EB-C84FEB1E7E31} = {10FFE24D-CF0C-4466-B806-BDE64C924306}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E877ACA-6D8C-4C01-9D3A-25ECDBDA698F}

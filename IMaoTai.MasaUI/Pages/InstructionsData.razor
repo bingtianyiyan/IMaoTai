@@ -3,24 +3,56 @@
 @using IMaoTai.MasaUI.Core
 @inherits AuthComponentBase
 
-<MToolbar>
-    <label>点击新增用户</label>
-</MToolbar>
-<MImage AspectRatio="16/9d" Width="@("100%")" Height="200"
-        Src="/img/tip01.png"></MImage>
-<MToolbar>
-    <label>新增用户</label>
-</MToolbar>
-<MImage AspectRatio="16/9d" Width="@("100%")" Height="300"
-        Src="/img/tip02.png"></MImage>
-<MToolbar>
-    <label>编辑用户信息,补充剩余信息</label>
-</MToolbar>
-<MImage AspectRatio="16/9d" Width="@("100%")" Height="400"
-        Src="/img/tip03.png"></MImage>
+<PageTitle>使用手册</PageTitle>
+
+<h1>使用手册</h1>
+
+<MStepper Value="_step">
+    <MStepperHeader>
+        <MStepperStep Step="1" Complete="_step>1">
+            开始-点击新增用户
+        </MStepperStep>
+        <MDivider></MDivider>
+        <MStepperStep Step="2" Complete="_step>2">
+            用户注册
+        </MStepperStep>
+        <MDivider></MDivider>
+        <MStepperStep Step="3">
+            编辑补充用户信息
+        </MStepperStep>
+    </MStepperHeader>
+
+    <MStepperItems>
+        <MStepperContent Step="1">
+            <MCard Class="mb-12" Height="200" Color="grey lighten-1">
+                <MImage AspectRatio="16/9d" Width="@("100%")" Height="200"
+                        Src="/img/tip01.png"></MImage>
+            </MCard>
+            <MButton Color="primary" OnClick="()=>_step=2">Continue</MButton>
+            <MButton Text>Cancel</MButton>
+        </MStepperContent>
+        <MStepperContent Step="2">
+            <MCard Class="mb-12" Height="200" Color="grey lighten-1">
+                <MImage AspectRatio="16/9d" Width="@("100%")" Height="300"
+                        Src="/img/tip02.png"></MImage>
+            </MCard>
+            <MButton Color="primary" OnClick="()=>_step=3">Continue</MButton>
+            <MButton Text>Cancel</MButton>
+        </MStepperContent>
+        <MStepperContent Step="3">
+            <MCard Class="mb-12" Height="200" Color="grey lighten-1">
+                <MImage AspectRatio="16/9d" Width="@("100%")" Height="400"
+                        Src="/img/tip03.png"></MImage>
+            </MCard>
+            <MButton Color="primary" OnClick="()=>_step=1">Continue</MButton>
+            <MButton Text>Cancel</MButton>
+        </MStepperContent>
+    </MStepperItems>
+</MStepper>
+
 
 @code {
-
+    private int _step = 1;
 
 }
 

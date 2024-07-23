@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IMaoTai.MasaBlazor.Aspire.ServiceDefaults\IMaoTai.MasaBlazor.Aspire.ServiceDefaults.csproj" />
     <ProjectReference Include="..\IMaoTai.MasaUI\IMaoTai.MasaUI.csproj" />
   </ItemGroup>
 

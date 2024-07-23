@@ -5,6 +5,8 @@ using IMaoTai.MasaUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -17,7 +19,7 @@ builder.Services.AddMasaBlazor();
 await IocHelper.InitBusiness();
 builder.Services.AddIMaoTaiAdmin(new Type[] { typeof(Program), typeof(IMaoTai.MasaUI._Imports) });
 
-//增加API允许跨域调用
+//澧炲姞API鍏佽璺ㄥ煙璋冪敤
 builder.Services.AddCors(options => options.AddPolicy("Any",
     builder =>
     {
@@ -28,6 +30,8 @@ builder.Services.AddCors(options => options.AddPolicy("Any",
     }));
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -36,6 +36,14 @@ namespace IMaoTai.Core.Repository
             // 创建表结构
             var types = new[] { typeof(UserEntity), typeof(ShopEntity), typeof(LogEntity) };
             DB.SqlConn.CodeFirst.SyncStructure(types);
+
+            //初始化数据
+            try
+            {
+                var loginUser = new LoginUserEntity { UserName = "admin", Password = "123456" };
+                DB.SqlConn.Insert(loginUser).ExecuteAffrows();
+            }
+            catch (Exception ex) { }
         }
     }
 }
