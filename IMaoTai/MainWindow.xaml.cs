@@ -21,8 +21,6 @@ namespace IMaoTai
 #if DEBUG
             serviceCollection.AddBlazorWebViewDeveloperTools();
 #endif
-
-            // Resources.Add("services", serviceCollection.BuildServiceProvider());
         }
     }
 }

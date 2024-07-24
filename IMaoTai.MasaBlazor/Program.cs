@@ -12,7 +12,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-IocHelper.RegisterService(builder.Services);
+builder.Services.RegisterService();
 
 builder.Services.AddMasaBlazor();
 

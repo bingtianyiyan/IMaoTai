@@ -3,18 +3,14 @@ using IMaoTai.Core.Entity;
 using IMaoTai.Core.Jobs;
 using IMaoTai.Core.Repository;
 using IMaoTai.Core;
-using IMaoTai.Core.Service;
 using IMaoTai.MasaExtensions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Quartz.Impl;
 using Quartz;
 using System.IO;
 using System.Windows;
 using Yitter.IdGenerator;
 using IMaoTai.MasaUI;
-using IMaoTai.MasaUI.Core;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace IMaoTai.Helpers;
 
@@ -36,16 +32,8 @@ public static class IocHelper
         _services.AddWpfBlazorWebView();
         _services.AddBlazorWebViewDeveloperTools();
 
-        _services.AddAuthorizationCore();
-        _services.AddCascadingAuthenticationState();
-        _services.AddScoped<WHostAuthenticationStateProvider>();
-        _services.AddScoped<AuthenticationStateProvider, WHostAuthenticationStateProvider>();
+        _services.AddIMaoTaiBusinessService();
 
-        _services.TryAddSingleton<IUserService, UserService>();
-        _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
-        _services.TryAddSingleton<IShopService, ShopService>();
-        _services.TryAddSingleton<ILogService, LogService>();
-        _services.TryAddSingleton<ILoginUserService, LoginUserService>();
         _services.AddIMaoTaiAdmin(new Type[] { typeof(IocHelper), typeof(IMaoTai.MasaUI._Imports) });
         return _services!;
     }

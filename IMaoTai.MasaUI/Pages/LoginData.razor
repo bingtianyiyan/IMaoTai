@@ -54,22 +54,14 @@
 @code{
 
     [Inject]
-    AuthenticationStateProvider AuthStateProvider { get; set; }
+    HostAuthenticationStateProvider AuthStateProvider { get; set; }
 
 
     public async Task Login(MouseEventArgs args)
     {
         var returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)["returnUrl"];
         if (returnUrl == null) returnUrl = "/";
-        bool result;
-        if (AuthStateProvider is HostAuthenticationStateProvider)
-        {
-            result = await (AuthStateProvider as HostAuthenticationStateProvider).Login(ApplicationUser, returnUrl);
-        }else
-        {
-            result = await (AuthStateProvider as WHostAuthenticationStateProvider).Login(ApplicationUser, returnUrl);
-        }
-
+        bool result = await AuthStateProvider.Login(ApplicationUser, returnUrl);
         _alertShow = true;
         if (!result)
         {

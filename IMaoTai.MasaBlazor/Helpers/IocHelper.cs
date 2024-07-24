@@ -3,33 +3,24 @@ using IMaoTai.Core.Entity;
 using IMaoTai.Core.Jobs;
 using IMaoTai.Core.Repository;
 using IMaoTai.Core;
-using IMaoTai.Core.Service;
 using Masa.Blazor;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Quartz.Impl;
 using Quartz;
 using Yitter.IdGenerator;
-using IMaoTai.MasaUI.Core;
-using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
+using IMaoTai.MasaUI;
 
 namespace IMaoTai.MasaBlazor.Web.Helpers;
 
 public static class IocHelper
 {
-    public static IServiceCollection RegisterService(IServiceCollection _services)
+    public static IServiceCollection RegisterService(this IServiceCollection _services)
     {
-        _services.AddAuthorizationCore();
-        _services.AddCascadingAuthenticationState();
-        _services.AddScoped<HostAuthenticationStateProvider>();
-        _services.AddScoped<AuthenticationStateProvider, HostAuthenticationStateProvider>();
+        _services.AddIMaoTaiBusinessService();
+
         _services.AddBlazoredLocalStorage(config =>
          config.JsonSerializerOptions.WriteIndented = true);
-        _services.TryAddSingleton<IUserService, UserService>();
-        _services.TryAddSingleton<IAppointProjectService, AppointProjectService>();
-        _services.TryAddSingleton<IShopService, ShopService>();
-        _services.TryAddSingleton<ILogService, LogService>();
-        _services.TryAddSingleton<ILoginUserService, LoginUserService>();
         _services.TryAddScoped<I18n>();
         //_services.TryAddScoped<CookieStorage>();
         _services.AddHttpContextAccessor();

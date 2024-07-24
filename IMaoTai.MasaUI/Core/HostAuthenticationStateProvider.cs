@@ -2,29 +2,30 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using IMaoTai.Core.Domain;
 using IMaoTai.Core.Service;
+using IMaoTai.MasaUI.Core.SessionData;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using IMaoTai.Core;
 
 namespace IMaoTai.MasaUI.Core
 {
     public class HostAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly ILoginUserService _loginUserService;
-        private ProtectedSessionStorage _protectedSessionStore;
+        private readonly ISessionDataService _sessionDataService;
 
         private ClaimsIdentity identity = new ClaimsIdentity();
 
         public HostAuthenticationStateProvider(
             ILoginUserService loginUserService,
-            ProtectedSessionStorage protectedSessionStore)
+            ISessionDataService sessionDataService)
         {
             _loginUserService = loginUserService;
-            _protectedSessionStore = protectedSessionStore;
+            _sessionDataService = sessionDataService;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var userSessionStorageResult = await _protectedSessionStore.GetAsync<UserLogin>("UserSession");
-            var userSession = userSessionStorageResult.Success ? userSessionStorageResult.Value : null;
+            var userSession = await _sessionDataService.GetSession();
             if (userSession != null)
             {
                 var claims = new[] {
@@ -51,6 +52,7 @@ namespace IMaoTai.MasaUI.Core
         {
             var result = await _loginUserService.Logout();
             identity = new ClaimsIdentity();
+            await _sessionDataService.RemoveSession();
             if (!Config.IsServer)
             {
                 NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
@@ -63,9 +65,10 @@ namespace IMaoTai.MasaUI.Core
             var result = await _loginUserService.Login(loginParameters, returnUrl);
             if (result)
             {
+                CommonX.LoginUserName = loginParameters.UserName;
                 var claims = new[] { new Claim(ClaimTypes.Name, loginParameters.UserName) };
                 identity = new ClaimsIdentity(claims, "IMaoTai");
-                await _protectedSessionStore.SetAsync("UserSession", loginParameters);
+                await _sessionDataService.SetSession(loginParameters);
                 NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             }
             return result;

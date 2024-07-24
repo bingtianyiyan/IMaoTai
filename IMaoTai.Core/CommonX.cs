@@ -44,6 +44,11 @@ namespace IMaoTai.Core
         public static bool LoadFromFile = ConfigurationManager.AppSettings["LoadFromFile"].ToString() == "1";
 
         /// <summary>
+        /// 桌面应用程序登录用户名
+        /// </summary>
+        public static string LoginUserName = "";
+
+        /// <summary>
         /// 获取Freesql数据库类型
         /// </summary>
         /// <returns></returns>
