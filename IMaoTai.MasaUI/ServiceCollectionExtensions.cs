@@ -15,7 +15,6 @@ namespace IMaoTai.MasaUI
             service.AddCascadingAuthenticationState();
             service.AddScoped<HostAuthenticationStateProvider>();
             service.AddScoped<AuthenticationStateProvider, HostAuthenticationStateProvider>();
-            service.AddScoped<ISessionDataService, DeskTopSessionDataService>();
             service.TryAddSingleton<IUserService, UserService>();
             service.TryAddSingleton<IAppointProjectService, AppointProjectService>();
             service.TryAddSingleton<IShopService, ShopService>();

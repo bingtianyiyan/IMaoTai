@@ -11,6 +11,7 @@ using System.IO;
 using System.Windows;
 using Yitter.IdGenerator;
 using IMaoTai.MasaUI;
+using IMaoTai.MasaUI.Core.SessionData;
 
 namespace IMaoTai.Helpers;
 
@@ -33,6 +34,7 @@ public static class IocHelper
         _services.AddBlazorWebViewDeveloperTools();
 
         _services.AddIMaoTaiBusinessService();
+        _services.AddScoped<ISessionDataService, DeskTopSessionDataService>();
 
         _services.AddIMaoTaiAdmin(new Type[] { typeof(IocHelper), typeof(IMaoTai.MasaUI._Imports) });
         return _services!;

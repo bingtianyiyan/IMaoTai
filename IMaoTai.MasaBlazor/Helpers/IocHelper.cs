@@ -10,6 +10,7 @@ using Quartz;
 using Yitter.IdGenerator;
 using Blazored.LocalStorage;
 using IMaoTai.MasaUI;
+using IMaoTai.MasaUI.Core.SessionData;
 
 namespace IMaoTai.MasaBlazor.Web.Helpers;
 
@@ -18,7 +19,7 @@ public static class IocHelper
     public static IServiceCollection RegisterService(this IServiceCollection _services)
     {
         _services.AddIMaoTaiBusinessService();
-
+        _services.AddScoped<ISessionDataService, WebSessionDataService>();
         _services.AddBlazoredLocalStorage(config =>
          config.JsonSerializerOptions.WriteIndented = true);
         _services.TryAddScoped<I18n>();
